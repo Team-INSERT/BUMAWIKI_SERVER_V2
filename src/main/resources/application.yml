@@ -24,11 +24,11 @@ spring:
     show_sql: true
     format_sql: true
 
-  auth:
-    jwt:
-      header: ${HEADER}
-      secret: ${SECRET}
-      accessExp: ${ACCESS-EXP}
-      refreshExp: ${ACCESS-EXP}
-      prefix: ${PREFIX}
+auth:
+  jwt:
+    header: ${HEADER}
+    secret: ${SECRET}
+    accessExp: ${ACCESS-EXP}
+    refreshExp: ${REFRESH-EXP}
+    prefix: ${PREFIX}
 
