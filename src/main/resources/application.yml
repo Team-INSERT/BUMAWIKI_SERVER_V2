@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB-URL}
+    username: ${DB-USERNAME}
+    password: ${DB-PASSWORD}
+  redis:
+    port: 6379
+    host: localhost
+
+  logging:
+    level:
+      org:
+        hibernate:
+          SQL: debug
+
+  jpa:
+    database: mysql
+
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    show_sql: true
+    format_sql: true
+
+  auth:
+    jwt:
+      header: ${HEADER}
+      secret: ${SECRET}
+      accessExp: ${ACCESS-EXP}
+      refreshExp: ${ACCESS-EXP}
+      prefix: ${PREFIX}
+
