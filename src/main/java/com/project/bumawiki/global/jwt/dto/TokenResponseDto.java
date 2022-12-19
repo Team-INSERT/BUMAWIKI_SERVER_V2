@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.security.jwt.dto;
+package com.project.bumawiki.global.jwt.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

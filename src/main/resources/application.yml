@@ -32,3 +32,6 @@ auth:
     refreshExp: ${REFRESH-EXP}
     prefix: ${PREFIX}
 
+bsm:
+  client-id: ${BSM_CLIENT_ID}
+  secret-key : ${BSM_SECRET_KEY}

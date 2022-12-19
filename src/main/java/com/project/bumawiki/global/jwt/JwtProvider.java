@@ -1,16 +1,15 @@
-package com.project.bumawiki.global.security.jwt;
+package com.project.bumawiki.global.jwt;
 
-import com.project.bumawiki.auth.domain.RefreshToken;
-import com.project.bumawiki.auth.domain.repository.RefreshTokenRepository;
-import com.project.bumawiki.global.security.jwt.dto.TokenResponseDto;
+import com.project.bumawiki.domain.auth.domain.RefreshToken;
+import com.project.bumawiki.domain.auth.domain.repository.RefreshTokenRepository;
+import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 
-import static com.project.bumawiki.global.security.jwt.JwtConstants.*;
+import static com.project.bumawiki.global.jwt.JwtConstants.*;
 
 @RequiredArgsConstructor
 public class JwtProvider {

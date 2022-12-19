@@ -1,4 +1,4 @@
-package com.project.bumawiki.auth.domain;
+package com.project.bumawiki.domain.auth.domain;
 
 import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
@@ -6,7 +6,6 @@ import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.Id;
-import java.time.ZonedDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

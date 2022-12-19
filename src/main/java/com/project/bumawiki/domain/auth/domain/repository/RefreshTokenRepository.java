@@ -1,6 +1,6 @@
-package com.project.bumawiki.auth.domain.repository;
+package com.project.bumawiki.domain.auth.domain.repository;
 
-import com.project.bumawiki.auth.domain.RefreshToken;
+import com.project.bumawiki.domain.auth.domain.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

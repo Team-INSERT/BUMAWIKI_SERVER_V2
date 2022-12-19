@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.security.jwt;
+package com.project.bumawiki.global.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
