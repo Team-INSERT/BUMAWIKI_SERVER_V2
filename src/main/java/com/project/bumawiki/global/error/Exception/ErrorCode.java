@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
-    USER_NOT_FOUND(404, "USER-404-1", "User Not Found");
+    USER_NOT_FOUND(404, "USER-404-1", "User Not Found"),
+    BSM_AUTH_INVALID_CLIENT(500, "BSM-500-1", "Bsm Client Is Invalid");
 
     private final int status;
     private final String code;
