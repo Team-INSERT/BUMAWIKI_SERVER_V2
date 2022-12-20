@@ -4,6 +4,7 @@ import com.project.bumawiki.global.jwt.config.JwtProperties;
 import com.project.bumawiki.global.jwt.exception.InvalidJwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,16 +36,22 @@ public class JwtUtil {
         return  bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
     }
 
-    public Jws<Claims> getJwt(String bearer){
-        if(bearer.isEmpty()){
+    public Jws<Claims> getJwt(String token){
+        if(token.isEmpty()){
             throw InvalidJwtException.EXCEPTION;
         }
-        String token = parseToken(bearer);
         return Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token);
     }
 
+
+
     public Claims getJwtBody(String bearer){
-        Jws<Claims> jwt = getJwt(bearer);
+        Jws<Claims> jwt = getJwt(parseToken(bearer));
         return jwt.getBody();
+    }
+
+    public JwsHeader getHeader(String bearer) {
+        Jws<Claims> jwt = getJwt(parseToken(bearer));
+        return jwt.getHeader();
     }
 }
