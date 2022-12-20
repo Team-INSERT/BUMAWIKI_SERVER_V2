@@ -36,11 +36,14 @@ public class JwtUtil {
     }
 
     public Jws<Claims> getJwt(String bearer){
+        if(bearer.isEmpty()){
+            throw InvalidJwtException.EXCEPTION;
+        }
         String token = parseToken(bearer);
         return Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token);
     }
 
-    public Claims getBody(String bearer){
+    public Claims getJwtBody(String bearer){
         Jws<Claims> jwt = getJwt(bearer);
         return jwt.getBody();
     }
