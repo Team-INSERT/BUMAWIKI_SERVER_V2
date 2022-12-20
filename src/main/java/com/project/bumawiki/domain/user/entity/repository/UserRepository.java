@@ -1,6 +1,6 @@
-package com.project.bumawiki.domain.user.repository;
+package com.project.bumawiki.domain.user.entity.repository;
 
-import com.project.bumawiki.domain.user.User;
+import com.project.bumawiki.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    INVALID_TOKEN(403, "TOKEN-403", "Access with Invalid Token"),
     USER_NOT_FOUND(404, "USER-404-1", "User Not Found"),
     BSM_AUTH_INVALID_CLIENT(500, "BSM-500-1", "Bsm Client Is Invalid");
 

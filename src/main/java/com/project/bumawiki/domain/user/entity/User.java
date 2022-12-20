@@ -1,6 +1,6 @@
-package com.project.bumawiki.domain.user;
+package com.project.bumawiki.domain.user.entity;
 
-import com.project.bumawiki.domain.user.authority.Authority;
+import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
 

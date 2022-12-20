@@ -1,9 +1,9 @@
 package com.project.bumawiki.domain.user.service;
 
-import com.project.bumawiki.domain.user.User;
-import com.project.bumawiki.domain.user.authority.Authority;
+import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.entity.authority.Authority;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
-import com.project.bumawiki.domain.user.repository.UserRepository;
+import com.project.bumawiki.domain.user.entity.repository.UserRepository;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.oauth.exception.BsmAuthIdInvalidClientException;
 import leehj050211.bsmOauth.BsmOauth;
@@ -12,7 +12,6 @@ import leehj050211.bsmOauth.exceptions.BsmAuthCodeNotFoundException;
 import leehj050211.bsmOauth.exceptions.BsmAuthInvalidClientException;
 import leehj050211.bsmOauth.exceptions.BsmAuthTokenNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
