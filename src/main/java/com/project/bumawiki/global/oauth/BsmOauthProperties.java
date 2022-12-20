@@ -4,6 +4,7 @@ import leehj050211.bsmOauth.BsmOauth;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.context.annotation.Bean;
 
 @Getter
 @ConstructorBinding
@@ -18,6 +19,7 @@ public class BsmOauthProperties {
         this.secret_key = secret_key;
     }
 
+    @Bean("bsmOauth")
     public BsmOauth bsmOauth(){
         return new BsmOauth(client_id, secret_key);
     }

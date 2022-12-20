@@ -4,6 +4,7 @@ import com.project.bumawiki.domain.user.User;
 import com.project.bumawiki.domain.user.authority.Authority;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.repository.UserRepository;
+import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.oauth.exception.BsmAuthIdInvalidClientException;
 import leehj050211.bsmOauth.BsmOauth;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
@@ -17,12 +18,13 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-@Service
-public class UserSignUpService {
+@ServiceWithTransactionalReadOnly
+public class UserSignUpOrUpdateService {
     private final BsmOauth bsmOauth;
     private final UserRepository userRepository;
 
-    public User bsmOauth(String authId) throws IOException {
+    @Transactional
+    public User execute(String authId) throws IOException {
         String token;
         BsmResourceResponse resource;
         try {

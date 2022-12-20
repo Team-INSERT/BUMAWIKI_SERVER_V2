@@ -1,7 +1,6 @@
 package com.project.bumawiki.global.jwt;
 
 import lombok.Getter;
-import net.bytebuddy.implementation.bind.annotation.BindingPriority;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 

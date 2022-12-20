@@ -6,12 +6,16 @@ import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
 
 import static com.project.bumawiki.global.jwt.JwtConstants.*;
 
+@Slf4j
 @RequiredArgsConstructor
+@Component
 public class JwtProvider {
     private final JwtProperties jwtProperties;
     private final RefreshTokenRepository refreshTokenRepository;
