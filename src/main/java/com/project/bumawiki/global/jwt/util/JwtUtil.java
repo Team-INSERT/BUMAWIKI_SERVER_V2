@@ -21,7 +21,9 @@ public class JwtUtil {
 
     public String resolveToken(HttpServletRequest request){
         String bearer = request.getHeader(jwtProperties.getHeader());
-        if(bearer.isEmpty()){
+
+
+        if(bearer == null){
             throw InvalidJwtException.EXCEPTION;
         }
 
@@ -37,7 +39,7 @@ public class JwtUtil {
     }
 
     public Jws<Claims> getJwt(String token){
-        if(token.isEmpty()){
+        if(token == null){
             throw InvalidJwtException.EXCEPTION;
         }
         return Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token);

@@ -14,6 +14,10 @@ spring:
         hibernate:
           SQL: debug
 
+server:
+  port: 80
+
+
   jpa:
     database: mysql
 

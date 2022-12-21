@@ -23,6 +23,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtAuth jwtAuth;
     private final JwtUtil jwtUtil;
     private final AuthIdRepository authIdRepository;
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
@@ -34,9 +36,10 @@ public class JwtFilter extends OncePerRequestFilter {
     private void checkLoginStatus(String token){
         Claims body = jwtUtil.getJwt(token).getBody();
 
-        if(body.isEmpty()){
+        if(body == null){
             throw InvalidJwtException.EXCEPTION;
         }
+
         String authId = body.get(JwtConstants.AUTH_ID.message).toString();
 
         authIdRepository.findByAuthId(authId)
