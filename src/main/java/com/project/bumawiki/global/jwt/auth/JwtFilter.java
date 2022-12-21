@@ -22,32 +22,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtAuth jwtAuth;
     private final JwtUtil jwtUtil;
-    private final AuthIdRepository authIdRepository;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
-        checkLoginStatus(token);
         SetAuthenticationInSecurityContext(token);
         filterChain.doFilter(request, response);
     }
-
-    private void checkLoginStatus(String token){
-        Claims body = jwtUtil.getJwt(token).getBody();
-
-        if(body == null){
-            throw InvalidJwtException.EXCEPTION;
-        }
-
-        String authId = body.get(JwtConstants.AUTH_ID.message).toString();
-
-        authIdRepository.findByAuthId(authId)
-                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
-    }
-
     private void SetAuthenticationInSecurityContext(String token){
-        Authentication authentication = jwtAuth.authentication(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(token != null) {
+            Authentication authentication = jwtAuth.authentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
     }
 }

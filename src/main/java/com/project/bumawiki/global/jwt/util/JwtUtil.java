@@ -22,20 +22,14 @@ public class JwtUtil {
     public String resolveToken(HttpServletRequest request){
         String bearer = request.getHeader(jwtProperties.getHeader());
 
-
-        if(bearer == null){
-            throw InvalidJwtException.EXCEPTION;
-        }
-
         return parseToken(bearer);
     }
 
     public String parseToken(String bearer){
-        if(!bearer.startsWith(jwtProperties.getPrefix())){
-            throw InvalidJwtException.EXCEPTION;
+        if(bearer != null){
+            return  bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
         }
-
-        return  bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
+        return null;
     }
 
     public Jws<Claims> getJwt(String token){

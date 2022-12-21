@@ -48,7 +48,7 @@ public class UserSignUpOrUpdateService {
 
     @Transactional
     protected User saveUser(BsmResourceResponse resource) {
-         return userRepository.save(
+        return userRepository.save(
                 User.builder()
                 .email(resource.getEmail())
                 .nickName(resource.getNickname())

@@ -24,7 +24,6 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final JwtUtil jwtUtil;
     private final JwtAuth jwtAuth;
-    private final AuthIdRepository authIdRepository;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -39,14 +38,14 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers(GET, "/**")
-                .authenticated()
-                .anyRequest()
-                .permitAll()
+
+                .antMatchers(GET, "/**").permitAll()
+
+                .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
                 .and()
-                .apply(new FilterConfig(jwtUtil, jwtAuth, authIdRepository));
+                .apply(new FilterConfig(jwtUtil, jwtAuth));
 
         return http.build();
     }

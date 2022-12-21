@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @ServiceWithTransactionalReadOnly
 @RequiredArgsConstructor
-public class UerLoginService {
+public class UserLoginService {
     private final UserSignUpOrUpdateService userSignUpORUpdateService;
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;

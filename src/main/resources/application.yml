@@ -14,10 +14,6 @@ spring:
         hibernate:
           SQL: debug
 
-server:
-  port: 80
-
-
   jpa:
     database: mysql
 
@@ -40,3 +36,6 @@ bsm:
   client-id: ${BSM_CLIENT_ID}
   secret-key: ${BSM_SECRET_KEY}
   redirect-url: ${BSM_REDIRECT_URL}
+
+server:
+  port: 80

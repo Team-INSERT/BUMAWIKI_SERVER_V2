@@ -17,11 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class FilterConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     private final JwtUtil jwtUtil;
     private final JwtAuth jwtAuth;
-    private final AuthIdRepository authIdRepository;
 
     @Override
     public void configure(HttpSecurity builder) throws Exception {
-        JwtFilter jwtFilter = new JwtFilter(jwtAuth, jwtUtil, authIdRepository);
+        JwtFilter jwtFilter = new JwtFilter(jwtAuth, jwtUtil);
         ExceptionFilter globalExceptionFilter = new ExceptionFilter();
         builder.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         builder.addFilterBefore(globalExceptionFilter, JwtFilter.class);
