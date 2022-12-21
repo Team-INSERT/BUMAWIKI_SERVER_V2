@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @ServiceWithTransactionalReadOnly
@@ -40,10 +41,14 @@ public class UserSignUpOrUpdateService {
 
     @Transactional
     protected User updateOrSignUp(BsmResourceResponse resource) {
-        User user = userRepository.findByEmail(resource.getEmail())
-                .orElse(saveUser(resource));
+        Optional<User> user = userRepository.findByEmail(resource.getEmail());
+        if(user.isEmpty()){
+            return saveUser(resource);
+        }
+        User updateUser = user.get();
 
-        return user.update(resource);
+
+        return updateUser.update(resource);
     }
 
     @Transactional
