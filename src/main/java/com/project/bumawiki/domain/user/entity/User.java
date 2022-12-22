@@ -1,10 +1,14 @@
 package com.project.bumawiki.domain.user.entity;
 
+import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,6 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
     @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
 
     @Column(unique = true, length = 32)
@@ -25,10 +30,18 @@ public class User {
     @Column(length = 16)
     private Authority authority;
 
+    @OneToMany(mappedBy = "contributor")
+    private List<Contribute> contributeDocs = new ArrayList<>();
 
     public User update(BsmResourceResponse resource){
         this.email = resource.getEmail();
         this.nickName = resource.getNickname();
         return this;
     }
+
+    public User updateContribute(Contribute contribute){
+        contributeDocs.add(0, contribute);
+        return this;
+    }
+
 }

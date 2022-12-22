@@ -1,5 +1,6 @@
-package com.project.bumawiki.domain.docs.Service;
+package com.project.bumawiki.domain.docs.service;
 
+import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
@@ -7,8 +8,11 @@ import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
+import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class DocsUpdateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
@@ -23,12 +28,24 @@ public class DocsUpdateService {
     public DocsResponseDto execute(DocsUpdateRequestDto docsUpdateRequestDto){
         VersionDocs versionDocs = ifPostExistReturnPostId(docsUpdateRequestDto);
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, versionDocs);
-        setVersionDocsToDocs(savedVersionDocs);
+        Docs docs = setVersionDocsToDocs(savedVersionDocs);
+        setContribute(docs);
 
         return new DocsResponseDto(savedVersionDocs);
     }
 
-    public VersionDocs ifPostExistReturnPostId(DocsUpdateRequestDto docsUpdateRequestDto){
+    private void setContribute(Docs docs) {
+        User contributor = SecurityUtil.getCurrentUser().getUser();
+        Contribute contribute = Contribute.builder()
+                .docs(docs)
+                .contributor(contributor)
+                .build();
+        contributor.updateContribute(contribute);
+        docs.updateContribute(contribute);
+    }
+
+    @Transactional(readOnly = true)
+    private VersionDocs ifPostExistReturnPostId(DocsUpdateRequestDto docsUpdateRequestDto){
         List<VersionDocs> findVersionDocs = versionDocsRepository.findAllByTitle(docsUpdateRequestDto.getTitle());
         if(findVersionDocs.size() == 0){
             throw NoUpdatablePostException.EXCEPTION;
@@ -36,7 +53,7 @@ public class DocsUpdateService {
         return findVersionDocs.get(0);
     }
     
-    public VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, VersionDocs versionDocs){
+    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, VersionDocs versionDocs){
         return versionDocsRepository.save(
                 VersionDocs.builder()
                 .docsId(versionDocs.getDocsId())
@@ -48,10 +65,12 @@ public class DocsUpdateService {
         );
     }
 
-    public void setVersionDocsToDocs(VersionDocs versionDocs){
+    private Docs setVersionDocsToDocs(VersionDocs versionDocs){
         Docs docs = docsRepository.findById(versionDocs.getDocsId())
                 .orElseThrow(() -> NoUpdatablePostException.EXCEPTION);
 
         docs.getDocsVersion().add(0, versionDocs);
+
+        return docs;
     }
 }

@@ -1,9 +1,9 @@
 package com.project.bumawiki.domain.docs.domain;
 
+import com.project.bumawiki.domain.contribute.domain.Contribute;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +22,16 @@ public class Docs {
     @JoinColumn(name = "versionDocs_id")
     private List<VersionDocs> docsVersion = new ArrayList<>();
 
+    @OneToMany(mappedBy = "docs")
+    private List<Contribute> contributor = new ArrayList<>();
+
     public Docs updateVersionDocs(VersionDocs versionDocs){
         docsVersion.add(0, versionDocs);
+        return this;
+    }
+
+    public Docs updateContribute(Contribute contribute){
+        contributor.add(0, contribute);
         return this;
     }
 

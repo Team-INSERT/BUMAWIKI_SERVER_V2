@@ -10,12 +10,13 @@ import com.project.bumawiki.global.jwt.config.JwtProperties;
 import com.project.bumawiki.global.jwt.util.JwtProvider;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 
 @ServiceWithTransactionalReadOnly
 @RequiredArgsConstructor
+@Transactional
 public class UserLoginService {
     private final UserSignUpOrUpdateService userSignUpORUpdateService;
     private final JwtProvider jwtProvider;
@@ -23,7 +24,6 @@ public class UserLoginService {
     private final JwtProperties jwtProperties;
     private final AuthIdRepository authIdRepository;
 
-    @Transactional
     public TokenResponseDto execute(String authId) throws IOException {
 
         User user = userSignUpORUpdateService.execute(authId);
@@ -32,13 +32,11 @@ public class UserLoginService {
         return saveRefreshToken(jwtProvider.generateToken(user.getEmail(), user.getAuthority().name()), user.getEmail());
     }
 
-    @Transactional
-    protected void saveAuthId(String email){
+    private void saveAuthId(String email){
         authIdRepository.save(new AuthId().update(email));
     }
 
-    @Transactional
-    protected TokenResponseDto saveRefreshToken(TokenResponseDto tokenResponseDto, String id){
+    private TokenResponseDto saveRefreshToken(TokenResponseDto tokenResponseDto, String id){
         refreshTokenRepository.save(
                 RefreshToken.builder()
                         .id(id)

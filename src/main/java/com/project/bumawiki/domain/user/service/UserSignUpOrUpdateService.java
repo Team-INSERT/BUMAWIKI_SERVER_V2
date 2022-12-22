@@ -12,8 +12,8 @@ import leehj050211.bsmOauth.exceptions.BsmAuthCodeNotFoundException;
 import leehj050211.bsmOauth.exceptions.BsmAuthInvalidClientException;
 import leehj050211.bsmOauth.exceptions.BsmAuthTokenNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Optional;
 
