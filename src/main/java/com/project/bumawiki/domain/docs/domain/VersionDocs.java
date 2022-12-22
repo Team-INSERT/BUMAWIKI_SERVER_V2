@@ -22,7 +22,7 @@ public class VersionDocs {
     @NotNull
     private Long DocsId;
 
-    @Column(length = 32)
+    @Column(length = 32, unique = true)
     @NotNull
     private String title;
 

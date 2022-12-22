@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ErrorCode {
 
 
+    POST_TITLE_ALREADY_EXIST(403, "POST-403-1", "Post_Already_Exist"),
     FORBIDDEN(403, "COMMON-403-1", "Forbidden"),
     USER_NOT_LOGIN(403,"USER-403-1", "User Not Login"),
     INVALID_TOKEN(403, "TOKEN-403-1", "Access with Invalid Token"),
