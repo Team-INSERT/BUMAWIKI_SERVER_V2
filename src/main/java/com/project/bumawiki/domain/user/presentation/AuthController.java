@@ -15,13 +15,18 @@ import java.io.IOException;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping
+@RequestMapping("auth")
 public class AuthController {
     private final UserLoginService userLoginService;
     private final UserLogoutService userLogoutService;
 
-    @GetMapping("/signup/bsm")
-    public TokenResponseDto userSignup(@RequestParam String code) throws IOException {
-        return userLoginService.execute(code);
+    @PostMapping("/oauth/bsm")
+    public TokenResponseDto userSignup(HttpServletRequest request) throws IOException {
+        return userLoginService.execute(request.getHeader("authCode"));
+    }
+
+    @PostMapping("/bsm/logout")
+    public String userLogout(@RequestHeader("refresh_token")String refreshToken) throws IOException {
+        return userLogoutService.execute(refreshToken);
     }
 }
