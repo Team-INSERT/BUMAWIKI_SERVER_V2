@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class VersionDocsChangeRequestDto {
+public class DocsCreateRequestDto {
 
     @Column(length = 32)
     @NotNull

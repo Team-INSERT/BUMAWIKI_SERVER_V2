@@ -8,7 +8,7 @@ import com.project.bumawiki.domain.docs.exception.PostTitleAlreadyExistException
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsChangeRequestDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 
 import javax.transaction.Transactional;
 
@@ -19,24 +19,24 @@ public class DocsCreateService {
     private final VersionDocsRepository versionDocsRepository;
 
     @Transactional
-    public DocsResponseDto execute(VersionDocsChangeRequestDto versionDocsChangeRequestDto){
-        checkTitleDuplication(versionDocsChangeRequestDto.getTitle());
+    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
+        checkTitleDuplication(docsCreateRequestDto.getTitle());
         Docs docs = createDocs();
-        VersionDocs savedDocs = saveVersionDocs(versionDocsChangeRequestDto, docs.getId());
+        VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         docs.updateVersionDocs(savedDocs);
 
         return new DocsResponseDto(savedDocs);
     }
 
     @Transactional
-    protected VersionDocs saveVersionDocs(VersionDocsChangeRequestDto versionDocsChangeRequestDto, Long id){
+    protected VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
         VersionDocs savedDocs = versionDocsRepository.save(
                 VersionDocs.builder()
                         .DocsId(id)
-                        .title(versionDocsChangeRequestDto.getTitle())
-                        .enroll(versionDocsChangeRequestDto.getEnroll())
-                        .contents(versionDocsChangeRequestDto.getContents())
-                        .imageLink(versionDocsChangeRequestDto.getImageLink())
+                        .title(docsCreateRequestDto.getTitle())
+                        .enroll(docsCreateRequestDto.getEnroll())
+                        .contents(docsCreateRequestDto.getContents())
+                        .imageLink(docsCreateRequestDto.getImageLink())
                         .build()
         );
         return savedDocs;
