@@ -32,7 +32,7 @@ public class DocsCreateService {
     protected VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
         VersionDocs savedDocs = versionDocsRepository.save(
                 VersionDocs.builder()
-                        .DocsId(id)
+                        .docsId(id)
                         .title(docsCreateRequestDto.getTitle())
                         .enroll(docsCreateRequestDto.getEnroll())
                         .contents(docsCreateRequestDto.getContents())

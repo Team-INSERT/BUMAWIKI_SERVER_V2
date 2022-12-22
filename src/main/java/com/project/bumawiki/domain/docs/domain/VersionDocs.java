@@ -20,9 +20,9 @@ public class VersionDocs {
     private Long id;
 
     @NotNull
-    private Long DocsId;
+    private Long docsId;
 
-    @Column(length = 32, unique = true)
+    @Column(length = 32)
     @NotNull
     private String title;
 
