@@ -22,4 +22,9 @@ public class Docs {
     @JoinColumn(name = "versionDocs_id")
     private List<VersionDocs> docsVersion = new ArrayList<>();
 
+    public Docs updateVersionDocs(VersionDocs versionDocs){
+        docsVersion.add(0, versionDocs);
+        return this;
+    }
+
 }

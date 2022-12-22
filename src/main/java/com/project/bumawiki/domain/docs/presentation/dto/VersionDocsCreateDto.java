@@ -1,26 +1,16 @@
-package com.project.bumawiki.domain.docs.domain;
+package com.project.bumawiki.domain.docs.presentation.dto;
 
-import lombok.*;
+import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class VersionDocs {
-
-    @Id @GeneratedValue
-    @Column(name = "versionDocs_id")
-    private Long id;
-
-    @NotNull
-    private Long DocsId;
+public class VersionDocsCreateDto {
 
     @Column(length = 32)
     @NotNull
@@ -36,6 +26,4 @@ public class VersionDocs {
 
     @Lob
     private List<Clob> imageLink = new ArrayList<>();
-
-
 }
