@@ -1,10 +1,13 @@
 package com.project.bumawiki.domain.docs.domain;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Clob;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +40,6 @@ public class VersionDocs {
     @Lob
     private List<Clob> imageLink = new ArrayList<>();
 
-
+    @CreatedDate
+    private LocalDateTime thisVersionCreatedAt;
 }

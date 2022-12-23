@@ -28,6 +28,8 @@ public class Docs {
     @OneToMany(mappedBy = "docs")
     private List<Contribute> contributor = new ArrayList<>();
 
+    private int view = 0;
+
     public Docs updateVersionDocs(VersionDocs versionDocs){
         docsVersion.add(0, versionDocs);
         return this;
