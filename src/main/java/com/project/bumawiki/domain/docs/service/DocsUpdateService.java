@@ -31,7 +31,7 @@ public class DocsUpdateService {
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         setContribute(docs);
 
-        return new DocsResponseDto(savedVersionDocs);
+        return new DocsResponseDto(docs);
     }
 
     private void setContribute(Docs docs) {

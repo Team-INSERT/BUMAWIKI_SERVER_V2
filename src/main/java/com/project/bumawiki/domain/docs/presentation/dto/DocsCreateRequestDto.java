@@ -29,5 +29,5 @@ public class DocsCreateRequestDto {
     private DocsType docsType;
 
     @Lob
-    private List<Clob> imageLink = new ArrayList<>();
+    private List<Clob> image = new ArrayList<>();
 }

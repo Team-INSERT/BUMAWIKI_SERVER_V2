@@ -29,7 +29,7 @@ public class DocsCreateService {
         docs.updateDocsType(docsCreateRequestDto.getDocsType());
         setContribute(docs);
 
-        return new DocsResponseDto(savedDocs);
+        return new DocsResponseDto(docs);
     }
 
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
@@ -39,7 +39,7 @@ public class DocsCreateService {
                         .title(docsCreateRequestDto.getTitle())
                         .enroll(docsCreateRequestDto.getEnroll())
                         .contents(docsCreateRequestDto.getContents())
-                        .imageLink(docsCreateRequestDto.getImageLink())
+                        .imageLink(docsCreateRequestDto.getImage())
                         .build()
         );
         return savedDocs;
@@ -63,6 +63,14 @@ public class DocsCreateService {
     private void checkTitleDuplication(String title) {
         versionDocsRepository.findByTitle(title)
                 .orElseThrow(() -> PostTitleAlreadyExistException.EXCEPTION);
+    }
+
+
+    /**
+     * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
+     */
+    public void setImageUrlInContents(){
+
     }
 }
 

@@ -3,8 +3,10 @@ package com.project.bumawiki.domain.docs.domain;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import lombok.*;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +29,10 @@ public class Docs {
     private DocsType docsType;
     @OneToMany(mappedBy = "docs")
     private List<Contribute> contributor = new ArrayList<>();
-
     private int view = 0;
+    @LastModifiedDate
+    private LocalDateTime lastModifiedAt;
+
 
     public Docs updateVersionDocs(VersionDocs versionDocs){
         docsVersion.add(0, versionDocs);
