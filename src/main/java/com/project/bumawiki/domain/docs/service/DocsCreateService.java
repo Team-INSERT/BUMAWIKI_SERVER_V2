@@ -26,19 +26,10 @@ public class DocsCreateService {
         Docs docs = createDocs();
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         docs.updateVersionDocs(savedDocs);
+        docs.updateDocsType(docsCreateRequestDto.getDocsType());
         setContribute(docs);
 
         return new DocsResponseDto(savedDocs);
-    }
-
-    private void setContribute(Docs docs) {
-        User user = SecurityUtil.getCurrentUser().getUser();
-        Contribute contribute = Contribute.builder()
-                .docs(docs)
-                .contributor(user)
-                .build();
-        docs.updateContribute(contribute);
-        user.updateContribute(contribute);
     }
 
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
@@ -52,6 +43,16 @@ public class DocsCreateService {
                         .build()
         );
         return savedDocs;
+    }
+
+    private void setContribute(Docs docs) {
+        User user = SecurityUtil.getCurrentUser().getUser();
+        Contribute contribute = Contribute.builder()
+                .docs(docs)
+                .contributor(user)
+                .build();
+        docs.updateContribute(contribute);
+        user.updateContribute(contribute);
     }
 
     private Docs createDocs(){

@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.docs.domain;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,8 @@ public class Docs {
     @JoinColumn(name = "versionDocs_id")
     private List<VersionDocs> docsVersion = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private DocsType docsType;
     @OneToMany(mappedBy = "docs")
     private List<Contribute> contributor = new ArrayList<>();
 
@@ -35,4 +38,8 @@ public class Docs {
         return this;
     }
 
+    public Docs updateDocsType(DocsType docsType){
+        this.docsType = docsType;
+        return this;
+    }
 }

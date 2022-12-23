@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.docs.presentation.dto;
 
+import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import lombok.Getter;
 
 import javax.persistence.Column;
@@ -23,6 +24,9 @@ public class DocsCreateRequestDto {
     @Column(columnDefinition = "TEXT")
     @NotNull
     private String contents;
+
+    @NotNull
+    private DocsType docsType;
 
     @Lob
     private List<Clob> imageLink = new ArrayList<>();
