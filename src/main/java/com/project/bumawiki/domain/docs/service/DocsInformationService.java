@@ -2,7 +2,7 @@ package com.project.bumawiki.domain.docs.service;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
-import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
+import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,16 +19,38 @@ import java.util.stream.Collectors;
 @Transactional
 public class DocsInformationService {
     private final DocsRepository docsRepository;
-    private final VersionDocsRepository versionDocsRepository;
 
-    public List<DocsResponseDto> allStudent(Pageable pageable){
-        Page<Docs> allStudent = docsRepository.findAllStudent(pageable);
+    public List<DocsResponseDto> findAllStudent(Pageable pageable){
+        Page<Docs> allStudent = docsRepository.findByDocsType(DocsType.STUDENT, pageable);
 
         return allStudent.stream()
                 .map(DocsResponseDto::new)
                 .collect(Collectors.toList());
     }
 
+    public List<DocsResponseDto> findAllAccident(Pageable pageable){
+        Page<Docs> allAccident = docsRepository.findByDocsType(DocsType.ACCIDENT, pageable);
+
+        return allAccident.stream()
+                .map(DocsResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DocsResponseDto> findAllTeacher(Pageable pageable){
+        Page<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER, pageable);
+
+        return allTeacher.stream()
+                .map(DocsResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DocsResponseDto> findAllClub(Pageable pageable){
+        Page<Docs> allClub = docsRepository.findByDocsType(DocsType.CLUB, pageable);
+
+        return allClub.stream()
+                .map(DocsResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }
 
 
