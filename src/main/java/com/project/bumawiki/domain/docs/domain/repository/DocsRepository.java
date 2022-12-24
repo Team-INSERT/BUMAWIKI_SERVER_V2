@@ -7,9 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface DocsRepository extends JpaRepository<Docs, Long> {
 
     @Query("select d from Docs d where d.docsType = :docsType order by d.lastModifiedAt asc")
-    Page<Docs> findByDocsType(DocsType docsType, Pageable pageable);
+    List<Docs> findByDocsType(DocsType docsType, Pageable pageable);
 
 }

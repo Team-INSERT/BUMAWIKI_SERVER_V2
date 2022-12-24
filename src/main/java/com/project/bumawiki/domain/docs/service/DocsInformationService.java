@@ -21,15 +21,15 @@ public class DocsInformationService {
     private final DocsRepository docsRepository;
 
     public List<DocsResponseDto> findAllStudent(Pageable pageable){
-        Page<Docs> allStudent = docsRepository.findByDocsType(DocsType.STUDENT, pageable);
+        List<Docs> allStudent = docsRepository.findByDocsType(DocsType.STUDENT, pageable);
 
         return allStudent.stream()
                 .map(DocsResponseDto::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());;
     }
 
     public List<DocsResponseDto> findAllAccident(Pageable pageable){
-        Page<Docs> allAccident = docsRepository.findByDocsType(DocsType.ACCIDENT, pageable);
+        List<Docs> allAccident = docsRepository.findByDocsType(DocsType.ACCIDENT, pageable);
 
         return allAccident.stream()
                 .map(DocsResponseDto::new)
@@ -37,7 +37,7 @@ public class DocsInformationService {
     }
 
     public List<DocsResponseDto> findAllTeacher(Pageable pageable){
-        Page<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER, pageable);
+        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER, pageable);
 
         return allTeacher.stream()
                 .map(DocsResponseDto::new)
@@ -45,7 +45,7 @@ public class DocsInformationService {
     }
 
     public List<DocsResponseDto> findAllClub(Pageable pageable){
-        Page<Docs> allClub = docsRepository.findByDocsType(DocsType.CLUB, pageable);
+        List<Docs> allClub = docsRepository.findByDocsType(DocsType.CLUB, pageable);
 
         return allClub.stream()
                 .map(DocsResponseDto::new)
