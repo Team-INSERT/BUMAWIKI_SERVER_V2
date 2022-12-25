@@ -40,7 +40,6 @@ public class DocsCreateService {
                 VersionDocs.builder()
                         .docsId(id)
                         .contents(docsCreateRequestDto.getContents())
-                        .imageLink(docsCreateRequestDto.getImage())
                         .build()
         );
         return savedDocs;

@@ -58,7 +58,6 @@ public class DocsUpdateService {
                 VersionDocs.builder()
                 .docsId(docsId)
                 .contents(docsUpdateRequestDto.getContents())
-                .imageLink(docsUpdateRequestDto.getImageLink())
                 .build()
         );
     }
@@ -70,5 +69,12 @@ public class DocsUpdateService {
         docs.getDocsVersion().add(0, versionDocs);
 
         return docs;
+    }
+
+    /**
+     * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
+     */
+    public void setImageUrlInContents(){
+
     }
 }

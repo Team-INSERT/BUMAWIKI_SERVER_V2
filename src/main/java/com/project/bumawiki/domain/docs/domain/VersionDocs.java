@@ -28,9 +28,6 @@ public class VersionDocs {
     @NotNull
     private String contents;
 
-    @Lob
-    private List<Clob> imageLink = new ArrayList<>();
-
     @CreatedDate
     private LocalDateTime thisVersionCreatedAt;
 }
