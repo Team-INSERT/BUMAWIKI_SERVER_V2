@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    NO_IMAGE(403,"IMAGE-403-1","NO Image"),
     NO_UPDATABLE_POST(403, "POST-404-1", "No Post You Want To Update"),
     POST_TITLE_ALREADY_EXIST(403, "POST-403-1", "Post_Already_Exist"),
     FORBIDDEN(403, "COMMON-403-1", "Forbidden"),

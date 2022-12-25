@@ -25,7 +25,7 @@ public class DocsInformationService {
 
         return allStudent.stream()
                 .map(DocsResponseDto::new)
-                .collect(Collectors.toList());;
+                .collect(Collectors.toList());
     }
 
     public List<DocsResponseDto> findAllAccident(Pageable pageable){

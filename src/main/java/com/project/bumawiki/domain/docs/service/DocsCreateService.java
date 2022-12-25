@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocsCreateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
-
+    private final ArrayList<String> LinkList;
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
         checkTitleDuplication(docsCreateRequestDto.getTitle());
         Docs docs = createDocs();
@@ -60,7 +65,7 @@ public class DocsCreateService {
     }
 
     @Transactional(readOnly = true)
-    private void checkTitleDuplication(String title) {
+    void checkTitleDuplication(String title) {
         versionDocsRepository.findByTitle(title)
                 .orElseThrow(() -> PostTitleAlreadyExistException.EXCEPTION);
     }
@@ -69,6 +74,7 @@ public class DocsCreateService {
     /**
      * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
      */
+
     public void setImageUrlInContents(){
 
     }
