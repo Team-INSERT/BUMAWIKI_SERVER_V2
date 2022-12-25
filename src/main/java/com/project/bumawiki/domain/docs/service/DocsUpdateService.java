@@ -6,6 +6,7 @@ import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.user.entity.User;
@@ -29,10 +30,15 @@ public class DocsUpdateService {
         VersionDocs versionDocs = ifPostExistReturnPostId(docsUpdateRequestDto);
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, versionDocs);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
+
+        docs.updateEnroll(docsUpdateRequestDto.getEnroll());
+        docs.updateVersionDocs(savedVersionDocs);
+
         setContribute(docs);
 
         return new DocsResponseDto(docs);
     }
+
 
     private void setContribute(Docs docs) {
         User contributor = SecurityUtil.getCurrentUser().getUser();
@@ -58,7 +64,6 @@ public class DocsUpdateService {
                 VersionDocs.builder()
                 .docsId(versionDocs.getDocsId())
                 .title(docsUpdateRequestDto.getTitle())
-                .enroll(docsUpdateRequestDto.getEnroll())
                 .contents(docsUpdateRequestDto.getContents())
                 .imageLink(docsUpdateRequestDto.getImageLink())
                 .build()

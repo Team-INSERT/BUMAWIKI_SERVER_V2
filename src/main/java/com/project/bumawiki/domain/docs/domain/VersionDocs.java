@@ -29,10 +29,6 @@ public class VersionDocs {
     @NotNull
     private String title;
 
-    @Column(length = 8)
-    @NotNull
-    private int enroll;
-
     @Column(columnDefinition = "TEXT")
     @NotNull
     private String contents;

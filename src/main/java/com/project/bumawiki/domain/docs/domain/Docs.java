@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,10 @@ public class Docs {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "versionDocs_id")
     private List<VersionDocs> docsVersion = new ArrayList<>();
+
+    @Column(length = 8)
+    @NotNull
+    private int enroll;
 
     @Enumerated(EnumType.STRING)
     private DocsType docsType;
@@ -47,5 +52,9 @@ public class Docs {
     public Docs updateDocsType(DocsType docsType){
         this.docsType = docsType;
         return this;
+    }
+
+    public void updateEnroll(int enroll) {
+        this.enroll = enroll;
     }
 }

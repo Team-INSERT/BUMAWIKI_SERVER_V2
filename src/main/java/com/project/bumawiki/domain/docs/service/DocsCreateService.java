@@ -5,6 +5,7 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
+import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.PostTitleAlreadyExistException;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.util.SecurityUtil;
@@ -25,11 +26,17 @@ public class DocsCreateService {
         checkTitleDuplication(docsCreateRequestDto.getTitle());
         Docs docs = createDocs();
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
-        docs.updateVersionDocs(savedDocs);
-        docs.updateDocsType(docsCreateRequestDto.getDocsType());
         setContribute(docs);
 
+        updateDocs(docs, savedDocs, docsCreateRequestDto);
+
         return new DocsResponseDto(docs);
+    }
+
+    private void updateDocs(Docs docs, VersionDocs savedDocs, DocsCreateRequestDto docsCreateRequestDto){
+        docs.updateVersionDocs(savedDocs);
+        docs.updateDocsType(docsCreateRequestDto.getDocsType());
+        docs.updateEnroll(docsCreateRequestDto.getEnroll());
     }
 
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
@@ -37,7 +44,6 @@ public class DocsCreateService {
                 VersionDocs.builder()
                         .docsId(id)
                         .title(docsCreateRequestDto.getTitle())
-                        .enroll(docsCreateRequestDto.getEnroll())
                         .contents(docsCreateRequestDto.getContents())
                         .imageLink(docsCreateRequestDto.getImage())
                         .build()

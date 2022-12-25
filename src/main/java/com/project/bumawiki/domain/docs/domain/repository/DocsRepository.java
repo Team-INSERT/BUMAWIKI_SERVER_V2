@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface DocsRepository extends JpaRepository<Docs, Long> {
 
-    @Query("select d from Docs d where d.docsType = :docsType order by d.lastModifiedAt asc")
-    List<Docs> findByDocsType(DocsType docsType, Pageable pageable);
+    @Query("select d from Docs d where d.docsType = :docsType order by d.docs")
+    List<Docs> findByDocsType(DocsType docsType);
 
+    @Query("select d from Docs d order by d.lastModifiedAt desc")
+    List<Docs> findAll();
 }
