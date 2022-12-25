@@ -3,9 +3,10 @@ package com.project.bumawiki.domain.docs.service;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
+import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,36 +20,43 @@ import java.util.stream.Collectors;
 public class DocsInformationService {
     private final DocsRepository docsRepository;
 
-    public List<DocsResponseDto> findAllStudent(){
+    public List<DocsNameAndEnrollResponseDto> findAllStudent(){
         List<Docs> allStudent = docsRepository.findByDocsType(DocsType.STUDENT);
 
         return allStudent.stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<DocsResponseDto> findAllAccident(){
+    public List<DocsNameAndEnrollResponseDto> findAllAccident(){
         List<Docs> allAccident = docsRepository.findByDocsType(DocsType.ACCIDENT);
 
         return allAccident.stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<DocsResponseDto> findAllTeacher(){
+    public List<DocsNameAndEnrollResponseDto> findAllTeacher(){
         List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER);
 
         return allTeacher.stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<DocsResponseDto> findAllClub(){
+    public List<DocsNameAndEnrollResponseDto> findAllClub(){
         List<Docs> allClub = docsRepository.findByDocsType(DocsType.CLUB);
 
         return allClub.stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public DocsResponseDto findDocs(String title){
+        Docs docs = docsRepository.findByTitle(title)
+                .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+
+        return new DocsResponseDto(docs);
     }
 }
 

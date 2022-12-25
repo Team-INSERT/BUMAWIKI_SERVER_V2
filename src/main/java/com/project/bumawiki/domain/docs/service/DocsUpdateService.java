@@ -6,7 +6,6 @@ import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.user.entity.User;

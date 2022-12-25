@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface DocsRepository extends JpaRepository<Docs, Long> {
 
-    @Query("select d from Docs d where d.docsType = :docsType order by d.enroll")
+    @Query("select d.title, d.enroll from Docs d where d.docsType = :docsType order by d.enroll")
     List<Docs> findByDocsType(DocsType docsType);
 
     Optional<Docs> findByTitle(String title);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/docs")
+@RequestMapping("/docs/api")
 public class DocsCreateUpdateController {
 
     private final DocsCreateService docsCreateService;

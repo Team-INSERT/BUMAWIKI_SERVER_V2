@@ -5,8 +5,7 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
-import com.project.bumawiki.domain.docs.domain.type.DocsType;
-import com.project.bumawiki.domain.docs.exception.PostTitleAlreadyExistException;
+import com.project.bumawiki.domain.docs.exception.DocsTitleAlreadyExistException;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +68,7 @@ public class DocsCreateService {
     private void checkTitleDuplication(String title) {
         Optional<Docs> docs = docsRepository.findByTitle(title);
         if(docs == null)
-            throw PostTitleAlreadyExistException.EXCEPTION;
+            throw DocsTitleAlreadyExistException.EXCEPTION;
     }
 
 
