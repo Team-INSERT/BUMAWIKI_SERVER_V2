@@ -2,7 +2,6 @@ package com.project.bumawiki.domain.docs.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,10 +23,6 @@ public class VersionDocs {
 
     @NotNull
     private Long docsId;
-
-    @Column(length = 32)
-    @NotNull
-    private String title;
 
     @Column(columnDefinition = "TEXT")
     @NotNull

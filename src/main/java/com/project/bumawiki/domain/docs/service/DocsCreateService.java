@@ -15,6 +15,8 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -24,26 +26,19 @@ public class DocsCreateService {
 
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
         checkTitleDuplication(docsCreateRequestDto.getTitle());
-        Docs docs = createDocs();
+        Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         setContribute(docs);
 
-        updateDocs(docs, savedDocs, docsCreateRequestDto);
+        docs.updateVersionDocs(savedDocs);
 
         return new DocsResponseDto(docs);
-    }
-
-    private void updateDocs(Docs docs, VersionDocs savedDocs, DocsCreateRequestDto docsCreateRequestDto){
-        docs.updateVersionDocs(savedDocs);
-        docs.updateDocsType(docsCreateRequestDto.getDocsType());
-        docs.updateEnroll(docsCreateRequestDto.getEnroll());
     }
 
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
         VersionDocs savedDocs = versionDocsRepository.save(
                 VersionDocs.builder()
                         .docsId(id)
-                        .title(docsCreateRequestDto.getTitle())
                         .contents(docsCreateRequestDto.getContents())
                         .imageLink(docsCreateRequestDto.getImage())
                         .build()
@@ -61,14 +56,21 @@ public class DocsCreateService {
         user.updateContribute(contribute);
     }
 
-    private Docs createDocs(){
-        return docsRepository.save(Docs.builder().build());
+    private Docs createDocs(DocsCreateRequestDto docsCreateRequestDto){
+        return docsRepository.save(
+                Docs.builder()
+                        .title(docsCreateRequestDto.getTitle())
+                        .enroll(docsCreateRequestDto.getEnroll())
+                        .docsType(docsCreateRequestDto.getDocsType())
+                .build()
+        );
     }
 
     @Transactional(readOnly = true)
     private void checkTitleDuplication(String title) {
-        versionDocsRepository.findByTitle(title)
-                .orElseThrow(() -> PostTitleAlreadyExistException.EXCEPTION);
+        Optional<Docs> docs = docsRepository.findByTitle(title);
+        if(docs == null)
+            throw PostTitleAlreadyExistException.EXCEPTION;
     }
 
 

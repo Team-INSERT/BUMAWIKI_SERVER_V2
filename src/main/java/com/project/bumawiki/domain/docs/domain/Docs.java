@@ -22,6 +22,10 @@ public class Docs {
     @Column(name = "docs_id")
     private Long id;
 
+    @Column(length = 32)
+    @NotNull
+    private String title;
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "versionDocs_id")
     private List<VersionDocs> docsVersion = new ArrayList<>();
@@ -47,14 +51,5 @@ public class Docs {
     public Docs updateContribute(Contribute contribute){
         contributor.add(0, contribute);
         return this;
-    }
-
-    public Docs updateDocsType(DocsType docsType){
-        this.docsType = docsType;
-        return this;
-    }
-
-    public void updateEnroll(int enroll) {
-        this.enroll = enroll;
     }
 }

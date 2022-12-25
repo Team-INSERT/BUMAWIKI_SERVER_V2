@@ -15,10 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-// 기여자 생성 해야함
-
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -27,11 +23,10 @@ public class DocsUpdateService {
     private final VersionDocsRepository versionDocsRepository;
 
     public DocsResponseDto execute(DocsUpdateRequestDto docsUpdateRequestDto){
-        VersionDocs versionDocs = ifPostExistReturnPostId(docsUpdateRequestDto);
-        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, versionDocs);
+        Long docsId = ifPostExistReturnPostId(docsUpdateRequestDto);
+        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
 
-        docs.updateEnroll(docsUpdateRequestDto.getEnroll());
         docs.updateVersionDocs(savedVersionDocs);
 
         setContribute(docs);
@@ -51,19 +46,17 @@ public class DocsUpdateService {
     }
 
     @Transactional(readOnly = true)
-    private VersionDocs ifPostExistReturnPostId(DocsUpdateRequestDto docsUpdateRequestDto){
-        List<VersionDocs> findVersionDocs = versionDocsRepository.findAllByTitle(docsUpdateRequestDto.getTitle());
-        if(findVersionDocs.size() == 0){
-            throw NoUpdatablePostException.EXCEPTION;
-        }
-        return findVersionDocs.get(0);
+    private Long ifPostExistReturnPostId(DocsUpdateRequestDto docsUpdateRequestDto){
+        Docs findByTitle = docsRepository.findByTitle(docsUpdateRequestDto.getTitle())
+                .orElseThrow(() -> NoUpdatablePostException.EXCEPTION);
+
+        return findByTitle.getId();
     }
     
-    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, VersionDocs versionDocs){
+    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto,Long docsId){
         return versionDocsRepository.save(
                 VersionDocs.builder()
-                .docsId(versionDocs.getDocsId())
-                .title(docsUpdateRequestDto.getTitle())
+                .docsId(docsId)
                 .contents(docsUpdateRequestDto.getContents())
                 .imageLink(docsUpdateRequestDto.getImageLink())
                 .build()
