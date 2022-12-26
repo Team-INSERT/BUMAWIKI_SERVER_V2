@@ -38,7 +38,7 @@ bsm:
   redirect-url: ${BSM_REDIRECT_URL}
 
 image:
-  saving-url: ${SAVING_URL}
+  path: ${SAVING_URL}
 server:
   port: 80
 
