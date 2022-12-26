@@ -7,6 +7,7 @@ import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.exception.DocsTitleAlreadyExistException;
 import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,17 +27,23 @@ public class DocsCreateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
 
+    @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
         checkTitleDuplication(docsCreateRequestDto.getTitle());
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         setContribute(docs);
 
-        docs.updateVersionDocs(savedDocs);
+        List<VersionDocs> versionDocs = new ArrayList<>();
+        versionDocs.add(savedDocs);
 
-        return new DocsResponseDto(docs);
+        docs.setVersionDocs(versionDocs);
+
+        DocsResponseDto docsResponseDto = new DocsResponseDto(docs);
+        return docsResponseDto;
     }
 
+    @Transactional
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
         VersionDocs savedDocs = versionDocsRepository.save(
                 VersionDocs.builder()
@@ -44,16 +54,23 @@ public class DocsCreateService {
         return savedDocs;
     }
 
+    @Transactional
     private void setContribute(Docs docs) {
         User user = SecurityUtil.getCurrentUser().getUser();
+        if(user == null){
+            throw UserNotFoundException.EXCEPTION;
+        }
         Contribute contribute = Contribute.builder()
                 .docs(docs)
                 .contributor(user)
                 .build();
-        docs.updateContribute(contribute);
-        user.updateContribute(contribute);
+        ArrayList<Contribute> contributes = new ArrayList<>();
+        contributes.add(contribute);
+        docs.setContributor(contributes);
+        user.setContributeDocs(contributes);
     }
 
+    @Transactional
     private Docs createDocs(DocsCreateRequestDto docsCreateRequestDto){
         return docsRepository.save(
                 Docs.builder()

@@ -37,7 +37,6 @@ public class JwtProvider {
 
     private String generateToken(String authId, String role, String type ,Long time){
         return Jwts.builder()
-                .setSubject(authId)
                 .setHeaderParam(TYPE.message, type)
                 .claim(ROLE.getMessage(), role)
                 .claim(AUTH_ID.getMessage(), authId)

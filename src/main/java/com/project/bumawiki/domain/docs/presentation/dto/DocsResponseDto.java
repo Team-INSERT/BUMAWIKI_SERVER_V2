@@ -7,6 +7,7 @@ import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +15,12 @@ import java.util.List;
 public class DocsResponseDto {
 
     private String title;
+
     private String contents;
+
     private DocsType docsType;
     private int enroll;
     private int view;
-    private List<User> contributor = new ArrayList<>();
 
     public DocsResponseDto(Docs docs) {
         VersionDocs versionDocs = docs.getDocsVersion().get(0);
@@ -28,8 +30,6 @@ public class DocsResponseDto {
         this.docsType = docs.getDocsType();
         this.enroll = docs.getEnroll();
         this.view = docs.getView();
-        for (Contribute contribute : contributes) {
-            this.contributor.add(contribute.getContributor());
-        }
     }
 }
+
