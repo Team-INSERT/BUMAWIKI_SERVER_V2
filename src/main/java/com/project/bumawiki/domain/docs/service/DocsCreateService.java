@@ -29,7 +29,6 @@ public class DocsCreateService {
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
-        checkTitleDuplication(docsCreateRequestDto.getTitle(), docsCreateRequestDto.getEnroll());
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         setContribute(docs);
@@ -71,21 +70,14 @@ public class DocsCreateService {
     }
 
     @Transactional
-    private Docs createDocs(DocsCreateRequestDto docsCreateRequestDto){
+    private Docs createDocs(DocsCreateRequestDto docsCreateRequestDto) {
         return docsRepository.save(
                 Docs.builder()
                         .title(docsCreateRequestDto.getTitle())
                         .enroll(docsCreateRequestDto.getEnroll())
                         .docsType(docsCreateRequestDto.getDocsType())
-                .build()
+                        .build()
         );
-    }
-
-    @Transactional(readOnly = true)
-    private void checkTitleDuplication(String title, int enroll) {
-        List<Docs> docs = docsRepository.findByTitle(title, enroll);
-        if(docs.size() == 0)
-            throw DocsTitleAlreadyExistException.EXCEPTION;
     }
 
 

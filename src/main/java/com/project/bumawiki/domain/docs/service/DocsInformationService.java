@@ -4,10 +4,9 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
-import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
+import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Service
 @RequiredArgsConstructor
-@Transactional
+@ServiceWithTransactionalReadOnly
 public class DocsInformationService {
     private final DocsRepository docsRepository;
 
@@ -54,8 +52,9 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public List<DocsResponseDto> findDocs(String title, int enroll){
-        List<Docs> docs = docsRepository.findByTitle(title, enroll);
+    @Transactional(readOnly = true)
+    public List<DocsResponseDto> findByTitle(String title){
+        List<Docs> docs = docsRepository.findByTitle(title);
         if(docs.size() == 0){
             throw DocsNotFoundException.EXCEPTION;
         }
@@ -65,14 +64,13 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
-    public List<Docs> findByTitleAndEnroll(DocsUpdateRequestDto docsUpdateRequestDto){
-        List<Docs> docs = docsRepository.findByTitle(docsUpdateRequestDto.getTitle(), docsUpdateRequestDto.getEnroll());
-        if(docs.size() == 0){
-            throw NoUpdatablePostException.EXCEPTION;
-        }
+    @Transactional
+    public DocsResponseDto findDocs(Long id){
+        Docs docs = docsRepository.findById(id).
+                orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+        docs.increaseView();
 
-        return docs;
+        return new DocsResponseDto(docs);
     }
 }
 

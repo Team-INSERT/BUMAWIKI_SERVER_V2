@@ -26,7 +26,6 @@ public class DocsUpdateService {
     public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto){
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
-        docs.increaseView();
 
         docs.updateVersionDocs(savedVersionDocs);
 

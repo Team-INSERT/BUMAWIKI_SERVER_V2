@@ -39,9 +39,14 @@ public class DocsInformationController {
         return docsInformationService.findAllClub();
     }
 
-    @GetMapping("/find/{enroll}/{title}/")
-    public List<DocsResponseDto> findDocs(@PathVariable String title, @PathVariable int enroll){
-        return docsInformationService.findDocs(title, enroll);
+    @GetMapping("/find/{title}")
+    public List<DocsResponseDto> findByTitle(@PathVariable String title, @PathVariable int enroll){
+        return docsInformationService.findByTitle(title);
+    }
+
+    @GetMapping("/find/{id}")
+    public DocsResponseDto findById(@PathVariable Long id){
+        return docsInformationService.findDocs(id);
     }
 
 

@@ -11,6 +11,8 @@ import java.util.List;
 @Getter
 public class DocsResponseDto {
 
+    private Long id;
+
     private String title;
 
     private String contents;
@@ -22,6 +24,7 @@ public class DocsResponseDto {
     public DocsResponseDto(Docs docs) {
         VersionDocs versionDocs = docs.getDocsVersion().get(0);
         List<Contribute> contributes = docs.getContributor();
+        this.id = docs.getId();
         this.title = docs.getTitle();
         this.contents = versionDocs.getContents();
         this.docsType = docs.getDocsType();
