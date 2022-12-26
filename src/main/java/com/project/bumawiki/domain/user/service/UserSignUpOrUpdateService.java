@@ -4,6 +4,7 @@ import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.oauth.exception.BsmAuthIdInvalidClientException;
 import leehj050211.bsmOauth.BsmOauth;
@@ -33,7 +34,7 @@ public class UserSignUpOrUpdateService {
         }catch(BsmAuthCodeNotFoundException | BsmAuthTokenNotFoundException e){
             throw UserNotFoundException.EXCEPTION;
         }catch(BsmAuthInvalidClientException e){
-            throw BsmAuthIdInvalidClientException.EXCEPTION;
+            throw UserNotLoginException.EXCEPTION;
         }
 
         return updateOrSignUp(resource);

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Validated
@@ -39,12 +41,12 @@ public class DocsInformationController {
         return docsInformationService.findAllClub();
     }
 
-    @GetMapping("/find/{title}")
-    public List<DocsResponseDto> findByTitle(@PathVariable String title, @PathVariable int enroll){
+    @GetMapping("/find/title/{title}")
+    public List<DocsResponseDto> findByTitle(@PathVariable String title) throws UnsupportedEncodingException {
         return docsInformationService.findByTitle(title);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/find/id/{id}")
     public DocsResponseDto findById(@PathVariable Long id){
         return docsInformationService.findDocs(id);
     }
