@@ -14,12 +14,16 @@ import java.util.List;
 @Getter
 public class DocsCreateRequestDto {
 
+    @NotBlank
     private String title;
 
+    @NotBlank
     private int enroll;
 
+    @NotBlank
     private String contents;
 
+    @NotBlank
     private DocsType docsType;
 
     private List<Clob> image = new ArrayList<>();

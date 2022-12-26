@@ -5,9 +5,9 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
-import com.project.bumawiki.domain.docs.exception.DocsTitleAlreadyExistException;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
+import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,8 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,10 +27,15 @@ public class DocsCreateService {
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
+        try {
+            SecurityUtil.getCurrentUser().getUser().getAuthority();
+        }catch(Exception e){
+            throw UserNotLoginException.EXCEPTION;
+        }
+
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         setContribute(docs);
-
         List<VersionDocs> versionDocs = new ArrayList<>();
         versionDocs.add(savedDocs);
 

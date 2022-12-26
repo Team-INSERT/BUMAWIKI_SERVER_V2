@@ -33,7 +33,7 @@ public class UserSignUpOrUpdateService {
             resource = bsmOauth.getResource(token);
         }catch(BsmAuthCodeNotFoundException | BsmAuthTokenNotFoundException e){
             throw UserNotFoundException.EXCEPTION;
-        }catch(BsmAuthInvalidClientException e){
+        }catch(BsmAuthInvalidClientException e ){
             throw UserNotLoginException.EXCEPTION;
         }
 

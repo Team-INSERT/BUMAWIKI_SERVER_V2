@@ -1,10 +1,12 @@
-package com.project.bumawiki.global.error.Exception;
+package com.project.bumawiki.global.error.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
 
     NO_UPDATABLE_POST(403, "POST-404-1", "No Post You Want To Update"),
