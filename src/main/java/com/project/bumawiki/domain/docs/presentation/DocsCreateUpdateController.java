@@ -9,6 +9,10 @@ import com.project.bumawiki.domain.docs.service.DocsUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 @Validated
 @RequiredArgsConstructor
@@ -20,8 +24,9 @@ public class DocsCreateUpdateController {
     private final DocsUpdateService docsUpdateService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request){
-        return docsCreateService.execute(request);
+    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @RequestBody MultipartFile[] file,@RequestBody String[] imageName) throws IOException {
+
+        return docsCreateService.execute(request,file,imageName);
     }
 
     @PutMapping("/update")

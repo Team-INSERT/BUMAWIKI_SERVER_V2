@@ -14,8 +14,8 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import com.project.bumawiki.domain.image.service.StorageService;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -25,19 +25,23 @@ import java.util.ArrayList;
 public class DocsCreateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
-    private final ArrayList<String> LinkList;
-    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
+    private final StorageService storageService;
+
+    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName) throws IOException {
+        ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
+        setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
         checkTitleDuplication(docsCreateRequestDto.getTitle());
         Docs docs = createDocs();
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         docs.updateVersionDocs(savedDocs);
         docs.updateDocsType(docsCreateRequestDto.getDocsType());
+
         setContribute(docs);
 
         return new DocsResponseDto(docs);
     }
 
-    private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
+    private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id) {
         VersionDocs savedDocs = versionDocsRepository.save(
                 VersionDocs.builder()
                         .docsId(id)
@@ -60,7 +64,7 @@ public class DocsCreateService {
         user.updateContribute(contribute);
     }
 
-    private Docs createDocs(){
+    private Docs createDocs() {
         return docsRepository.save(Docs.builder().build());
     }
 
@@ -71,12 +75,23 @@ public class DocsCreateService {
     }
 
 
+    private ArrayList<String> ImageName2Url(ArrayList<String> ImageUrl) {
+
+        for (int i = 0; i < ImageUrl.size(); i++) {
+            ImageUrl.set(i, "대충 경로" + "/image/display/" + ImageUrl);
+        }
+        return ImageUrl;
+    }
+
+
     /**
      * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
      */
 
-    public void setImageUrlInContents(){
-
+    public void setImageUrlInContents(String contents, ArrayList<String> ImageUrl) {
+        for (String URL : ImageUrl) {
+            contents = contents.replace("[[사진]]", URL);
+        }
     }
 }
 

@@ -1,14 +1,15 @@
 package com.project.bumawiki.domain.image.service;
 
 import com.project.bumawiki.domain.image.exception.NoImageException;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.bumawiki.domain.image.presentation.FileStorageProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import com.project.bumawiki.domain.image.payload.FileStorageProperties;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -17,19 +18,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @Service
 public class StorageService {
     private String uploadPath;
 
-    @Autowired
-    public StorageService(FileStorageProperties fileStorageProperties){
-        this.uploadPath = fileStorageProperties.getPath();
-    }
-
-    private String getRandomStr(){
+    private static String getRandomStr(){
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 10;
@@ -42,25 +37,27 @@ public class StorageService {
         return generatedString;
     }
 
-    public List<String> saveFiles(MultipartFile[] files, String postName) throws IOException {
+    public ArrayList<String> saveFiles(MultipartFile[] files, String DocsName,String[] imageName ) throws IOException {
+        int index = 0;
+        FileStorageProperties fileStorageProperties = new FileStorageProperties();
         String randomStr = getRandomStr();
-        List<String> fileNames = new ArrayList<>();
+        String path = fileStorageProperties.getPath();
+        ArrayList<String> fileNames = new ArrayList<>();
         for(MultipartFile file : files) {
 
-            System.out.println("original file name : " + StringUtils.cleanPath(file.getOriginalFilename()));
-
-            String filename = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
+            String filename =  DocsName+"/"+randomStr + StringUtils.cleanPath(imageName[index]);
 
             if(filename.length() > 30){
                 filename.substring(0,30);
             }
             System.out.println("modified file name : " + filename);
             fileNames.add(filename);
+            index++;
         }
-        Path uploadPath = Paths.get(this.uploadPath+"/"+postName);
+        Path uploadPath = Paths.get(path+"/"+DocsName);
         if(!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
-            System.out.println("make dir : " + uploadPath.toString());
+            System.out.println("make dir : " + uploadPath);
         }
         for(int i =0; i< files.length; i++) {
             try (InputStream inputStream = files[i].getInputStream()) {

@@ -1,7 +1,9 @@
-package com.project.bumawiki.domain.image.payload;
+package com.project.bumawiki.domain.image.presentation;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
+@ConstructorBinding
 @ConfigurationProperties(prefix = "image")
 public class FileStorageProperties {
     private String path;
