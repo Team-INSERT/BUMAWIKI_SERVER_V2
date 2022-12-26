@@ -26,12 +26,13 @@ public class Docs {
     @NotNull
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<VersionDocs> docsVersion = new ArrayList<>();
-
     @Column(length = 8)
     @NotNull
     private int enroll;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<VersionDocs> docsVersion = new ArrayList<>();
+
 
     @Enumerated(EnumType.STRING)
     private DocsType docsType;

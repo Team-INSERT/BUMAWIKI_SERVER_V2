@@ -1,11 +1,6 @@
 package com.project.bumawiki.global.jwt.auth;
 
-import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
-import com.project.bumawiki.domain.user.exception.UserNotLoginException;
-import com.project.bumawiki.global.jwt.config.JwtConstants;
-import com.project.bumawiki.global.jwt.exception.InvalidJwtException;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

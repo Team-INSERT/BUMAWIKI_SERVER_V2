@@ -44,7 +44,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    private ZonedDateTime getExpiredTime(){
+    public ZonedDateTime getExpiredTime(){
         return ZonedDateTime.now().plusSeconds(jwtProperties.getRefreshExp());
     }
 }

@@ -9,6 +9,7 @@ import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,12 @@ public class DocsUpdateService {
     private final VersionDocsRepository versionDocsRepository;
 
     public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto){
+        try {
+            SecurityUtil.getCurrentUser().getUser().getAuthority();
+        }catch(Exception e){
+            throw UserNotLoginException.EXCEPTION;
+        }
+
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
 

@@ -1,6 +1,7 @@
 package com.project.bumawiki.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.bumawiki.domain.user.entity.authority.Authority;
 import com.project.bumawiki.global.error.CustomAuthenticationEntryPoint;
 import com.project.bumawiki.global.jwt.auth.JwtAuth;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
@@ -38,7 +39,6 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers(HttpMethod.POST, "/docs/api/**").hasRole(USER)
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))

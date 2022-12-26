@@ -27,6 +27,11 @@ public class DocsCreateService {
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
+        try {
+            SecurityUtil.getCurrentUser().getUser().getAuthority();
+        }catch(Exception e){
+            throw UserNotLoginException.EXCEPTION;
+        }
 
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());

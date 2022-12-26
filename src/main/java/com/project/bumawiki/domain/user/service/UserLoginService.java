@@ -33,7 +33,7 @@ public class UserLoginService {
     }
 
     private void saveAuthId(String email){
-        authIdRepository.save(new AuthId().update(email));
+        authIdRepository.save(new AuthId().update(email, jwtProperties.getAccessExp()));
     }
 
     private TokenResponseDto saveRefreshToken(TokenResponseDto tokenResponseDto, String id){
