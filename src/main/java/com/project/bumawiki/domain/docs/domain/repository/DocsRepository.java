@@ -16,6 +16,8 @@ public interface DocsRepository extends JpaRepository<Docs, Long> {
     @Query("select d.title, d.enroll from Docs d where d.docsType = :docsType order by d.enroll")
     List<Docs> findByDocsType(DocsType docsType);
 
-    Optional<Docs> findByTitle(String title);
+    @Query("select d from Docs d where d.title = :title and d.enroll = :enroll")
+    List<Docs> findByTitle(String title, int enroll);
 
+    Optional<Docs> findById(Long id);
 }

@@ -29,7 +29,7 @@ public class DocsCreateService {
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
-        checkTitleDuplication(docsCreateRequestDto.getTitle());
+        checkTitleDuplication(docsCreateRequestDto.getTitle(), docsCreateRequestDto.getEnroll());
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         setContribute(docs);
@@ -82,9 +82,9 @@ public class DocsCreateService {
     }
 
     @Transactional(readOnly = true)
-    private void checkTitleDuplication(String title) {
-        Optional<Docs> docs = docsRepository.findByTitle(title);
-        if(docs == null)
+    private void checkTitleDuplication(String title, int enroll) {
+        List<Docs> docs = docsRepository.findByTitle(title, enroll);
+        if(docs.size() == 0)
             throw DocsTitleAlreadyExistException.EXCEPTION;
     }
 

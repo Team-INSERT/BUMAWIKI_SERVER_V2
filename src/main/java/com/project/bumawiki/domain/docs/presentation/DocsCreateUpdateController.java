@@ -24,8 +24,8 @@ public class DocsCreateUpdateController {
         return docsCreateService.execute(request);
     }
 
-    @PutMapping("/update")
-    public DocsResponseDto updateDocs(@RequestBody DocsUpdateRequestDto request){
-        return docsUpdateService.execute(request);
+    @PutMapping("/update/{id}")
+    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request){
+        return docsUpdateService.execute(id ,request);
     }
 }

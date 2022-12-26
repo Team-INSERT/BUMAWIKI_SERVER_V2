@@ -4,8 +4,10 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
+import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,11 +54,25 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public DocsResponseDto findDocs(String title){
-        Docs docs = docsRepository.findByTitle(title)
-                .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+    public List<DocsResponseDto> findDocs(String title, int enroll){
+        List<Docs> docs = docsRepository.findByTitle(title, enroll);
+        if(docs.size() == 0){
+            throw DocsNotFoundException.EXCEPTION;
+        }
 
-        return new DocsResponseDto(docs);
+        return docs.stream()
+                .map(DocsResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Docs> findByTitleAndEnroll(DocsUpdateRequestDto docsUpdateRequestDto){
+        List<Docs> docs = docsRepository.findByTitle(docsUpdateRequestDto.getTitle(), docsUpdateRequestDto.getEnroll());
+        if(docs.size() == 0){
+            throw NoUpdatablePostException.EXCEPTION;
+        }
+
+        return docs;
     }
 }
 

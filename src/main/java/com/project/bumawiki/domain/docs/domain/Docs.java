@@ -56,4 +56,8 @@ public class Docs {
         this.contributor.add(0, contribute);
         return this;
     }
+
+    public void increaseView(){
+        this.view += 1;
+    }
 }

@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -21,10 +23,10 @@ public class DocsUpdateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
 
-    public DocsResponseDto execute(DocsUpdateRequestDto docsUpdateRequestDto){
-        Long docsId = ifPostExistReturnPostId(docsUpdateRequestDto);
+    public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto){
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
+        docs.increaseView();
 
         docs.updateVersionDocs(savedVersionDocs);
 
@@ -42,14 +44,6 @@ public class DocsUpdateService {
                 .build();
         contributor.updateContribute(contribute);
         docs.updateContribute(contribute);
-    }
-
-    @Transactional(readOnly = true)
-    private Long ifPostExistReturnPostId(DocsUpdateRequestDto docsUpdateRequestDto){
-        Docs findByTitle = docsRepository.findByTitle(docsUpdateRequestDto.getTitle())
-                .orElseThrow(() -> NoUpdatablePostException.EXCEPTION);
-
-        return findByTitle.getId();
     }
     
     private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto,Long docsId){
