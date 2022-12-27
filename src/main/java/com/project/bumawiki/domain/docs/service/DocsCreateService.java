@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.project.bumawiki.domain.image.service.StorageService;
 
+import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,8 +29,10 @@ public class DocsCreateService {
     private final StorageService storageService;
 
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName) throws IOException {
-        ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
-        setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
+        if(file != null){
+            ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
+            setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
+        }
         checkTitleDuplication(docsCreateRequestDto.getTitle());
         Docs docs = createDocs();
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
