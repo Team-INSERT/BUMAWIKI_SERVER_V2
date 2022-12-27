@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.List;
 
 @Validated
@@ -45,7 +43,7 @@ public class DocsInformationController {
 
 
     @GetMapping("/find/title/{title}")
-    public List<DocsResponseDto> findByTitle(@PathVariable String title) throws UnsupportedEncodingException {
+    public List<DocsResponseDto> findByTitle(@PathVariable String title) {
         return docsInformationService.findByTitle(title);
     }
 
