@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.error.Exception;
+package com.project.bumawiki.global.error.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

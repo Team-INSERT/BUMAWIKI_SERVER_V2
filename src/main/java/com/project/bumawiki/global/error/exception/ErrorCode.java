@@ -1,14 +1,17 @@
-package com.project.bumawiki.global.error.Exception;
+package com.project.bumawiki.global.error.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
 
     NO_IMAGE(403,"IMAGE-403-1","NO Image"),
     NO_UPDATABLE_POST(403, "POST-404-1", "No Post You Want To Update"),
+    DOCS_NOT_FOUND(404, "POST-404-2", "Doesn't Not Found"),
     POST_TITLE_ALREADY_EXIST(403, "POST-403-1", "Post_Already_Exist"),
     FORBIDDEN(403, "COMMON-403-1", "Forbidden"),
     USER_NOT_LOGIN(403,"USER-403-1", "User Not Login"),

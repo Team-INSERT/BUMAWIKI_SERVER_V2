@@ -1,7 +1,6 @@
 package com.project.bumawiki.domain.user.entity;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
-import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
@@ -39,6 +38,9 @@ public class User {
         return this;
     }
 
+    public void setContributeDocs(List<Contribute> contribute){
+        this.contributeDocs = contribute;
+    }
     public User updateContribute(Contribute contribute){
         contributeDocs.add(0, contribute);
         return this;

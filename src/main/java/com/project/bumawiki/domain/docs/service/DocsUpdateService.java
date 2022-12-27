@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-// 기여자 생성 해야함
-
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -25,14 +23,17 @@ public class DocsUpdateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
 
-    public DocsResponseDto execute(DocsUpdateRequestDto docsUpdateRequestDto){
-        VersionDocs versionDocs = ifPostExistReturnPostId(docsUpdateRequestDto);
-        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, versionDocs);
+    public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto){
+        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
+
+        docs.updateVersionDocs(savedVersionDocs);
+
         setContribute(docs);
 
         return new DocsResponseDto(docs);
     }
+
 
     private void setContribute(Docs docs) {
         User contributor = SecurityUtil.getCurrentUser().getUser();
@@ -43,24 +44,12 @@ public class DocsUpdateService {
         contributor.updateContribute(contribute);
         docs.updateContribute(contribute);
     }
-
-    @Transactional(readOnly = true)
-    private VersionDocs ifPostExistReturnPostId(DocsUpdateRequestDto docsUpdateRequestDto){
-        List<VersionDocs> findVersionDocs = versionDocsRepository.findAllByTitle(docsUpdateRequestDto.getTitle());
-        if(findVersionDocs.size() == 0){
-            throw NoUpdatablePostException.EXCEPTION;
-        }
-        return findVersionDocs.get(0);
-    }
     
-    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, VersionDocs versionDocs){
+    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto,Long docsId){
         return versionDocsRepository.save(
                 VersionDocs.builder()
-                .docsId(versionDocs.getDocsId())
-                .title(docsUpdateRequestDto.getTitle())
-                .enroll(docsUpdateRequestDto.getEnroll())
+                .docsId(docsId)
                 .contents(docsUpdateRequestDto.getContents())
-                .imageLink(docsUpdateRequestDto.getImageLink())
                 .build()
         );
     }
@@ -72,5 +61,12 @@ public class DocsUpdateService {
         docs.getDocsVersion().add(0, versionDocs);
 
         return docs;
+    }
+
+    /**
+     * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
+     */
+    public void setImageUrlInContents(){
+
     }
 }

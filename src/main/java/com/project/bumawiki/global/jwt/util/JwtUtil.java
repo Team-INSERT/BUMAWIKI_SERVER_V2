@@ -26,7 +26,7 @@ public class JwtUtil {
     }
 
     public String parseToken(String bearer){
-        if(bearer != null){
+        if(bearer != "" && bearer != null){
             return  bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
         }
         return null;

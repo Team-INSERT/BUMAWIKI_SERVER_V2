@@ -25,7 +25,7 @@ public class AuthController {
         return userLoginService.execute(request.getHeader("authCode"));
     }
 
-    @PostMapping("/bsm/logout")
+    @DeleteMapping("/bsm/logout")
     public String userLogout(@RequestHeader("refresh_token")String refreshToken) throws IOException {
         return userLogoutService.execute(refreshToken);
     }

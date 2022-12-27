@@ -1,7 +1,7 @@
 package com.project.bumawiki.global.jwt.exception;
 
-import com.project.bumawiki.global.error.Exception.BumawikiException;
-import com.project.bumawiki.global.error.Exception.ErrorCode;
+import com.project.bumawiki.global.error.exception.BumawikiException;
+import com.project.bumawiki.global.error.exception.ErrorCode;
 
 public class InvalidJwtException extends BumawikiException {
 

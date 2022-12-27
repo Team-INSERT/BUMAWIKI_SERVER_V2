@@ -2,7 +2,6 @@ package com.project.bumawiki.domain.docs.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,20 +24,9 @@ public class VersionDocs {
     @NotNull
     private Long docsId;
 
-    @Column(length = 32)
-    @NotNull
-    private String title;
-
-    @Column(length = 8)
-    @NotNull
-    private int enroll;
-
     @Column(columnDefinition = "TEXT")
     @NotNull
     private String contents;
-
-    @Lob
-    private List<Clob> imageLink = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime thisVersionCreatedAt;

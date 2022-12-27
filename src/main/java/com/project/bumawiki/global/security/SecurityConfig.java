@@ -1,7 +1,7 @@
 package com.project.bumawiki.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
+import com.project.bumawiki.global.error.CustomAuthenticationEntryPoint;
 import com.project.bumawiki.global.jwt.auth.JwtAuth;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +14,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsUtils;
 
-import static org.springframework.http.HttpMethod.*;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private static final String USER = "USER";
 
     private final ObjectMapper objectMapper;
     private final JwtUtil jwtUtil;
@@ -38,9 +38,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-
-                .antMatchers(GET, "/**").permitAll()
-
+                .antMatchers(HttpMethod.POST, "/docs/api/**").hasRole(USER)
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
