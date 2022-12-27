@@ -22,8 +22,7 @@ public class DocsResponseDto {
     private int view;
 
     public DocsResponseDto(Docs docs) {
-        VersionDocs versionDocs = docs.getDocsVersion().get(0);
-        List<Contribute> contributes = docs.getContributor();
+        VersionDocs versionDocs = docs.getDocsVersion().get(docs.getDocsVersion().size() - 1);
         this.id = docs.getId();
         this.title = docs.getTitle();
         this.contents = versionDocs.getContents();

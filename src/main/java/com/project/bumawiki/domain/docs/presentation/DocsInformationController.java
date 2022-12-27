@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.docs.presentation;
 
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,8 @@ public class DocsInformationController {
         return docsInformationService.findAllClub();
     }
 
+
+
     @GetMapping("/find/title/{title}")
     public List<DocsResponseDto> findByTitle(@PathVariable String title) throws UnsupportedEncodingException {
         return docsInformationService.findByTitle(title);
@@ -51,5 +54,8 @@ public class DocsInformationController {
         return docsInformationService.findDocs(id);
     }
 
-
+    @GetMapping("/find/{id}/version")
+    public VersionResponseDto showDocsVersion(@PathVariable Long id){
+        return docsInformationService.findDocsVersion(id);
+    }
 }

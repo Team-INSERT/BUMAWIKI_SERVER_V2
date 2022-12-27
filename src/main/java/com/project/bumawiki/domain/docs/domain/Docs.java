@@ -4,6 +4,7 @@ import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -53,6 +54,8 @@ public class Docs {
     public void setContributor(List<Contribute> contributes){
         this.contributor =  contributes;
     }
+
+    @Transactional
     public Docs updateContribute(Contribute contribute){
         this.contributor.add(0, contribute);
         return this;

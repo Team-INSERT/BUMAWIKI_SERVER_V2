@@ -13,12 +13,6 @@ import java.util.List;
 public class DocsUpdateRequestDto {
 
     @NotNull
-    private String title;
-
-    @NotNull
-    private int enroll;
-
-    @NotNull
     private String contents;
 
     @Lob

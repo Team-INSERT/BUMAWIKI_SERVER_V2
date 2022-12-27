@@ -6,6 +6,7 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.docs.service.DocsCreateService;
 import com.project.bumawiki.domain.docs.service.DocsUpdateService;
+import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ public class DocsCreateUpdateController {
 
     @PutMapping("/update/{id}")
     public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request){
-        return docsUpdateService.execute(id ,request);
+        UserResponseDto currentUser = docsUpdateService.findCurrentUser();
+        return docsUpdateService.execute(id, currentUser,request);
     }
+
 }

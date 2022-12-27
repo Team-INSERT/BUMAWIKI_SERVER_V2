@@ -15,6 +15,7 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class DocsCreateService {
                 VersionDocs.builder()
                         .docsId(id)
                         .contents(docsCreateRequestDto.getContents())
+                        .thisVersionCreatedAt(LocalDateTime.now())
                         .build()
         );
         return savedDocs;
