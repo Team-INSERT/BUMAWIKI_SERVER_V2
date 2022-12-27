@@ -64,4 +64,8 @@ public class Docs {
     public void increaseView(){
         this.view += 1;
     }
+
+    public void setModifiedTime(LocalDateTime lastModifiedAt){
+        this.lastModifiedAt = lastModifiedAt;
+    }
 }

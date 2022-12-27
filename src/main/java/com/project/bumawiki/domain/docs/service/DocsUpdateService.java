@@ -35,6 +35,7 @@ public class DocsUpdateService {
 
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
+        docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
 
         setContribute(docs, userResponseDto);
 

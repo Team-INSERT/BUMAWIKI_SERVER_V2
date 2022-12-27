@@ -86,6 +86,15 @@ public class DocsInformationService {
 
         return new  VersionResponseDto(new DocsResponseDto(docs), versionDocs);
     }
+
+    public List<DocsResponseDto> showDocsModifiedAtDesc(){
+        return docsRepository.findByLastModifiedAt()
+                .stream()
+                .map(DocsResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
 }
 
 

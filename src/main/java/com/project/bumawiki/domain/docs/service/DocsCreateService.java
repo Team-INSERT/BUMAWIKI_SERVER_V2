@@ -81,6 +81,7 @@ public class DocsCreateService {
                         .title(docsCreateRequestDto.getTitle())
                         .enroll(docsCreateRequestDto.getEnroll())
                         .docsType(docsCreateRequestDto.getDocsType())
+                        .lastModifiedAt(LocalDateTime.now())
                         .build()
         );
     }

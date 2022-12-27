@@ -58,4 +58,9 @@ public class DocsInformationController {
     public VersionResponseDto showDocsVersion(@PathVariable Long id){
         return docsInformationService.findDocsVersion(id);
     }
+
+    @GetMapping("/find/modified")
+    public List<DocsResponseDto> showDocsModifiedTimeDesc(){
+        return docsInformationService.showDocsModifiedAtDesc();
+    }
 }
