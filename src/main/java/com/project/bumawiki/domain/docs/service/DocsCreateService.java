@@ -32,16 +32,13 @@ public class DocsCreateService {
     private final StorageService storageService;
 
     @Transactional
-    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto){
-
-        Docs docs = createDocs(docsCreateRequestDto);
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName) throws IOException {
         if(file != null){
             ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
             setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
         }
         checkTitleDuplication(docsCreateRequestDto.getTitle());
-        Docs docs = createDocs();
+        Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         docs.updateVersionDocs(savedDocs);
         docs.updateDocsType(docsCreateRequestDto.getDocsType());
