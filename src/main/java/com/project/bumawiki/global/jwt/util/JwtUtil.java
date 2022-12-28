@@ -1,7 +1,6 @@
 package com.project.bumawiki.global.jwt.util;
 
 import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
-import com.project.bumawiki.global.jwt.config.JwtConstants;
 import com.project.bumawiki.global.jwt.config.JwtProperties;
 import com.project.bumawiki.global.jwt.exception.ExpiredJwtException;
 import com.project.bumawiki.global.jwt.exception.InvalidJwtException;

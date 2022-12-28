@@ -2,6 +2,7 @@ package com.project.bumawiki.global.error;
 
 import com.project.bumawiki.global.error.exception.BumawikiException;
 import com.project.bumawiki.global.error.exception.ErrorCode;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,8 +19,10 @@ public class ExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch(BumawikiException e){
             writeErrorCode(response,e.getErrorCode());
-        }catch(JwtException e){
-          writeErrorCode(response, ErrorCode.INVALID_TOKEN);
+        } catch (ExpiredJwtException e) {
+            writeErrorCode(response, ErrorCode.EXPIRED_JWT);
+        } catch(JwtException e){
+            writeErrorCode(response, ErrorCode.INVALID_TOKEN);
         } catch(Exception e){
             e.printStackTrace();
             writeErrorCode(response, ErrorCode.INTERNAL_SERVER_ERROR);

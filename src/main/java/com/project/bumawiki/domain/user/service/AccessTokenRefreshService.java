@@ -17,7 +17,6 @@ import java.time.ZonedDateTime;
 public class AccessTokenRefreshService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
-    private final JwtUtil jwtUtil;
 
     public TokenResponseDto execute(String bearerRefreshToken) {
         RefreshToken redisRefreshToken = refreshTokenRepository.findByRefreshToken(bearerRefreshToken)

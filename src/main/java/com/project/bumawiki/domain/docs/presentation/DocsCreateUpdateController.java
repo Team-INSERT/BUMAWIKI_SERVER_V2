@@ -21,8 +21,8 @@ public class DocsCreateUpdateController {
     private final DocsUpdateService docsUpdateService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request){
-        return docsCreateService.execute(request);
+    public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestBody DocsCreateRequestDto request){
+        return docsCreateService.execute(request, bearer);
     }
 
     @PutMapping("/update/{id}")
