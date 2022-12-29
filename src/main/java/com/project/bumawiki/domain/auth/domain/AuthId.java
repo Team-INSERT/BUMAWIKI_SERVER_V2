@@ -1,10 +1,16 @@
 package com.project.bumawiki.domain.auth.domain;
 
+import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.Id;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @RedisHash
 public class AuthId {
 
@@ -14,9 +20,6 @@ public class AuthId {
     @Indexed
     String authId;
 
-
-    public AuthId update(String authId) {
-        this.authId = authId;
-        return this;
-    }
+    @TimeToLive
+    private long ttl;
 }

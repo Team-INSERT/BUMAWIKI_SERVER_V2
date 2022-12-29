@@ -2,6 +2,7 @@ package com.project.bumawiki.global.error;
 
 import com.project.bumawiki.global.error.exception.BumawikiException;
 import com.project.bumawiki.global.error.exception.ErrorCode;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

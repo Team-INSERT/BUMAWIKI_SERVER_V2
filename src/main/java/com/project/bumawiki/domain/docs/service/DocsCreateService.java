@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.docs.service;
 
+import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
@@ -8,6 +9,8 @@ import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
+import com.project.bumawiki.global.jwt.config.JwtConstants;
+import com.project.bumawiki.global.jwt.util.JwtUtil;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.project.bumawiki.domain.image.service.StorageService;
 
 import javax.validation.constraints.Null;
-import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -29,15 +32,23 @@ import java.util.List;
 public class DocsCreateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
+
     private final StorageService storageService;
 
     @Transactional
-    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName) throws IOException {
+    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName, String bearer) throws IOException {
         if(file != null){
             ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
             setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
         }
         checkTitleDuplication(docsCreateRequestDto.getTitle());
+
+    private final JwtUtil jwtUtil;
+
+    private final AuthIdRepository authIdRepository;
+
+        checkIsLoginUser(bearer);
+
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         docs.updateVersionDocs(savedDocs);
@@ -53,12 +64,20 @@ public class DocsCreateService {
         return docsResponseDto;
     }
 
+
+    public void checkIsLoginUser(String bearer){
+        String authId = jwtUtil.getJwtBody(bearer).get(JwtConstants.AUTH_ID.message).toString();
+
+        authIdRepository.findByAuthId(authId)
+                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
+    }
     @Transactional
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
         VersionDocs savedDocs = versionDocsRepository.save(
                 VersionDocs.builder()
                         .docsId(id)
                         .contents(docsCreateRequestDto.getContents())
+                        .thisVersionCreatedAt(LocalDateTime.now())
                         .build()
         );
         return savedDocs;
@@ -87,6 +106,7 @@ public class DocsCreateService {
                         .title(docsCreateRequestDto.getTitle())
                         .enroll(docsCreateRequestDto.getEnroll())
                         .docsType(docsCreateRequestDto.getDocsType())
+                        .lastModifiedAt(LocalDateTime.now())
                         .build()
         );
     }

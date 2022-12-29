@@ -1,10 +1,9 @@
 package com.project.bumawiki.domain.user.presentation;
 
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.service.AccessTokenRefreshService;
 import com.project.bumawiki.domain.user.service.UserLoginService;
 import com.project.bumawiki.domain.user.service.UserLogoutService;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +18,7 @@ import java.io.IOException;
 public class AuthController {
     private final UserLoginService userLoginService;
     private final UserLogoutService userLogoutService;
+    private final AccessTokenRefreshService accessTokenRefreshService;
 
     @PostMapping("/oauth/bsm")
     public TokenResponseDto userSignup(HttpServletRequest request) throws IOException {
@@ -28,5 +28,10 @@ public class AuthController {
     @DeleteMapping("/bsm/logout")
     public String userLogout(@RequestHeader("refresh_token")String refreshToken) throws IOException {
         return userLogoutService.execute(refreshToken);
+    }
+
+    @PutMapping("/refresh/access")
+    public TokenResponseDto refreshAccessToken(@RequestHeader("refresh_token") String bearerRefreshToken){
+        return accessTokenRefreshService.execute(bearerRefreshToken);
     }
 }

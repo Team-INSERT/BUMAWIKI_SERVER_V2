@@ -1,14 +1,16 @@
 package com.project.bumawiki.domain.docs.service;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
+import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -63,6 +65,36 @@ public class DocsInformationService {
                 .map(DocsResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public DocsResponseDto findDocs(Long id) {
+        Docs docs = docsRepository.findById(id).
+                orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+        docs.increaseView();
+
+        return new DocsResponseDto(docs);
+    }
+
+    public VersionResponseDto findDocsVersion(Long id) {
+        Docs docs = docsRepository.findById(id)
+                .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+
+        List<VersionDocsResponseDto> versionDocs = docs.getDocsVersion()
+                .stream()
+                .map(VersionDocsResponseDto::new)
+                .collect(Collectors.toList());
+
+        return new  VersionResponseDto(new DocsResponseDto(docs), versionDocs);
+    }
+
+    public List<DocsResponseDto> showDocsModifiedAtDesc(){
+        return docsRepository.findByLastModifiedAt()
+                .stream()
+                .map(DocsResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
 }
 
 

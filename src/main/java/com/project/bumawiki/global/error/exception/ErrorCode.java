@@ -16,6 +16,8 @@ public enum ErrorCode {
     FORBIDDEN(403, "COMMON-403-1", "Forbidden"),
     USER_NOT_LOGIN(403,"USER-403-1", "User Not Login"),
     INVALID_TOKEN(403, "TOKEN-403-1", "Access with Invalid Token"),
+    EXPIRED_JWT(403, "TOKEN-403-2", "Access Token Expired"),
+    REFRESH_TOKEN_EXPIRED(403, "TOKEN-403-3", "Refresh Token Expired"),
     USER_NOT_FOUND(404, "USER-404-1", "User Not Found"),
     BSM_AUTH_INVALID_CLIENT(500, "BSM-500-1", "Bsm Client Is Invalid"),
     INTERNAL_SERVER_ERROR(500, "SERVER-500-1", "Internal Server Error");

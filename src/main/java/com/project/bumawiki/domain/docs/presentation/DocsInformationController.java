@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.docs.presentation;
 
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.List;
 
 @Validated
@@ -41,8 +40,10 @@ public class DocsInformationController {
         return docsInformationService.findAllClub();
     }
 
+
+
     @GetMapping("/find/title/{title}")
-    public List<DocsResponseDto> findByTitle(@PathVariable String title) throws UnsupportedEncodingException {
+    public List<DocsResponseDto> findByTitle(@PathVariable String title) {
         return docsInformationService.findByTitle(title);
     }
 
@@ -51,5 +52,13 @@ public class DocsInformationController {
         return docsInformationService.findDocs(id);
     }
 
+    @GetMapping("/find/{id}/version")
+    public VersionResponseDto showDocsVersion(@PathVariable Long id){
+        return docsInformationService.findDocsVersion(id);
+    }
 
+    @GetMapping("/find/modified")
+    public List<DocsResponseDto> showDocsModifiedTimeDesc(){
+        return docsInformationService.showDocsModifiedAtDesc();
+    }
 }

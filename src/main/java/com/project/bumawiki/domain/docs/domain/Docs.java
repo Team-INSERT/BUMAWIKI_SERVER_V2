@@ -4,6 +4,7 @@ import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,12 +27,13 @@ public class Docs {
     @NotNull
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<VersionDocs> docsVersion = new ArrayList<>();
-
     @Column(length = 8)
     @NotNull
     private int enroll;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<VersionDocs> docsVersion = new ArrayList<>();
+
 
     @Enumerated(EnumType.STRING)
     private DocsType docsType;
@@ -52,6 +54,8 @@ public class Docs {
     public void setContributor(List<Contribute> contributes){
         this.contributor =  contributes;
     }
+
+    @Transactional
     public Docs updateContribute(Contribute contribute){
         this.contributor.add(0, contribute);
         return this;
@@ -59,5 +63,9 @@ public class Docs {
 
     public void increaseView(){
         this.view += 1;
+    }
+
+    public void setModifiedTime(LocalDateTime lastModifiedAt){
+        this.lastModifiedAt = lastModifiedAt;
     }
 }
