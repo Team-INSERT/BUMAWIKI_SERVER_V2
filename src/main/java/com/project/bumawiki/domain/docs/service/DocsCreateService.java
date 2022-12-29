@@ -1,6 +1,5 @@
 package com.project.bumawiki.domain.docs.service;
 
-import com.project.bumawiki.domain.auth.domain.AuthId;
 import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.Docs;
@@ -11,8 +10,6 @@ import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.jwt.config.JwtConstants;
-import com.project.bumawiki.global.jwt.config.JwtProperties;
-import com.project.bumawiki.global.jwt.util.JwtProvider;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,15 +34,8 @@ public class DocsCreateService {
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer){
-//        try {
-//            SecurityUtil.getCurrentUser().getUser().getAuthority();
-//        }catch(Exception e){
-//            throw UserNotLoginException.EXCEPTION;
-//        }
-        String authId = jwtUtil.getJwtBody(bearer).get(JwtConstants.AUTH_ID.message).toString();
 
-        AuthId authId1 = authIdRepository.findByAuthId(authId)
-                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
+        checkIsLoginUser(bearer);
 
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
@@ -59,6 +49,13 @@ public class DocsCreateService {
         return docsResponseDto;
     }
 
+
+    public void checkIsLoginUser(String bearer){
+        String authId = jwtUtil.getJwtBody(bearer).get(JwtConstants.AUTH_ID.message).toString();
+
+        authIdRepository.findByAuthId(authId)
+                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
+    }
     @Transactional
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
         VersionDocs savedDocs = versionDocsRepository.save(

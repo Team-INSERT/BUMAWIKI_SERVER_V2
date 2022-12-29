@@ -33,7 +33,13 @@ public class UserLoginService {
     }
 
     private void saveAuthId(String email){
-        authIdRepository.save(new AuthId().update(email, jwtProperties.getAccessExp()));
+        authIdRepository.save(
+                AuthId.builder()
+                        .id(email)
+                        .authId(email)
+                        .ttl(jwtProperties.getRefreshExp())
+                        .build()
+        );
     }
 
     private TokenResponseDto saveRefreshToken(TokenResponseDto tokenResponseDto, String id){
@@ -41,7 +47,7 @@ public class UserLoginService {
                 RefreshToken.builder()
                         .id(id)
                         .refreshToken(tokenResponseDto.getRefreshToken())
-                        .ttl(jwtProperties.getRefreshExp() * 1000)
+                        .ttl(jwtProperties.getRefreshExp())
                         .build()
 
         );
