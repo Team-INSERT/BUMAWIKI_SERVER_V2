@@ -24,14 +24,6 @@ public class UserLoginService {
     private final JwtProperties jwtProperties;
     private final AuthIdRepository authIdRepository;
 
-    public TokenResponseDto execute(String authId) throws IOException {
-
-        User user = userSignUpORUpdateService.execute(authId);
-        saveAuthId(user.getEmail());
-
-        return saveRefreshToken(jwtProvider.generateToken(user.getEmail(), user.getAuthority().name()), user.getEmail());
-    }
-
     private void saveAuthId(String email){
         authIdRepository.save(
                 AuthId.builder()
@@ -52,5 +44,13 @@ public class UserLoginService {
 
         );
         return tokenResponseDto;
+    }
+
+    public TokenResponseDto execute(String authId) throws IOException {
+
+        User user = userSignUpORUpdateService.execute(authId);
+        saveAuthId(user.getEmail());
+
+        return saveRefreshToken(jwtProvider.generateToken(user.getEmail(), user.getAuthority().name()), user.getEmail());
     }
 }

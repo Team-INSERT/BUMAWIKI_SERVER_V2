@@ -27,13 +27,6 @@ public class JwtProvider {
         String accessToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage() ,jwtProperties.getAccessExp());
         String refreshToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, REFRESH_KEY.getMessage() ,jwtProperties.getRefreshExp());
 
-        refreshTokenRepository.save(RefreshToken.builder()
-                .id(authId)
-                .refreshToken(refreshToken)
-                .ttl(jwtProperties.getRefreshExp() * 1000)
-                .build()
-        );
-
         return new TokenResponseDto(accessToken, refreshToken, getExpiredTime());
     }
 
