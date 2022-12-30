@@ -21,7 +21,6 @@ import static com.project.bumawiki.global.jwt.config.JwtConstants.*;
 @Component
 public class JwtProvider {
     private final JwtProperties jwtProperties;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     public TokenResponseDto generateToken(String authId, String role){
         String accessToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage() ,jwtProperties.getAccessExp());
