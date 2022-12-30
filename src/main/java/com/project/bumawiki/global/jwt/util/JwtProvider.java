@@ -21,13 +21,23 @@ import static com.project.bumawiki.global.jwt.config.JwtConstants.*;
 @Component
 public class JwtProvider {
     private final JwtProperties jwtProperties;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public TokenResponseDto generateToken(String authId, String role){
         String accessToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage() ,jwtProperties.getAccessExp());
         String refreshToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, REFRESH_KEY.getMessage() ,jwtProperties.getRefreshExp());
 
+        refreshTokenRepository.save(RefreshToken.builder()
+                .id(authId)
+                .refreshToken(refreshToken)
+                .ttl(jwtProperties.getRefreshExp())
+                .build()
+        );
+
         return new TokenResponseDto(accessToken, refreshToken, getExpiredTime());
     }
+
+
 
     private String generateToken(String authId, String role, String type ,Long exp){
         return Jwts.builder()

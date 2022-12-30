@@ -20,7 +20,6 @@ import java.io.IOException;
 public class UserLoginService {
     private final UserSignUpOrUpdateService userSignUpORUpdateService;
     private final JwtProvider jwtProvider;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProperties jwtProperties;
     private final AuthIdRepository authIdRepository;
 
@@ -34,23 +33,12 @@ public class UserLoginService {
         );
     }
 
-    private TokenResponseDto saveRefreshToken(TokenResponseDto tokenResponseDto, String id){
-        refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .id(id)
-                        .refreshToken(tokenResponseDto.getRefreshToken())
-                        .ttl(jwtProperties.getRefreshExp())
-                        .build()
-
-        );
-        return tokenResponseDto;
-    }
 
     public TokenResponseDto execute(String authId) throws IOException {
 
         User user = userSignUpORUpdateService.execute(authId);
         saveAuthId(user.getEmail());
 
-        return saveRefreshToken(jwtProvider.generateToken(user.getEmail(), user.getAuthority().name()), user.getEmail());
+        return jwtProvider.generateToken(user.getEmail(), user.getAuthority().name());
     }
 }
