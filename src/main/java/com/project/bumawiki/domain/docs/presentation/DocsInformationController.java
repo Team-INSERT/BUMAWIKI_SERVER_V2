@@ -30,12 +30,12 @@ public class DocsInformationController {
         return docsInformationService.findAllAccident();
     }
 
-    @GetMapping("/teacher")
+    @GetMapping("/humanitiesTeacher")
     public List<DocsNameAndEnrollResponseDto> findAllHumanitiesTeacher(){
         return docsInformationService.findAllHumanistTeacher();
     }
 
-    @GetMapping("/teacher")
+    @GetMapping("/majorTeacher")
     public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
         return docsInformationService.findAllMajorTeacher();
     }
