@@ -38,8 +38,16 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndEnrollResponseDto> findAllTeacher(){
-        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER);
+    public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
+        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.MAJOR_TEACHER);
+
+        return allTeacher.stream()
+                .map(DocsNameAndEnrollResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DocsNameAndEnrollResponseDto> findAllHumanistTeacher(){
+        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.HUMANITIES_TEACHER);
 
         return allTeacher.stream()
                 .map(DocsNameAndEnrollResponseDto::new)
