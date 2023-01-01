@@ -5,7 +5,6 @@ import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import lombok.Getter;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

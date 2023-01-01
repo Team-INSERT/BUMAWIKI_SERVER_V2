@@ -46,6 +46,7 @@ public class Docs {
     public void setVersionDocs(List<VersionDocs> versionDocs){
         this.docsVersion = versionDocs;
     }
+
     public Docs updateVersionDocs(VersionDocs versionDocs){
         docsVersion.add(0, versionDocs);
         return this;
@@ -68,4 +69,6 @@ public class Docs {
     public void setModifiedTime(LocalDateTime lastModifiedAt){
         this.lastModifiedAt = lastModifiedAt;
     }
+
+
 }

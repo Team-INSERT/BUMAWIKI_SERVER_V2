@@ -43,4 +43,8 @@ public class User {
     public void setContributeDocs(List<Contribute> contribute){
         this.contributeDocs = contribute;
     }
+
+    public void updateContributeDocs(Contribute contribute){
+        this.contributeDocs.add(0, contribute);
+    }
 }

@@ -5,6 +5,8 @@ import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,7 +66,7 @@ public class DocsInformationController {
     }
 
     @GetMapping("/find/modified")
-    public List<DocsResponseDto> showDocsModifiedTimeDesc(){
-        return docsInformationService.showDocsModifiedAtDesc();
+    public List<DocsResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 5)Pageable pageable){
+        return docsInformationService.showDocsModifiedAtDesc(pageable);
     }
 }

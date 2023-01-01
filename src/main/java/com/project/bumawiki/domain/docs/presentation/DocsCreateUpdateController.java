@@ -28,7 +28,7 @@ public class DocsCreateUpdateController {
     @PutMapping("/update/{id}")
     public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request){
         UserResponseDto currentUser = docsUpdateService.findCurrentUser();
-        return docsUpdateService.execute(id, currentUser,request);
+        return docsUpdateService.execute(id, currentUser ,request);
     }
 
 }
