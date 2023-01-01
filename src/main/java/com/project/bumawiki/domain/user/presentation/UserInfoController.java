@@ -3,12 +3,14 @@ package com.project.bumawiki.domain.user.presentation;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import com.project.bumawiki.domain.user.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@Validated
 @RequiredArgsConstructor
+@RestController
 @RequestMapping
 public class UserInfoController {
 
