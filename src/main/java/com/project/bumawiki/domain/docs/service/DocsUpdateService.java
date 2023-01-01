@@ -50,6 +50,7 @@ public class DocsUpdateService {
         Contribute contribute = Contribute.builder()
                 .docs(docs)
                 .contributor(user)
+                .createdAt(LocalDateTime.now())
                 .build();
         userResponseDto.updateContribute(contribute);
         docs.updateContribute(contribute);
