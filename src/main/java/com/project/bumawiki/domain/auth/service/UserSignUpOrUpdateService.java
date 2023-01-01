@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.user.service;
+package com.project.bumawiki.domain.auth.service;
 
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;

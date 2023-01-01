@@ -1,9 +1,8 @@
 package com.project.bumawiki.domain.user.service;
 
 import com.project.bumawiki.domain.auth.domain.AuthId;
-import com.project.bumawiki.domain.auth.domain.RefreshToken;
 import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
-import com.project.bumawiki.domain.auth.domain.repository.RefreshTokenRepository;
+import com.project.bumawiki.domain.auth.service.UserSignUpOrUpdateService;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.jwt.config.JwtProperties;
