@@ -8,6 +8,7 @@ import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
+import com.project.bumawiki.domain.image.service.StorageService;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
@@ -15,24 +16,30 @@ import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 
 @RequiredArgsConstructor
 @ServiceWithTransactionalReadOnly
 public class DocsUpdateService {
     private final DocsRepository docsRepository;
+    private final StorageService storageService;
     private final VersionDocsRepository versionDocsRepository;
 
     @Transactional
-    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto,DocsUpdateRequestDto docsUpdateRequestDto){
+    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] file, String[] ImageName){
         try {
             SecurityUtil.getCurrentUser().getUser().getAuthority();
         }catch(Exception e){
             throw UserNotLoginException.EXCEPTION;
         }
-
+        if(file != null){
+            ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsUpdateRequestDto.getTitle(), ImageName));
+            setImageUrlInContents(docsUpdateRequestDto.getContents(),ImageURL);
+        }
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
@@ -85,10 +92,17 @@ public class DocsUpdateService {
         return new UserResponseDto(user);
     }
 
+
+    private ArrayList<String> ImageName2Url(ArrayList<String> ImageUrl) {
+        ImageUrl.replaceAll(ignored -> "대충 경로" + "/image/display/" + ImageUrl);
+        return ImageUrl;
+    }
     /**
      * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
      */
-    public void setImageUrlInContents(){
-
+    public void setImageUrlInContents(String contents, ArrayList<String> ImageUrl) {
+        for (String URL : ImageUrl) {
+            contents = contents.replace("[[사진]]", URL);
+        }
     }
 }

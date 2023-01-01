@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.project.bumawiki.domain.image.service.StorageService;
 
 import javax.validation.constraints.Null;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -34,6 +35,10 @@ public class DocsCreateService {
     private final VersionDocsRepository versionDocsRepository;
 
     private final StorageService storageService;
+    private final JwtUtil jwtUtil;
+
+    private final AuthIdRepository authIdRepository;
+
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName, String bearer) throws IOException {
@@ -43,9 +48,6 @@ public class DocsCreateService {
         }
         checkTitleDuplication(docsCreateRequestDto.getTitle());
 
-    private final JwtUtil jwtUtil;
-
-    private final AuthIdRepository authIdRepository;
 
         checkIsLoginUser(bearer);
 
@@ -114,9 +116,7 @@ public class DocsCreateService {
 
     private ArrayList<String> ImageName2Url(ArrayList<String> ImageUrl) {
 
-        for (int i = 0; i < ImageUrl.size(); i++) {
-            ImageUrl.set(i, "대충 경로" + "/image/display/" + ImageUrl);
-        }
+        ImageUrl.replaceAll(ignored -> "대충 경로" + "/image/display/" + ImageUrl);
         return ImageUrl;
     }
 
