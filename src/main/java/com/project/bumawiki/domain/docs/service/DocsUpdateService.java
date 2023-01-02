@@ -42,9 +42,16 @@ public class DocsUpdateService {
         Docs foundDocs = docsRepository.findById(docsId).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
         if(file != null){
-            ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, foundDocs.getTitle(), ImageName));
-            setImageUrlInContents(docsUpdateRequestDto.getContents(),ImageURL);
+            ArrayList<String> Fileuri = null;
+            if(file.length == 1){
+                Fileuri.set(0, upLoadFile(file[0], foundDocs.getTitle(), ImageName[0]));
+            }
+            else {
+                Fileuri = uploadMultipleFiles(file,foundDocs.getTitle(),ImageName);
+            }
+            setImageUrlInContents(docsUpdateRequestDto.getContents(),Fileuri);
         }
+
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
@@ -99,13 +106,20 @@ public class DocsUpdateService {
     }
 
 
-    private ArrayList<String> ImageName2Url(ArrayList<String> ImageUrl) {
-        ImageUrl.replaceAll(ignored -> "대충 경로" + "/image/display/" + ImageUrl);
+    private String upLoadFile(MultipartFile file,String Title,String ImageName) throws IOException {
+        String fileName = storageService.saveFile(file,Title,ImageName);
+        return "http://10.150.150.56/image/display/"+Title+"/"+fileName;
+    }
+    private ArrayList<String> uploadMultipleFiles(MultipartFile[] files,String Title, String[] ImageName) throws IOException {
+        ArrayList<String> ImageUrl = null;
+        int i=0;
+        for (MultipartFile file : files){
+            ImageUrl.set(i, upLoadFile(file, Title, ImageName[i]));
+            i++;
+        }
         return ImageUrl;
     }
-    /**
-     * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
-     */
+
     public void setImageUrlInContents(String contents, ArrayList<String> ImageUrl) {
         for (String URL : ImageUrl) {
             contents = contents.replace("[[사진]]", URL);

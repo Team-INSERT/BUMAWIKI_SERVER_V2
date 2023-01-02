@@ -70,10 +70,10 @@ public class StorageService {
         return fileNames;
     }
 
-    public String saveFile(MultipartFile file, String userName) throws IOException {
+    public String saveFile(MultipartFile file, String userName,String ImageName) throws IOException {
 
         String randomStr = getRandomStr();
-        String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = randomStr + StringUtils.cleanPath(ImageName+file.getOriginalFilename().split(".")[1]);
 
         Path uploadPath = Paths.get(this.uploadPath+"/"+userName);
         if(!Files.exists(uploadPath)) {

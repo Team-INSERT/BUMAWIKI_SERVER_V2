@@ -6,8 +6,10 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.docs.service.DocsCreateService;
 import com.project.bumawiki.domain.docs.service.DocsUpdateService;
+import com.project.bumawiki.domain.image.service.StorageService;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +26,11 @@ public class DocsCreateUpdateController {
     private final DocsCreateService docsCreateService;
     private final DocsUpdateService docsUpdateService;
 
+    @Autowired
+    private StorageService StorageService;
+
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @RequestBody MultipartFile[] file,@RequestBody String[] imageName,@RequestHeader("Authorization")String bearer) throws IOException {
+    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @RequestParam("file") MultipartFile[] file,@RequestBody String[] imageName,@RequestHeader("Authorization")String bearer) throws IOException {
 
         return docsCreateService.execute(request,file,imageName,bearer);
     }

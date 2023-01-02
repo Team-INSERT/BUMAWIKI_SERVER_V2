@@ -13,6 +13,7 @@ import com.project.bumawiki.global.jwt.config.JwtConstants;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.project.bumawiki.domain.image.service.StorageService;
 
-import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ public class DocsCreateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
 
+    @Autowired
     private final StorageService storageService;
     private final JwtUtil jwtUtil;
 
@@ -43,12 +44,18 @@ public class DocsCreateService {
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName, String bearer) throws IOException {
         if(file != null){
-            ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
-            setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
+            ArrayList<String> Fileuri = null;
+            if(file.length == 1){
+                Fileuri.set(0, upLoadFile(file[0], docsCreateRequestDto.getTitle(), ImageName[0]));
+            }
+            else {
+                Fileuri = uploadMultipleFiles(file,docsCreateRequestDto.getTitle(),ImageName);
+            }
+            setImageUrlInContents(docsCreateRequestDto.getContents(),Fileuri);
         }
 
 
-        checkIsLoginUser(bearer);
+        //checkIsLoginUser(bearer);
 
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
@@ -112,16 +119,20 @@ public class DocsCreateService {
     }
 
 
-    private ArrayList<String> ImageName2Url(ArrayList<String> ImageUrl) {
 
-        ImageUrl.replaceAll(ignored -> "대충 경로" + "/image/display/" + ImageUrl);
+    private String upLoadFile(MultipartFile file,String Title,String ImageName) throws IOException {
+        String fileName = storageService.saveFile(file,Title,ImageName);
+        return "http://10.150.150.56/image/display/"+Title+"/"+fileName;
+    }
+    private ArrayList<String> uploadMultipleFiles(MultipartFile[] files,String Title, String[] ImageName) throws IOException {
+        ArrayList<String> ImageUrl = null;
+        int i=0;
+        for (MultipartFile file : files){
+            ImageUrl.set(i, upLoadFile(file, Title, ImageName[i]));
+            i++;
+        }
         return ImageUrl;
     }
-
-
-    /**
-     * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
-     */
 
     public void setImageUrlInContents(String contents, ArrayList<String> ImageUrl) {
         for (String URL : ImageUrl) {

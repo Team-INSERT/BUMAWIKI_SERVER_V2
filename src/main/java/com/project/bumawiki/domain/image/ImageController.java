@@ -3,6 +3,7 @@ package com.project.bumawiki.domain.image;
 
 import com.project.bumawiki.domain.image.payload.Response;
 import com.project.bumawiki.domain.image.service.StorageService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -29,23 +30,24 @@ public class ImageController {
         this.storageService = storageService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<Response> uploadImage(@RequestParam("file") MultipartFile file,
-                                                @RequestParam("DocsName") String DocsName) throws IOException {
-        Response res = new Response();
-        try{
-            String result = storageService.saveFile(file, DocsName);
-            res.setImageLocation("/"+ DocsName +"/"+result);
-            res.setMessage("done");
-            res.setSuccess(true);
-            return new ResponseEntity<Response>(res, HttpStatus.OK);
-        }catch (Exception e){
-            res.setMessage("failed");
-            res.setSuccess(false);
-            return new ResponseEntity<Response>(res, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-//
+//    @PostMapping("/upload")
+//    public ResponseEntity<Response> uploadImage(@RequestParam("file") MultipartFile file,
+//                                                @RequestParam("DocsName") String DocsName,
+//                                                @RequestBody) throws IOException {
+//        Response res = new Response();
+//        try{
+//            String result = storageService.saveFile(file, DocsName);
+//            res.setImageLocation("/"+ DocsName +"/"+result);
+//            res.setMessage("done");
+//            res.setSuccess(true);
+//            return new ResponseEntity<Response>(res, HttpStatus.OK);
+//        }catch (Exception e){
+//            res.setMessage("failed");
+//            res.setSuccess(false);
+//            return new ResponseEntity<Response>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+////
 //    @PostMapping("/post/upload")
 //    public ResponseEntity<Response> postImageUpload(@RequestParam("files") MultipartFile[] files,
 //                                                    @RequestParam("postName")String postName,
