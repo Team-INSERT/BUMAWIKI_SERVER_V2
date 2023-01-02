@@ -30,8 +30,8 @@ public class DocsCreateUpdateController {
     @Autowired
     private StorageService StorageService;
 
-    @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @Nullable @RequestPart(value = "file", required = false) MultipartFile[] file, @RequestHeader("Authorization")String bearer) throws IOException {
+    @PostMapping(path = "/create", consumes = {"multipart/form-data"})
+    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @Nullable @ModelAttribute MultipartFile[] file, @RequestHeader("Authorization")String bearer) throws IOException {
 
         return docsCreateService.execute(request,file,bearer);
     }
