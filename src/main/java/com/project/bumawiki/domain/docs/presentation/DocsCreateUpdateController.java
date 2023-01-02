@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.util.annotation.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class DocsCreateUpdateController {
     private StorageService StorageService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @RequestParam("file") MultipartFile[] file,@RequestHeader("Authorization")String bearer) throws IOException {
+    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @Nullable @RequestPart(value = "file", required = false) MultipartFile[] file, @RequestHeader("Authorization")String bearer) throws IOException {
 
         return docsCreateService.execute(request,file,bearer);
     }
