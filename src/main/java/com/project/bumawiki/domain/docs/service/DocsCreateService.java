@@ -44,9 +44,10 @@ public class DocsCreateService {
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String bearer) throws IOException {
         if(file != null){
-            ArrayList<String> Fileuri = null;
+            ArrayList<String> Fileuri = new ArrayList<String>();
             if(file.length == 1){
-                Fileuri.set(0, upLoadFile(file[0], docsCreateRequestDto.getTitle()));
+                String title = docsCreateRequestDto.getTitle();
+                Fileuri.add(upLoadFile(file[0], title));
             }
             else {
                 Fileuri = uploadMultipleFiles(file,docsCreateRequestDto.getTitle());

@@ -10,6 +10,7 @@ import com.project.bumawiki.domain.image.service.StorageService;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,8 +31,11 @@ public class DocsCreateUpdateController {
     @Autowired
     private StorageService StorageService;
 
-    @PostMapping(path = "/create", consumes = {"multipart/form-data"})
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @Nullable @ModelAttribute MultipartFile[] file, @RequestHeader("Authorization")String bearer) throws IOException {
+    @PostMapping(path = "/create", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public DocsResponseDto createDocs(
+            @RequestPart DocsCreateRequestDto request,
+            @Nullable @RequestPart MultipartFile[] file,
+            @RequestHeader("Authorization")String bearer) throws IOException {
 
         return docsCreateService.execute(request,file,bearer);
     }
