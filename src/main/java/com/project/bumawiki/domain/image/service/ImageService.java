@@ -41,7 +41,7 @@ public class ImageService {
         String randomStr = getRandomStr();
         String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
 
-        Path uploadPath = Paths.get(this.uploadPath+"/"+userName);
+        Path uploadPath = Paths.get("C:\\Users\\KHH\\Desktop\\Image\\"+userName);
         if(!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -66,7 +66,7 @@ public class ImageService {
     }
 
     public Resource loadFileAsResource(String DocsName, String fileName) {
-        Path uploadPath = Paths.get(this.uploadPath+"/"+DocsName);
+        Path uploadPath = Paths.get("C:\\Users\\KHH\\Desktop\\Image\\"+DocsName);
         try {
             Path filePath = uploadPath.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
