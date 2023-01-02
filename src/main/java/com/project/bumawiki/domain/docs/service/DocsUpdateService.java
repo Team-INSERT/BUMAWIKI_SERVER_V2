@@ -5,6 +5,7 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
+import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -31,14 +33,16 @@ public class DocsUpdateService {
     private final VersionDocsRepository versionDocsRepository;
 
     @Transactional
-    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] file, String[] ImageName){
+    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] file, String[] ImageName) throws IOException {
         try {
             SecurityUtil.getCurrentUser().getUser().getAuthority();
         }catch(Exception e){
             throw UserNotLoginException.EXCEPTION;
         }
+        Docs foundDocs = docsRepository.findById(docsId).
+                orElseThrow(() -> DocsNotFoundException.EXCEPTION);
         if(file != null){
-            ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsUpdateRequestDto.getTitle(), ImageName));
+            ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, foundDocs.getTitle(), ImageName));
             setImageUrlInContents(docsUpdateRequestDto.getContents(),ImageURL);
         }
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);

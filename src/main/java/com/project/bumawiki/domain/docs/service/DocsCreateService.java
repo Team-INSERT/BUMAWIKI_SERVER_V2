@@ -46,7 +46,6 @@ public class DocsCreateService {
             ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
             setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
         }
-        checkTitleDuplication(docsCreateRequestDto.getTitle());
 
 
         checkIsLoginUser(bearer);
@@ -54,7 +53,6 @@ public class DocsCreateService {
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         docs.updateVersionDocs(savedDocs);
-        docs.updateDocsType(docsCreateRequestDto.getDocsType());
 
         setContribute(docs);
         List<VersionDocs> versionDocs = new ArrayList<>();
