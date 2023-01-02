@@ -10,6 +10,7 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.image.service.StorageService;
 import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.entity.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
@@ -56,6 +57,7 @@ public class DocsUpdateService {
         Contribute contribute = Contribute.builder()
                 .docs(docs)
                 .contributor(user)
+                .createdAt(LocalDateTime.now())
                 .build();
         userResponseDto.updateContribute(contribute);
         docs.updateContribute(contribute);

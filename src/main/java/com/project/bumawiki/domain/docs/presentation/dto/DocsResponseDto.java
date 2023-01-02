@@ -21,6 +21,7 @@ public class DocsResponseDto {
     private int enroll;
     private int view;
 
+
     public DocsResponseDto(Docs docs) {
         VersionDocs versionDocs = docs.getDocsVersion().get(docs.getDocsVersion().size() - 1);
         this.id = docs.getId();

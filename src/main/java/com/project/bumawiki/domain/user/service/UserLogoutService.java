@@ -5,6 +5,7 @@ import com.project.bumawiki.domain.auth.domain.repository.RefreshTokenRepository
 import com.project.bumawiki.global.jwt.config.JwtConstants;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +29,9 @@ public class UserLogoutService {
 
 
                 refreshTokenRepository.findById(authId)
-                                .
-                        ifPresent(refreshTokenRepository::delete);
+                        .ifPresent(refreshTokenRepository::delete);
+
+        SecurityContextHolder.clearContext();
 
         return authId;
     }

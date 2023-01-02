@@ -30,12 +30,14 @@ public class JwtProvider {
         refreshTokenRepository.save(RefreshToken.builder()
                 .id(authId)
                 .refreshToken(refreshToken)
-                .ttl(jwtProperties.getRefreshExp() * 1000)
+                .ttl(jwtProperties.getRefreshExp())
                 .build()
         );
 
         return new TokenResponseDto(accessToken, refreshToken, getExpiredTime());
     }
+
+
 
     private String generateToken(String authId, String role, String type ,Long exp){
         return Jwts.builder()

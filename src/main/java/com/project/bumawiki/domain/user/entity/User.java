@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -42,5 +42,9 @@ public class User {
 
     public void setContributeDocs(List<Contribute> contribute){
         this.contributeDocs = contribute;
+    }
+
+    public void updateContributeDocs(Contribute contribute){
+        this.contributeDocs.add(0, contribute);
     }
 }

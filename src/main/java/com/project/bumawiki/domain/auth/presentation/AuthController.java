@@ -1,6 +1,6 @@
-package com.project.bumawiki.domain.user.presentation;
+package com.project.bumawiki.domain.auth.presentation;
 
-import com.project.bumawiki.domain.user.service.AccessTokenRefreshService;
+import com.project.bumawiki.domain.auth.service.AccessTokenRefreshService;
 import com.project.bumawiki.domain.user.service.UserLoginService;
 import com.project.bumawiki.domain.user.service.UserLogoutService;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;

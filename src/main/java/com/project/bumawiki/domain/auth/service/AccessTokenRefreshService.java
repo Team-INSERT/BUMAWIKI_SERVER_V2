@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.user.service;
+package com.project.bumawiki.domain.auth.service;
 
 import com.project.bumawiki.domain.auth.domain.RefreshToken;
 import com.project.bumawiki.domain.auth.domain.repository.RefreshTokenRepository;

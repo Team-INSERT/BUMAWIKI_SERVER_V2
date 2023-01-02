@@ -22,5 +22,5 @@ public interface DocsRepository extends JpaRepository<Docs, Long> {
     Optional<Docs> findById(Long id);
 
     @Query("select d from Docs d order by d.lastModifiedAt desc")
-    List<Docs> findByLastModifiedAt();
+    Page<Docs> findByLastModifiedAt(Pageable pageable);
 }

@@ -1,7 +1,6 @@
 package com.project.bumawiki.domain.docs.service;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
-import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
@@ -11,6 +10,7 @@ import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -38,8 +38,16 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndEnrollResponseDto> findAllTeacher(){
-        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER);
+    public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
+        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.MAJOR_TEACHER);
+
+        return allTeacher.stream()
+                .map(DocsNameAndEnrollResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DocsNameAndEnrollResponseDto> findAllHumanistTeacher(){
+        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.HUMANITIES_TEACHER);
 
         return allTeacher.stream()
                 .map(DocsNameAndEnrollResponseDto::new)
@@ -87,8 +95,8 @@ public class DocsInformationService {
         return new  VersionResponseDto(new DocsResponseDto(docs), versionDocs);
     }
 
-    public List<DocsResponseDto> showDocsModifiedAtDesc(){
-        return docsRepository.findByLastModifiedAt()
+    public List<DocsResponseDto> showDocsModifiedAtDesc(Pageable pageable){
+        return docsRepository.findByLastModifiedAt(pageable)
                 .stream()
                 .map(DocsResponseDto::new)
                 .collect(Collectors.toList());
