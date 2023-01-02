@@ -26,5 +26,8 @@ public class DocsCreateRequestDto {
     @NotBlank
     private DocsType docsType;
 
-    private List<Clob> image = new ArrayList<>();
+    public DocsCreateRequestDto updateContent(String setContent){
+        this.contents = setContent;
+        return this;
+    }
 }
