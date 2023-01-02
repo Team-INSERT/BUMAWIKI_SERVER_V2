@@ -10,6 +10,10 @@ import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 @Validated
 @RequiredArgsConstructor
@@ -21,14 +25,15 @@ public class DocsCreateUpdateController {
     private final DocsUpdateService docsUpdateService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestBody DocsCreateRequestDto request){
-        return docsCreateService.execute(request, bearer);
+    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @RequestBody MultipartFile[] file,@RequestBody String[] imageName,@RequestHeader("Authorization")String bearer) throws IOException {
+
+        return docsCreateService.execute(request,file,imageName,bearer);
     }
 
     @PutMapping("/update/{id}")
-    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request){
+    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request,@RequestBody MultipartFile[] file,@RequestBody String[] imageName){
         UserResponseDto currentUser = docsUpdateService.findCurrentUser();
-        return docsUpdateService.execute(id, currentUser ,request);
+        return docsUpdateService.execute(id, currentUser,request,file,imageName);
     }
 
 }

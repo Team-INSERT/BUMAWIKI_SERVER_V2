@@ -17,9 +17,14 @@ import org.springframework.stereotype.Service;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import com.project.bumawiki.domain.image.service.StorageService;
 
+import javax.validation.constraints.Null;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
@@ -28,17 +33,29 @@ import java.util.List;
 public class DocsCreateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
+
+    private final StorageService storageService;
     private final JwtUtil jwtUtil;
 
     private final AuthIdRepository authIdRepository;
 
+
     @Transactional
-    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer){
+    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName, String bearer) throws IOException {
+        if(file != null){
+            ArrayList<String> ImageURL = ImageName2Url(storageService.saveFiles(file, docsCreateRequestDto.getTitle(), ImageName));
+            setImageUrlInContents(docsCreateRequestDto.getContents(),ImageURL);
+        }
+        checkTitleDuplication(docsCreateRequestDto.getTitle());
+
 
         checkIsLoginUser(bearer);
 
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
+        docs.updateVersionDocs(savedDocs);
+        docs.updateDocsType(docsCreateRequestDto.getDocsType());
+
         setContribute(docs);
         List<VersionDocs> versionDocs = new ArrayList<>();
         versionDocs.add(savedDocs);
@@ -97,11 +114,21 @@ public class DocsCreateService {
     }
 
 
+    private ArrayList<String> ImageName2Url(ArrayList<String> ImageUrl) {
+
+        ImageUrl.replaceAll(ignored -> "대충 경로" + "/image/display/" + ImageUrl);
+        return ImageUrl;
+    }
+
+
     /**
      * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
      */
-    public void setImageUrlInContents(){
 
+    public void setImageUrlInContents(String contents, ArrayList<String> ImageUrl) {
+        for (String URL : ImageUrl) {
+            contents = contents.replace("[[사진]]", URL);
+        }
     }
 }
 
