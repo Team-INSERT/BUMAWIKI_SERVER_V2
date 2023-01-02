@@ -42,14 +42,14 @@ public class DocsCreateService {
 
 
     @Transactional
-    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String[] ImageName, String bearer) throws IOException {
+    public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, MultipartFile[] file, String bearer) throws IOException {
         if(file != null){
             ArrayList<String> Fileuri = null;
             if(file.length == 1){
-                Fileuri.set(0, upLoadFile(file[0], docsCreateRequestDto.getTitle(), ImageName[0]));
+                Fileuri.set(0, upLoadFile(file[0], docsCreateRequestDto.getTitle()));
             }
             else {
-                Fileuri = uploadMultipleFiles(file,docsCreateRequestDto.getTitle(),ImageName);
+                Fileuri = uploadMultipleFiles(file,docsCreateRequestDto.getTitle());
             }
             setImageUrlInContents(docsCreateRequestDto.getContents(),Fileuri);
         }
@@ -120,15 +120,15 @@ public class DocsCreateService {
 
 
 
-    private String upLoadFile(MultipartFile file,String Title,String ImageName) throws IOException {
-        String fileName = storageService.saveFile(file,Title,ImageName);
+    private String upLoadFile(MultipartFile file,String Title) throws IOException {
+        String fileName = storageService.saveFile(file,Title);
         return "http://10.150.150.56/image/display/"+Title+"/"+fileName;
     }
-    private ArrayList<String> uploadMultipleFiles(MultipartFile[] files,String Title, String[] ImageName) throws IOException {
+    private ArrayList<String> uploadMultipleFiles(MultipartFile[] files,String Title) throws IOException {
         ArrayList<String> ImageUrl = null;
         int i=0;
         for (MultipartFile file : files){
-            ImageUrl.set(i, upLoadFile(file, Title, ImageName[i]));
+            ImageUrl.set(i, upLoadFile(file, Title));
             i++;
         }
         return ImageUrl;

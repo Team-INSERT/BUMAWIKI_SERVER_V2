@@ -30,15 +30,15 @@ public class DocsCreateUpdateController {
     private StorageService StorageService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @RequestParam("file") MultipartFile[] file,@RequestBody String[] imageName,@RequestHeader("Authorization")String bearer) throws IOException {
+    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request, @RequestParam("file") MultipartFile[] file,@RequestHeader("Authorization")String bearer) throws IOException {
 
-        return docsCreateService.execute(request,file,imageName,bearer);
+        return docsCreateService.execute(request,file,bearer);
     }
 
     @PutMapping("/update/{id}")
-    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request,@RequestBody MultipartFile[] file,@RequestBody String[] imageName) throws IOException {
+    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request,@RequestParam("file") MultipartFile[] file) throws IOException {
         UserResponseDto currentUser = docsUpdateService.findCurrentUser();
-        return docsUpdateService.execute(id, currentUser,request,file,imageName);
+        return docsUpdateService.execute(id, currentUser,request,file);
     }
 
 }

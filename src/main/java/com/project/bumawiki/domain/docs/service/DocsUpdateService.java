@@ -33,7 +33,7 @@ public class DocsUpdateService {
     private final VersionDocsRepository versionDocsRepository;
 
     @Transactional
-    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] file, String[] ImageName) throws IOException {
+    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] file) throws IOException {
         try {
             SecurityUtil.getCurrentUser().getUser().getAuthority();
         }catch(Exception e){
@@ -44,10 +44,10 @@ public class DocsUpdateService {
         if(file != null){
             ArrayList<String> Fileuri = null;
             if(file.length == 1){
-                Fileuri.set(0, upLoadFile(file[0], foundDocs.getTitle(), ImageName[0]));
+                Fileuri.set(0, upLoadFile(file[0], foundDocs.getTitle()));
             }
             else {
-                Fileuri = uploadMultipleFiles(file,foundDocs.getTitle(),ImageName);
+                Fileuri = uploadMultipleFiles(file,foundDocs.getTitle());
             }
             setImageUrlInContents(docsUpdateRequestDto.getContents(),Fileuri);
         }
@@ -106,15 +106,15 @@ public class DocsUpdateService {
     }
 
 
-    private String upLoadFile(MultipartFile file,String Title,String ImageName) throws IOException {
-        String fileName = storageService.saveFile(file,Title,ImageName);
+    private String upLoadFile(MultipartFile file,String Title) throws IOException {
+        String fileName = storageService.saveFile(file,Title);
         return "http://10.150.150.56/image/display/"+Title+"/"+fileName;
     }
-    private ArrayList<String> uploadMultipleFiles(MultipartFile[] files,String Title, String[] ImageName) throws IOException {
+    private ArrayList<String> uploadMultipleFiles(MultipartFile[] files,String Title) throws IOException {
         ArrayList<String> ImageUrl = null;
         int i=0;
         for (MultipartFile file : files){
-            ImageUrl.set(i, upLoadFile(file, Title, ImageName[i]));
+            ImageUrl.set(i, upLoadFile(file, Title));
             i++;
         }
         return ImageUrl;
