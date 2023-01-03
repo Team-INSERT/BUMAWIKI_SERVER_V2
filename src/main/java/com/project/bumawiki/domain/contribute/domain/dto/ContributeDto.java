@@ -10,6 +10,7 @@ public class ContributeDto {
 
     private Long userId;
     private String userNickName;
+    private Long docsId;
     private LocalDateTime createTime;
     private String title;
     private Long versionDocsId;
@@ -17,6 +18,7 @@ public class ContributeDto {
     public ContributeDto(Contribute contribute){
         this.userId = contribute.getContributor().getId();
         this.userNickName = contribute.getContributor().getNickName();
+        this.docsId = contribute.getDocs().getId();
         this.createTime = contribute.getCreatedAt();
         this.title = contribute.getDocs().getTitle();
         this.versionDocsId = contribute.getVersionDocs().getId();
