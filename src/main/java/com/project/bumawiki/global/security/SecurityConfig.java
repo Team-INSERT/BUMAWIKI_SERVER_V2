@@ -20,8 +20,6 @@ import org.springframework.web.cors.CorsUtils;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private static final String USER = "USER";
-
     private final ObjectMapper objectMapper;
     private final JwtUtil jwtUtil;
     private final JwtAuth jwtAuth;

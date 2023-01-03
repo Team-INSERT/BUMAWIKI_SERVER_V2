@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.contribute.domain.service;
+package com.project.bumawiki.domain.contribute.service;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.Docs;

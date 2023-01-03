@@ -1,19 +1,15 @@
 package com.project.bumawiki.domain.docs.service;
 
 import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
-import com.project.bumawiki.domain.contribute.domain.Contribute;
-import com.project.bumawiki.domain.contribute.domain.service.ContributeService;
+import com.project.bumawiki.domain.contribute.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.image.service.ImageService;
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.jwt.config.JwtConstants;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
-import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
