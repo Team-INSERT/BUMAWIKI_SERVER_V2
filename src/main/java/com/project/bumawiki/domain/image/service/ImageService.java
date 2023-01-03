@@ -41,7 +41,7 @@ public class ImageService {
         String randomStr = getRandomStr();
         String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
 
-        Path uploadPath = Paths.get("C:\\Users\\KHH\\Desktop\\Image\\"+userName);
+        Path uploadPath = Paths.get("~/image"+userName);
         if(!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
