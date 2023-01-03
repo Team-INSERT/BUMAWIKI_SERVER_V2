@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.docs.service;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.contribute.domain.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
@@ -31,15 +32,16 @@ import java.util.ArrayList;
 public class DocsUpdateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
-
+    private final ContributeService contributeService;
     private final ImageService imageService;
     @Transactional
-    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
+    public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
         try {
             SecurityUtil.getCurrentUser().getUser().getAuthority();
         }catch(Exception e){
             throw UserNotLoginException.EXCEPTION;
         }
+
         Docs FoundDocs = docsRepository.findById(docsId)
                         .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
         setImageUrlInContents(docsUpdateRequestDto,imageService.GetFileUrl(files, FoundDocs.getTitle()));
@@ -47,26 +49,10 @@ public class DocsUpdateService {
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
 
-        setContribute(docs, userResponseDto);
+        contributeService.setContribute(docs);
 
         return new DocsResponseDto(docs);
     }
-
-
-    @Transactional
-    private void setContribute(Docs docs, UserResponseDto userResponseDto) {
-        User user = SecurityUtil.getCurrentUser().getUser();
-        Contribute contribute = Contribute.builder()
-                .docs(docs)
-                .contributor(user)
-                .createdAt(LocalDateTime.now())
-                .build();
-        userResponseDto.updateContribute(contribute);
-        docs.updateContribute(contribute);
-
-        user.setContributeDocs(userResponseDto.getContributeDocs());
-    }
-
 
 
     @Transactional
@@ -88,12 +74,6 @@ public class DocsUpdateService {
         docs.getDocsVersion().add(versionDocs);
 
         return docs;
-    }
-
-    public UserResponseDto findCurrentUser(){
-        User user = SecurityUtil.getCurrentUser().getUser();
-
-        return new UserResponseDto(user);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.project.bumawiki.domain.docs.service;
 
 import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.contribute.domain.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
@@ -34,6 +35,7 @@ public class DocsCreateService {
     private final JwtUtil jwtUtil;
     private final AuthIdRepository authIdRepository;
     private final ImageService imageService;
+    private final ContributeService contributeService;
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer, MultipartFile[] files) throws IOException {
@@ -43,7 +45,7 @@ public class DocsCreateService {
 
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
-        setContribute(docs);
+        contributeService.setContribute(docs);
         List<VersionDocs> versionDocs = new ArrayList<>();
         versionDocs.add(savedDocs);
 
@@ -60,6 +62,7 @@ public class DocsCreateService {
         authIdRepository.findByAuthId(authId)
                 .orElseThrow(() -> UserNotLoginException.EXCEPTION);
     }
+
     @Transactional
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){
         VersionDocs savedDocs = versionDocsRepository.save(
@@ -70,22 +73,6 @@ public class DocsCreateService {
                         .build()
         );
         return savedDocs;
-    }
-
-    @Transactional
-    private void setContribute(Docs docs) {
-        User user = SecurityUtil.getCurrentUser().getUser();
-        if(user == null){
-            throw UserNotFoundException.EXCEPTION;
-        }
-        Contribute contribute = Contribute.builder()
-                .docs(docs)
-                .contributor(user)
-                .build();
-        ArrayList<Contribute> contributes = new ArrayList<>();
-        contributes.add(contribute);
-        docs.setContributor(contributes);
-        user.setContributeDocs(contributes);
     }
 
     @Transactional
