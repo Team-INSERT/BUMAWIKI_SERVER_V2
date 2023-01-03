@@ -32,7 +32,7 @@ public class DocsInformationController {
         return docsInformationService.findAllAccident();
     }
 
-    @GetMapping("/humanitiesTeacher")
+    @GetMapping("/teacher")
     public List<DocsNameAndEnrollResponseDto> findAllHumanitiesTeacher(){
         return docsInformationService.findAllHumanistTeacher();
     }
