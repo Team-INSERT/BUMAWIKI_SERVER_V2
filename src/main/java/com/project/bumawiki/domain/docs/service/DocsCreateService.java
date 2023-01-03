@@ -45,7 +45,7 @@ public class DocsCreateService {
 
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
-        contributeService.setContribute(docs);
+        contributeService.setContribute(savedDocs);
         List<VersionDocs> versionDocs = new ArrayList<>();
         versionDocs.add(savedDocs);
 

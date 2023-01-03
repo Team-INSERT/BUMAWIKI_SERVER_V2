@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.docs.domain;
 
+import com.project.bumawiki.domain.contribute.domain.Contribute;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -30,4 +31,7 @@ public class VersionDocs {
 
     @CreatedDate
     private LocalDateTime thisVersionCreatedAt;
+
+    @OneToMany(mappedBy = "versionDocs", cascade = CascadeType.ALL)
+    private List<Contribute> contributor = new ArrayList<>();
 }

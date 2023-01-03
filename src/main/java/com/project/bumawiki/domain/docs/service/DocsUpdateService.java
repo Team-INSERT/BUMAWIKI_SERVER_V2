@@ -49,7 +49,7 @@ public class DocsUpdateService {
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
 
-        contributeService.setContribute(docs);
+        contributeService.setContribute(savedVersionDocs);
 
         return new DocsResponseDto(docs);
     }
