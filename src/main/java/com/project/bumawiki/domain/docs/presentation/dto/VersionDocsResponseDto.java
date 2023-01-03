@@ -11,6 +11,9 @@ public class VersionDocsResponseDto {
     private String contents;
     private LocalDateTime thisVersionCreatedAt;
 
+    private String nickName;
+    private Long userId;
+
     public VersionDocsResponseDto(VersionDocs versionDocs){
         this.contents = versionDocs.getContents();
         this.thisVersionCreatedAt = versionDocs.getThisVersionCreatedAt();

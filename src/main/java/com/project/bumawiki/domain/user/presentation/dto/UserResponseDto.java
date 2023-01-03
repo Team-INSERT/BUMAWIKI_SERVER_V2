@@ -1,13 +1,10 @@
 package com.project.bumawiki.domain.user.presentation.dto;
 
-import com.project.bumawiki.domain.contribute.domain.Contribute;
-import com.project.bumawiki.domain.contribute.domain.dto.ContributeDto;
+import com.project.bumawiki.domain.contribute.dto.ContributeDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import lombok.Getter;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

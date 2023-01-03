@@ -19,7 +19,7 @@ import java.util.Random;
 
 @Service
 public class ImageService {
-    private String uploadPath;
+    private static final String uploadPath = "/Users/leechangbo/image/";
 
 
 
@@ -36,12 +36,13 @@ public class ImageService {
         return generatedString;
     }
 
-    public String saveFile(MultipartFile file, String userName) throws IOException {
+    public String saveFile(MultipartFile file, String userName) throws IOException{
 
         String randomStr = getRandomStr();
         String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
 
-        Path uploadPath = Paths.get("~/image"+userName);
+//        Path uploadPath = Paths.get("~/image/"+userName);
+        Path uploadPath = Paths.get(ImageService.uploadPath+userName);
         if(!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -66,7 +67,7 @@ public class ImageService {
     }
 
     public Resource loadFileAsResource(String DocsName, String fileName) {
-        Path uploadPath = Paths.get("C:\\Users\\KHH\\Desktop\\Image\\"+DocsName);
+        Path uploadPath = Paths.get(ImageService.uploadPath,DocsName);
         try {
             Path filePath = uploadPath.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());

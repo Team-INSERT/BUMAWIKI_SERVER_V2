@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.contribute.domain.dto;
+package com.project.bumawiki.domain.contribute.dto;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import lombok.Getter;
