@@ -19,7 +19,7 @@ import java.util.Random;
 
 @Service
 public class ImageService {
-    private static final String uploadPath = "/Users/leechangbo/image/";
+    private static final String uploadPath = "/home/t/Desktop/image/";
 
 
 
@@ -60,7 +60,7 @@ public class ImageService {
         int i=0;
         for (MultipartFile file : files){
             String fileName = saveFile(file,DocsName);
-            ImageUrl.add("<<http://10.150.150.56/image/display/"+DocsName+"/"+fileName+">>");
+            ImageUrl.add("<<http://bumawiki.kro.kr/image/display/"+DocsName+"/"+fileName+">>");
             i++;
         }
         return ImageUrl;
