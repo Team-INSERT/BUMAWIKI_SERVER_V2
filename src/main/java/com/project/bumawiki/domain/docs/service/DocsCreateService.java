@@ -6,14 +6,14 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.image.service.ImageService;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.jwt.config.JwtConstants;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +37,7 @@ public class DocsCreateService {
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer, MultipartFile[] files) throws IOException {
 
         checkIsLoginUser(bearer);
-        if(files == null || files.length == 0){
+        if(files != null ){
             ArrayList<String> FileUrl = imageService.GetFileUrl(files, docsCreateRequestDto.getTitle());
             setImageUrlInContents(docsCreateRequestDto,FileUrl);
         }
