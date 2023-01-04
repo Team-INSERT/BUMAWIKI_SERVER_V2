@@ -37,7 +37,10 @@ public class DocsCreateService {
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer, MultipartFile[] files) throws IOException {
 
         checkIsLoginUser(bearer);
-        setImageUrlInContents(docsCreateRequestDto,imageService.GetFileUrl(files, docsCreateRequestDto.getTitle()));
+        if(files == null || files.length == 0){
+            ArrayList<String> FileUrl = imageService.GetFileUrl(files, docsCreateRequestDto.getTitle());
+            setImageUrlInContents(docsCreateRequestDto,FileUrl);
+        }
 
         Docs docs = createDocs(docsCreateRequestDto);
         VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
