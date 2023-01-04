@@ -29,6 +29,7 @@ public class DocsUpdateService {
     private final VersionDocsRepository versionDocsRepository;
     private final ContributeService contributeService;
     private final ImageService imageService;
+
     @Transactional
     public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
         try {
