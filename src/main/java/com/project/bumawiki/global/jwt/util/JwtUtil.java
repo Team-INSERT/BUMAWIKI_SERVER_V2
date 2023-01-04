@@ -1,16 +1,17 @@
 package com.project.bumawiki.global.jwt.util;
 
+import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
 import com.project.bumawiki.global.jwt.config.JwtProperties;
+import com.project.bumawiki.global.jwt.exception.ExpiredJwtException;
 import com.project.bumawiki.global.jwt.exception.InvalidJwtException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.project.bumawiki.global.jwt.config.JwtConstants.*;
 
 @Component
 @Slf4j
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public class JwtUtil {
 
     private final JwtProperties jwtProperties;
+    private final AuthIdRepository authIdRepository;
 
     public String resolveToken(HttpServletRequest request){
         String bearer = request.getHeader(jwtProperties.getHeader());
@@ -26,10 +28,19 @@ public class JwtUtil {
     }
 
     public String parseToken(String bearer){
-        if(bearer != null){
-            return  bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
+        if(bearer != "" && bearer != null){
+            String token = bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
+            checkingIfJwtExpired(token);
+            return token;
         }
         return null;
+    }
+
+    public void checkingIfJwtExpired(String token){
+        String authId = getJwt(token).getBody().get(AUTH_ID.getMessage()).toString();
+
+        authIdRepository.findByAuthId(authId)
+                .orElseThrow(() -> ExpiredJwtException.EXCEPTION);
     }
 
     public Jws<Claims> getJwt(String token){

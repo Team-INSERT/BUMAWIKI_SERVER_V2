@@ -1,8 +1,7 @@
-package com.project.bumawiki.global.security;
+package com.project.bumawiki.global.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.bumawiki.global.error.ErrorResponse;
-import com.project.bumawiki.global.error.Exception.ErrorCode;
+import com.project.bumawiki.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;

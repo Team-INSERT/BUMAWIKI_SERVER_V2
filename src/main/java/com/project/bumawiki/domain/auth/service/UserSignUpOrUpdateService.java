@@ -1,11 +1,11 @@
-package com.project.bumawiki.domain.user.service;
+package com.project.bumawiki.domain.auth.service;
 
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
-import com.project.bumawiki.global.oauth.exception.BsmAuthIdInvalidClientException;
 import leehj050211.bsmOauth.BsmOauth;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import leehj050211.bsmOauth.exceptions.BsmAuthCodeNotFoundException;
@@ -31,9 +31,9 @@ public class UserSignUpOrUpdateService {
             token = bsmOauth.getToken(authId);
             resource = bsmOauth.getResource(token);
         }catch(BsmAuthCodeNotFoundException | BsmAuthTokenNotFoundException e){
-            throw UserNotFoundException.EXCEPTION;
+            throw UserNotLoginException.EXCEPTION;
         }catch(BsmAuthInvalidClientException e){
-            throw BsmAuthIdInvalidClientException.EXCEPTION;
+            throw UserNotLoginException.EXCEPTION;
         }
 
         return updateOrSignUp(resource);

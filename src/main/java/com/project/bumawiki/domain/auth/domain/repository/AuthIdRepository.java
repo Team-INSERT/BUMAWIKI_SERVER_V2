@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface AuthIdRepository extends CrudRepository<AuthId, String> {
     Optional<AuthId> findByAuthId(String authId);
+
 }

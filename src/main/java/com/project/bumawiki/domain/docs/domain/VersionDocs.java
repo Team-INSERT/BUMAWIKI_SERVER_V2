@@ -1,8 +1,8 @@
 package com.project.bumawiki.domain.docs.domain;
 
+import com.project.bumawiki.domain.contribute.domain.Contribute;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,28 +18,20 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class VersionDocs {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "versionDocs_id")
     private Long id;
 
     @NotNull
     private Long docsId;
 
-    @Column(length = 32)
-    @NotNull
-    private String title;
-
-    @Column(length = 8)
-    @NotNull
-    private int enroll;
-
     @Column(columnDefinition = "TEXT")
     @NotNull
     private String contents;
 
-    @Lob
-    private List<Clob> imageLink = new ArrayList<>();
-
     @CreatedDate
     private LocalDateTime thisVersionCreatedAt;
+
+    @OneToMany(mappedBy = "versionDocs", cascade = CascadeType.ALL)
+    private List<Contribute> contributor = new ArrayList<>();
 }

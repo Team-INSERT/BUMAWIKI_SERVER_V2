@@ -1,76 +1,86 @@
 package com.project.bumawiki.domain.docs.service;
 
-import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.contribute.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
+import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.image.service.ImageService;
+import com.project.bumawiki.domain.user.exception.UserNotLoginException;
+import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
-// 기여자 생성 해야함
 
 @RequiredArgsConstructor
-@Service
-@Transactional
+@ServiceWithTransactionalReadOnly
 public class DocsUpdateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
+    private final ContributeService contributeService;
+    private final ImageService imageService;
 
-    public DocsResponseDto execute(DocsUpdateRequestDto docsUpdateRequestDto){
-        VersionDocs versionDocs = ifPostExistReturnPostId(docsUpdateRequestDto);
-        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, versionDocs);
+    @Transactional
+    public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
+        try {
+            SecurityUtil.getCurrentUser().getUser().getAuthority();
+        }catch(Exception e){
+            throw UserNotLoginException.EXCEPTION;
+        }
+
+        Docs FoundDocs = docsRepository.findById(docsId)
+                        .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+        setImageUrlInContents(docsUpdateRequestDto,imageService.GetFileUrl(files, FoundDocs.getTitle()));
+        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
-        setContribute(docs);
+        docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
+
+        contributeService.setContribute(savedVersionDocs);
 
         return new DocsResponseDto(docs);
     }
 
-    private void setContribute(Docs docs) {
-        User contributor = SecurityUtil.getCurrentUser().getUser();
-        Contribute contribute = Contribute.builder()
-                .docs(docs)
-                .contributor(contributor)
-                .build();
-        contributor.updateContribute(contribute);
-        docs.updateContribute(contribute);
-    }
 
-    @Transactional(readOnly = true)
-    private VersionDocs ifPostExistReturnPostId(DocsUpdateRequestDto docsUpdateRequestDto){
-        List<VersionDocs> findVersionDocs = versionDocsRepository.findAllByTitle(docsUpdateRequestDto.getTitle());
-        if(findVersionDocs.size() == 0){
-            throw NoUpdatablePostException.EXCEPTION;
-        }
-        return findVersionDocs.get(0);
-    }
-    
-    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, VersionDocs versionDocs){
+    @Transactional
+    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto,Long docsId){
         return versionDocsRepository.save(
                 VersionDocs.builder()
-                .docsId(versionDocs.getDocsId())
-                .title(docsUpdateRequestDto.getTitle())
-                .enroll(docsUpdateRequestDto.getEnroll())
-                .contents(docsUpdateRequestDto.getContents())
-                .imageLink(docsUpdateRequestDto.getImageLink())
-                .build()
+                        .docsId(docsId)
+                        .thisVersionCreatedAt(LocalDateTime.now())
+                        .contents(docsUpdateRequestDto.getContents())
+                        .build()
         );
     }
 
+    @Transactional
     private Docs setVersionDocsToDocs(VersionDocs versionDocs){
         Docs docs = docsRepository.findById(versionDocs.getDocsId())
                 .orElseThrow(() -> NoUpdatablePostException.EXCEPTION);
 
-        docs.getDocsVersion().add(0, versionDocs);
+        docs.getDocsVersion().add(versionDocs);
 
         return docs;
     }
+
+    /**
+     * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
+     */
+    public void setImageUrlInContents(DocsUpdateRequestDto docsUpdateRequestDto, ArrayList<String> urls){
+        String content = docsUpdateRequestDto.getContents();
+        for (String url : urls) {
+            content = content.replace("[[사진]]",url);
+        }
+        docsUpdateRequestDto.updateContent(content);
+    }
 }
+

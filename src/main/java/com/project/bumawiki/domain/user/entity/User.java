@@ -1,10 +1,10 @@
 package com.project.bumawiki.domain.user.entity;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
-import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -30,7 +30,7 @@ public class User {
     @Column(length = 16)
     private Authority authority;
 
-    @OneToMany(mappedBy = "contributor")
+    @OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL)
     private List<Contribute> contributeDocs = new ArrayList<>();
 
     public User update(BsmResourceResponse resource){
@@ -39,9 +39,12 @@ public class User {
         return this;
     }
 
-    public User updateContribute(Contribute contribute){
-        contributeDocs.add(0, contribute);
-        return this;
+
+    public void setContributeDocs(List<Contribute> contribute){
+        this.contributeDocs = contribute;
     }
 
+    public void updateContributeDocs(Contribute contribute){
+        this.contributeDocs.add(0, contribute);
+    }
 }

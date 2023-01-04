@@ -23,7 +23,7 @@ public class JwtAuth {
     private final AuthDetailsService authDetailsService;
 
     public Authentication authentication(String token){
-        Claims claims = jwtUtil.getJwtBody(token);
+        Claims claims = jwtUtil.getJwt(token).getBody();
 
         if(isNotAccessToken(token)){
             throw InvalidJwtException.EXCEPTION;
@@ -37,7 +37,7 @@ public class JwtAuth {
         if(token.isEmpty()){
             throw InvalidJwtException.EXCEPTION;
         }
-        String role = jwtUtil.getHeader(token).get(JwtConstants.ROLE).toString();
+        String role = jwtUtil.getJwt(token).getHeader().get(JwtConstants.TYPE.message).toString();
         if(role.equals(JwtConstants.ACCESS_KEY.message)){
             return false;
         }

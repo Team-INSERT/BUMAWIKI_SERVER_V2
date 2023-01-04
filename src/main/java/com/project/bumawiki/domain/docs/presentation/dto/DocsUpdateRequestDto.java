@@ -13,14 +13,10 @@ import java.util.List;
 public class DocsUpdateRequestDto {
 
     @NotNull
-    private String title;
-
-    @NotNull
-    private int enroll;
-
-    @NotNull
     private String contents;
 
-    @Lob
-    private List<Clob> imageLink = new ArrayList<>();
+    public DocsUpdateRequestDto updateContent(String setContent){
+        this.contents = setContent;
+        return this;
+    }
 }

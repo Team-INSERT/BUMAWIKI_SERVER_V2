@@ -6,26 +6,30 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.docs.service.DocsCreateService;
 import com.project.bumawiki.domain.docs.service.DocsUpdateService;
+import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/docs")
+@RequestMapping("/docs/api")
 public class DocsCreateUpdateController {
 
     private final DocsCreateService docsCreateService;
     private final DocsUpdateService docsUpdateService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestBody DocsCreateRequestDto request){
-        return docsCreateService.execute(request);
+    public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestPart DocsCreateRequestDto request, @RequestPart MultipartFile[] files) throws IOException {
+        return docsCreateService.execute(request, bearer,files);
     }
 
-    @PutMapping("/update")
-    public DocsResponseDto updateDocs(@RequestBody DocsUpdateRequestDto request){
-        return docsUpdateService.execute(request);
+    @PutMapping("/update/{id}")
+    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart MultipartFile[] files) throws IOException {
+        return docsUpdateService.execute(id, request, files);
     }
 }

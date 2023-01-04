@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Clob;
 import java.util.ArrayList;
@@ -13,21 +14,20 @@ import java.util.List;
 @Getter
 public class DocsCreateRequestDto {
 
-    @Column(length = 32)
-    @NotNull
+    @NotBlank
     private String title;
 
-    @Column(length = 8)
-    @NotNull
+    @NotBlank
     private int enroll;
 
-    @Column(columnDefinition = "TEXT")
-    @NotNull
+    @NotBlank
     private String contents;
 
-    @NotNull
+    @NotBlank
     private DocsType docsType;
 
-    @Lob
-    private List<Clob> image = new ArrayList<>();
+    public DocsCreateRequestDto updateContent(String setContent){
+        this.contents = setContent;
+        return this;
+    }
 }
