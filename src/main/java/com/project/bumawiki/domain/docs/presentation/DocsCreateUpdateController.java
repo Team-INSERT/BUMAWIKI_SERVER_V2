@@ -17,7 +17,7 @@ import java.io.IOException;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/docs/api")
+@RequestMapping("/api/docs")
 public class DocsCreateUpdateController {
 
     private final DocsCreateService docsCreateService;

@@ -18,7 +18,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/docs")
+@RequestMapping("/api/docs")
 public class DocsInformationController {
     private final DocsInformationService docsInformationService;
 
