@@ -6,44 +6,30 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.docs.service.DocsCreateService;
 import com.project.bumawiki.domain.docs.service.DocsUpdateService;
-import com.project.bumawiki.domain.image.service.StorageService;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import reactor.util.annotation.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/docs/api")
+@RequestMapping("/api/docs")
 public class DocsCreateUpdateController {
 
     private final DocsCreateService docsCreateService;
     private final DocsUpdateService docsUpdateService;
 
-    @Autowired
-    private StorageService StorageService;
-
-    @PostMapping(path = "/create", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public DocsResponseDto createDocs(
-            @RequestPart DocsCreateRequestDto request,
-            @Nullable @RequestPart MultipartFile[] file,
-            @RequestHeader("Authorization")String bearer) throws IOException {
-
-        return docsCreateService.execute(request,file,bearer);
+    @PostMapping("/create")
+    public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestPart DocsCreateRequestDto request, @RequestPart MultipartFile[] files) throws IOException {
+        return docsCreateService.execute(request, bearer,files);
     }
 
     @PutMapping("/update/{id}")
-    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestBody DocsUpdateRequestDto request,@RequestParam("file") MultipartFile[] file) throws IOException {
-        UserResponseDto currentUser = docsUpdateService.findCurrentUser();
-        return docsUpdateService.execute(id, currentUser,request,file);
+    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart MultipartFile[] files) throws IOException {
+        return docsUpdateService.execute(id, request, files);
     }
-
 }

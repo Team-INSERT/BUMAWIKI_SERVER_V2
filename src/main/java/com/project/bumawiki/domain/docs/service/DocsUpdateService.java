@@ -1,6 +1,6 @@
 package com.project.bumawiki.domain.docs.service;
 
-import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.contribute.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
@@ -9,11 +9,8 @@ import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
-import com.project.bumawiki.domain.image.service.StorageService;
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.image.service.ImageService;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
-import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,53 +26,29 @@ import java.util.ArrayList;
 @ServiceWithTransactionalReadOnly
 public class DocsUpdateService {
     private final DocsRepository docsRepository;
-    private final StorageService storageService;
     private final VersionDocsRepository versionDocsRepository;
+    private final ContributeService contributeService;
+    private final ImageService imageService;
 
     @Transactional
-    public DocsResponseDto execute(Long docsId, UserResponseDto userResponseDto, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] file) throws IOException {
+    public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
         try {
             SecurityUtil.getCurrentUser().getUser().getAuthority();
         }catch(Exception e){
             throw UserNotLoginException.EXCEPTION;
         }
-        Docs foundDocs = docsRepository.findById(docsId).
-                orElseThrow(() -> DocsNotFoundException.EXCEPTION);
-        if(file != null){
-            ArrayList<String> Fileuri = null;
-            if(file.length == 1){
-                Fileuri.set(0, upLoadFile(file[0], foundDocs.getTitle()));
-            }
-            else {
-                Fileuri = uploadMultipleFiles(file,foundDocs.getTitle());
-            }
-            setImageUrlInContents(docsUpdateRequestDto.getContents(),Fileuri);
-        }
 
+        Docs FoundDocs = docsRepository.findById(docsId)
+                        .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+        setImageUrlInContents(docsUpdateRequestDto,imageService.GetFileUrl(files, FoundDocs.getTitle()));
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
 
-        setContribute(docs, userResponseDto);
+        contributeService.setContribute(savedVersionDocs);
 
         return new DocsResponseDto(docs);
     }
-
-
-    @Transactional
-    private void setContribute(Docs docs, UserResponseDto userResponseDto) {
-        User user = SecurityUtil.getCurrentUser().getUser();
-        Contribute contribute = Contribute.builder()
-                .docs(docs)
-                .contributor(user)
-                .createdAt(LocalDateTime.now())
-                .build();
-        userResponseDto.updateContribute(contribute);
-        docs.updateContribute(contribute);
-
-        user.setContributeDocs(userResponseDto.getContributeDocs());
-    }
-
 
 
     @Transactional
@@ -99,30 +72,15 @@ public class DocsUpdateService {
         return docs;
     }
 
-    public UserResponseDto findCurrentUser(){
-        User user = SecurityUtil.getCurrentUser().getUser();
-
-        return new UserResponseDto(user);
-    }
-
-
-    private String upLoadFile(MultipartFile file,String Title) throws IOException {
-        String fileName = storageService.saveFile(file,Title);
-        return "http://10.150.150.56/image/display/"+Title+"/"+fileName;
-    }
-    private ArrayList<String> uploadMultipleFiles(MultipartFile[] files,String Title) throws IOException {
-        ArrayList<String> ImageUrl = null;
-        int i=0;
-        for (MultipartFile file : files){
-            ImageUrl.set(i, upLoadFile(file, Title));
-            i++;
+    /**
+     * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
+     */
+    public void setImageUrlInContents(DocsUpdateRequestDto docsUpdateRequestDto, ArrayList<String> urls){
+        String content = docsUpdateRequestDto.getContents();
+        for (String url : urls) {
+            content = content.replace("[[사진]]",url);
         }
-        return ImageUrl;
-    }
-
-    public void setImageUrlInContents(String contents, ArrayList<String> ImageUrl) {
-        for (String URL : ImageUrl) {
-            contents = contents.replace("[[사진]]", URL);
-        }
+        docsUpdateRequestDto.updateContent(content);
     }
 }
+

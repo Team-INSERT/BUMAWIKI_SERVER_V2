@@ -18,7 +18,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/docs")
+@RequestMapping("/api/docs")
 public class DocsInformationController {
     private final DocsInformationService docsInformationService;
 
@@ -32,7 +32,7 @@ public class DocsInformationController {
         return docsInformationService.findAllAccident();
     }
 
-    @GetMapping("/humanitiesTeacher")
+    @GetMapping("/teacher")
     public List<DocsNameAndEnrollResponseDto> findAllHumanitiesTeacher(){
         return docsInformationService.findAllHumanistTeacher();
     }

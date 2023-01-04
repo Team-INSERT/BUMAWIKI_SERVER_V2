@@ -2,7 +2,6 @@ package com.project.bumawiki.domain.docs.presentation.dto;
 
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 public class DocsCreateRequestDto {
 
     @NotBlank
@@ -28,4 +26,8 @@ public class DocsCreateRequestDto {
     @NotBlank
     private DocsType docsType;
 
+    public DocsCreateRequestDto updateContent(String setContent){
+        this.contents = setContent;
+        return this;
+    }
 }
