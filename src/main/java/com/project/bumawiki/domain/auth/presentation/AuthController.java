@@ -14,7 +14,7 @@ import java.io.IOException;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     private final UserLoginService userLoginService;
     private final UserLogoutService userLogoutService;
