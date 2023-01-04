@@ -60,7 +60,7 @@ public class ImageService {
         int i=0;
         for (MultipartFile file : files){
             String fileName = saveFile(file,DocsName);
-            ImageUrl.add("<<http://bumawiki.kro.kr/image/display/"+DocsName+"/"+fileName+">>");
+            ImageUrl.add("<<http://bumawiki.kro.kr/api/image/display/"+DocsName+"/"+fileName+">>");
             i++;
         }
         return ImageUrl;
