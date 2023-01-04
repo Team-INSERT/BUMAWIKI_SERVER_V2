@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.util.annotation.Nullable;
 
 import java.io.IOException;
 
@@ -24,12 +25,12 @@ public class DocsCreateUpdateController {
     private final DocsUpdateService docsUpdateService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestPart DocsCreateRequestDto request, @RequestPart MultipartFile[] files) throws IOException {
+    public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestPart DocsCreateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {
         return docsCreateService.execute(request, bearer,files);
     }
 
     @PutMapping("/update/{id}")
-    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart MultipartFile[] files) throws IOException {
+    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart(required = false) MultipartFile[] files) throws IOException {
         return docsUpdateService.execute(id, request, files);
     }
 }
