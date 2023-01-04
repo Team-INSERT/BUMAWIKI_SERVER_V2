@@ -30,7 +30,7 @@ auth:
     secret: ${SECRET}
     accessExp: ${ACCESS_EXP}
     refreshExp: ${REFRESH_EXP}
-    prefix: ${PREFIX}
+    prefix: ${PREFIXES}
 
 bsm:
   client-id: ${BSM_CLIENT_ID}
