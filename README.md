@@ -14,7 +14,7 @@
 <div>
 <img src="https://img.shields.io/badge/Spring-green?style=for-the-badge&logo=Spring&logoColor=white"/>
 <img src="https://img.shields.io/badge/mysql-275f85?style=for-the-badge&logo=mysql&logoColor=white"/>
-<img src="https://img.shields.io/badge/kotlin-9a35e7?style=for-the-badge&logo=kotlin&logoColor=white"/>
+<img src="https://img.shields.io/badge/java-blue?style=for-the-badge&logo=Java&logoColor=white"/>
 <img src="https://img.shields.io/badge/React JS-73c4f3?style=for-the-badge&logo=react&logoColor=white"/>
 <img src="https://img.shields.io/badge/TypeScript-4376c1?style=for-the-badge&logo=typescript&logoColor=white"/>
 <img src="https://img.shields.io/badge/Sass-hotpink?style=for-the-badge&logo=sass&logoColor=white"/>
