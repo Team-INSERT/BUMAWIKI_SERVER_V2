@@ -30,7 +30,7 @@ public class DocsCreateUpdateController {
     }
 
     @PutMapping("/update/{id}")
-    public DocsResponseDto updateDocs(@PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart(required = false) MultipartFile[] files) throws IOException {
-        return docsUpdateService.execute(id, request, files);
+    public DocsResponseDto updateDocs(@RequestHeader("Authorization")String bearer, @PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart(required = false) MultipartFile[] files) throws IOException {
+        return docsUpdateService.execute(bearer, id, request, files);
     }
 }

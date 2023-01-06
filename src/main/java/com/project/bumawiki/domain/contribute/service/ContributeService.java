@@ -8,6 +8,7 @@ import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
+import com.project.bumawiki.domain.user.service.UserService;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class ContributeService {
 
     private final DocsRepository docsRepository;
+    private final UserService userService;
 
     @Transactional
     public void setContribute(VersionDocs versionDocs) {
@@ -37,10 +39,17 @@ public class ContributeService {
                 .versionDocs(versionDocs)
                 .createdAt(LocalDateTime.now())
                 .build();
+
         ArrayList<Contribute> contributes = new ArrayList<>();
         contributes.add(contribute);
+
         docs.setContributor(contributes);
         user.setContributeDocs(contributes);
+    }
+
+    @Transactional
+    public void updateContribute(VersionDocs versionDocs){
+
     }
 
 //    @Transactional

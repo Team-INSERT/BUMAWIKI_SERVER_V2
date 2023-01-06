@@ -10,6 +10,7 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.image.service.ImageService;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
+import com.project.bumawiki.domain.user.service.UserService;
 import com.project.bumawiki.global.jwt.config.JwtConstants;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +29,14 @@ import java.util.List;
 public class DocsCreateService {
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
-    private final JwtUtil jwtUtil;
-    private final AuthIdRepository authIdRepository;
     private final ImageService imageService;
     private final ContributeService contributeService;
+    private final UserService userService;
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer, MultipartFile[] files) throws IOException {
 
-        checkIsLoginUser(bearer);
+        userService.checkIsLoginUser(bearer);
         if(files != null ){
             ArrayList<String> FileUrl = imageService.GetFileUrl(files, docsCreateRequestDto.getTitle());
             setImageUrlInContents(docsCreateRequestDto,FileUrl);
@@ -55,12 +55,7 @@ public class DocsCreateService {
     }
 
 
-    public void checkIsLoginUser(String bearer){
-        String authId = jwtUtil.getJwtBody(bearer).get(JwtConstants.AUTH_ID.message).toString();
 
-        authIdRepository.findByAuthId(authId)
-                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
-    }
 
     @Transactional
     private VersionDocs saveVersionDocs(DocsCreateRequestDto docsCreateRequestDto, Long id){

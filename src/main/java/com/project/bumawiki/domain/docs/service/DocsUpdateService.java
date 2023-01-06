@@ -11,6 +11,7 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.image.service.ImageService;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
+import com.project.bumawiki.domain.user.service.UserService;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +30,12 @@ public class DocsUpdateService {
     private final VersionDocsRepository versionDocsRepository;
     private final ContributeService contributeService;
     private final ImageService imageService;
+    private final UserService userService;
 
     @Transactional
-    public DocsResponseDto execute(Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
-        try {
-            SecurityUtil.getCurrentUser().getUser().getAuthority();
-        }catch(Exception e){
-            throw UserNotLoginException.EXCEPTION;
-        }
+    public DocsResponseDto execute(String bearer, Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
+
+        userService.checkIsLoginUser(bearer);
 
         Docs FoundDocs = docsRepository.findById(docsId)
                         .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
