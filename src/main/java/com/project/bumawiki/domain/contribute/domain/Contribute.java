@@ -30,7 +30,7 @@ public class Contribute {
     @JoinColumn(name = "docs_id")
     private Docs docs;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "versionDocs_id")
     private VersionDocs versionDocs;
 }

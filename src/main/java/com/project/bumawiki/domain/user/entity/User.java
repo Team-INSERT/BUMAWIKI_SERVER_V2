@@ -44,7 +44,4 @@ public class User {
         this.contributeDocs = contribute;
     }
 
-    public void updateContributeDocs(Contribute contribute){
-        this.contributeDocs.add(0, contribute);
-    }
 }
