@@ -39,7 +39,9 @@ public class DocsUpdateService {
 
         Docs FoundDocs = docsRepository.findById(docsId)
                         .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
-        setImageUrlInContents(docsUpdateRequestDto,imageService.GetFileUrl(files, FoundDocs.getTitle()));
+        if(files != null) {
+            setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, FoundDocs.getTitle()));
+        }
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());

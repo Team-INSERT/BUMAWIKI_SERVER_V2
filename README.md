@@ -1,6 +1,6 @@
 # 부마위키
 
-#### <a href="https://bsmboo.kro.kr" target="_blank">웹사이트 바로가기 : bumawiki.kro.kr</a>
+#### <a href="http://bumawiki.kro.kr" target="_blank">웹사이트 바로가기 : bumawiki.kro.kr</a>
 #### <a href="https://instagram.com/bssm.forest" target="_blank">인스타그램 바로가기 : @bssm.wiki</a>
 #### <a href="https://github.com/BSSM-BSM" target="_blank">BSM OAuth 바로가기 : github.com/BSSM-BSM</a>
 
