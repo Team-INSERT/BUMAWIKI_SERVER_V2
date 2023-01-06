@@ -32,6 +32,10 @@ public class VersionDocs {
     @CreatedDate
     private LocalDateTime thisVersionCreatedAt;
 
-    @OneToMany(mappedBy = "versionDocs", cascade = CascadeType.ALL)
-    private List<Contribute> contributor = new ArrayList<>();
+    @OneToOne(mappedBy = "versionDocs", cascade = CascadeType.ALL)
+    private Contribute contributor;
+
+    public void updateContributor(Contribute contribute){
+        this.contributor = contribute;
+    }
 }

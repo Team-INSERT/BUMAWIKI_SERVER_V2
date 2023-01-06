@@ -1,6 +1,6 @@
 package com.project.bumawiki.domain.docs.service;
 
-import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
+import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.contribute.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
@@ -9,10 +9,7 @@ import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.image.service.ImageService;
-import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.domain.user.service.UserService;
-import com.project.bumawiki.global.jwt.config.JwtConstants;
-import com.project.bumawiki.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,16 +34,19 @@ public class DocsCreateService {
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer, MultipartFile[] files) throws IOException {
 
         userService.checkIsLoginUser(bearer);
+
         if(files != null ){
             ArrayList<String> FileUrl = imageService.GetFileUrl(files, docsCreateRequestDto.getTitle());
             setImageUrlInContents(docsCreateRequestDto,FileUrl);
         }
 
         Docs docs = createDocs(docsCreateRequestDto);
-        VersionDocs savedDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
-        contributeService.setContribute(savedDocs);
+        VersionDocs savedVersionDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
+        Contribute contribute = contributeService.setContribute(savedVersionDocs);
         List<VersionDocs> versionDocs = new ArrayList<>();
-        versionDocs.add(savedDocs);
+        versionDocs.add(savedVersionDocs);
+
+        savedVersionDocs.updateContributor(contribute);
 
         docs.setVersionDocs(versionDocs);
 

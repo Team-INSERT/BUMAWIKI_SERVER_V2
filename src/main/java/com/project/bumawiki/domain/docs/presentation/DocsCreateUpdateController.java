@@ -21,13 +21,13 @@ import java.io.IOException;
 @RequestMapping("/api/docs")
 public class DocsCreateUpdateController {
 
-    private final DocsCreateService docsCreateService;
     private final DocsUpdateService docsUpdateService;
 
     @PostMapping("/create")
     public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestPart DocsCreateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {
         return docsCreateService.execute(request, bearer,files);
     }
+    private final DocsCreateService docsCreateService;
 
     @PutMapping("/update/{id}")
     public DocsResponseDto updateDocs(@RequestHeader("Authorization")String bearer, @PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart(required = false) MultipartFile[] files) throws IOException {

@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.docs.service;
 
+import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.contribute.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
@@ -46,7 +47,8 @@ public class DocsUpdateService {
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
 
-        contributeService.setContribute(savedVersionDocs);
+        Contribute contribute = contributeService.updateContribute(savedVersionDocs);
+        savedVersionDocs.updateContributor(contribute);
 
         return new DocsResponseDto(docs);
     }

@@ -92,7 +92,7 @@ public class DocsInformationService {
                 .map(VersionDocsResponseDto::new)
                 .collect(Collectors.toList());
 
-        return new  VersionResponseDto(new DocsResponseDto(docs), versionDocs);
+        return new VersionResponseDto(new DocsResponseDto(docs), versionDocs);
     }
 
     public List<DocsResponseDto> showDocsModifiedAtDesc(Pageable pageable){

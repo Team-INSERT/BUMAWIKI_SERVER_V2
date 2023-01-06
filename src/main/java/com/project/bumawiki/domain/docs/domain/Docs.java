@@ -46,20 +46,8 @@ public class Docs {
     public void setVersionDocs(List<VersionDocs> versionDocs){
         this.docsVersion = versionDocs;
     }
-
-    public Docs updateVersionDocs(VersionDocs versionDocs){
-        docsVersion.add(versionDocs);
-        return this;
-    }
-
     public void setContributor(List<Contribute> contributes){
         this.contributor =  contributes;
-    }
-
-    @Transactional
-    public Docs updateContribute(Contribute contribute){
-        this.contributor.add(0, contribute);
-        return this;
     }
 
     public void increaseView(){
