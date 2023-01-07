@@ -88,7 +88,7 @@ public class DocsCreateService {
     public void setImageUrlInContents(DocsCreateRequestDto docsCreateRequestDto,ArrayList<String> urls){
         String content = docsCreateRequestDto.getContents();
         for (String url : urls) {
-            content = content.replace("[[사진]]",url);
+            content = content.replace("<<사진>>",url);
         }
         docsCreateRequestDto.updateContent(content);
     }

@@ -81,7 +81,7 @@ public class DocsUpdateService {
     public void setImageUrlInContents(DocsUpdateRequestDto docsUpdateRequestDto, ArrayList<String> urls){
         String content = docsUpdateRequestDto.getContents();
         for (String url : urls) {
-            content = content.replace("[[사진]]",url);
+            content = content.replace("<<사진>>",url);
         }
         docsUpdateRequestDto.updateContent(content);
     }
