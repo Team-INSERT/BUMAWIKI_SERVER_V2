@@ -34,7 +34,7 @@ public class DocsInformationController {
 
     @GetMapping("/teacher")
     public List<DocsNameAndEnrollResponseDto> findAllHumanitiesTeacher(){
-        return docsInformationService.findAllHumanistTeacher();
+        return docsInformationService.findAllTeacher();
     }
 
     @GetMapping("/majorTeacher")

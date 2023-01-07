@@ -46,7 +46,7 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndEnrollResponseDto> findAllHumanistTeacher(){
+    public List<DocsNameAndEnrollResponseDto> findAllTeacher(){
         List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER);
 
         return allTeacher.stream()
