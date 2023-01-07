@@ -21,7 +21,7 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: create
-    show_sql: true
+    show_sql: false
     format_sql: true
 
 auth:
