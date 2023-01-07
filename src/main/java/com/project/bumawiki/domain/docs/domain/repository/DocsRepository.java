@@ -16,7 +16,7 @@ public interface DocsRepository extends JpaRepository<Docs, Long> {
     @Query("select d from Docs d where d.docsType = :docsType order by d.enroll")
     List<Docs> findByDocsType(DocsType docsType);
 
-    @Query("select d from Docs d where d.title like :title")
+    @Query("select d from Docs d where d.title like CONCAT('%',:title,'%')")
     List<Docs> findByTitle(String title);
 
     Optional<Docs> findById(Long id);
