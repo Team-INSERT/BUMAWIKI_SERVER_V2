@@ -24,12 +24,11 @@ public class AccessTokenRefreshService {
 
     private TokenResponseDto getNewAccessTokens(RefreshToken redisRefreshToken) {
 
-        String newAccessToken = jwtProvider.generateToken(redisRefreshToken.getId(), redisRefreshToken.getRole()).getAccessToken();
+        String newAccessToken = jwtProvider.generateAccessToken(redisRefreshToken.getId(), redisRefreshToken.getRole());
 
         return TokenResponseDto.builder()
                 .accessToken(newAccessToken)
                 .refreshToken(redisRefreshToken.getRefreshToken())
-                .expiredAt(ZonedDateTime.now().plusSeconds(redisRefreshToken.getTtl()))
                 .build();
     }
 }
