@@ -7,7 +7,7 @@ import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
-import com.project.bumawiki.domain.docs.exception.NoUpdatablePostException;
+import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.image.service.ImageService;
@@ -68,7 +68,7 @@ public class DocsUpdateService {
     @Transactional
     private Docs setVersionDocsToDocs(VersionDocs versionDocs){
         Docs docs = docsRepository.findById(versionDocs.getDocsId())
-                .orElseThrow(() -> NoUpdatablePostException.EXCEPTION);
+                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
 
         docs.getDocsVersion().add(versionDocs);
 
