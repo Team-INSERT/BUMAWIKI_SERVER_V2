@@ -39,6 +39,8 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers(POST, "/api/docs/create").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(PUT, "/api/docs/update").hasAnyAuthority("USER")
                 .antMatchers(DELETE,"/api/docs/delete/**").hasAuthority("ADMIN")
                 .antMatchers(PUT,"/api/docs/update/title/**").hasAuthority("ADMIN")
                 .anyRequest().permitAll()
