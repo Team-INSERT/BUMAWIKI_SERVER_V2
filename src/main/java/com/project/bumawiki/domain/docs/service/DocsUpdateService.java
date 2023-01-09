@@ -9,12 +9,11 @@ import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsTitleUpdateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.image.service.ImageService;
-import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.domain.user.service.UserService;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
-import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +48,15 @@ public class DocsUpdateService {
 
         Contribute contribute = contributeService.updateContribute(savedVersionDocs);
         savedVersionDocs.updateContributor(contribute);
+
+        return new DocsResponseDto(docs);
+    }
+
+    public DocsResponseDto titleUpdate(Long docsId, DocsTitleUpdateRequestDto requestDto){
+        Docs docs = docsRepository.findById(docsId)
+                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
+
+        docs.updateTitle(requestDto.getTitle());
 
         return new DocsResponseDto(docs);
     }

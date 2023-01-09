@@ -2,6 +2,7 @@ package com.project.bumawiki.domain.docs.domain;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
+import com.zaxxer.hikari.util.UtilityElf;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,10 @@ public class Docs {
 
     public void setModifiedTime(LocalDateTime lastModifiedAt){
         this.lastModifiedAt = lastModifiedAt;
+    }
+
+    public void updateTitle(String title){
+        this.title = title;
     }
 
 
