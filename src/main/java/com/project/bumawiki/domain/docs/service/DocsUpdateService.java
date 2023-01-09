@@ -6,6 +6,7 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
+import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.CannotChangeYourDocsException;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
@@ -46,7 +47,7 @@ public class DocsUpdateService {
         Docs foundDocs = docsRepository.findById(docsId)
                         .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
-        updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId);
+        updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId, foundDocs.getDocsType());
 
         if(files != null) {
             setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
@@ -61,13 +62,20 @@ public class DocsUpdateService {
         return new DocsResponseDto(docs);
     }
 
-    private void updateDocsOneself(String title, Integer enroll, String authId){
+    private void updateDocsOneself(String title, Integer enroll, String authId, DocsType docsType){
         User user = userRepository.findByEmail(authId)
                 .orElseThrow(() -> UserNotLoginException.EXCEPTION);
 
-        if(title.contains(user.getName()) && enroll.equals(user.getEnroll())){
-            throw CannotChangeYourDocsException.EXCEPTION;
+        if(docsType.equals(DocsType.STUDENT)){
+            if(title.equals(user.getName()) && enroll.equals(user.getEnroll())){
+                throw CannotChangeYourDocsException.EXCEPTION;
+            }
+        } else{
+            if(title.contains(user.getName())){
+                throw CannotChangeYourDocsException.EXCEPTION;
+            }
         }
+
     }
 
 
