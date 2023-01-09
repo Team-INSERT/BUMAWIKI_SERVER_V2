@@ -23,8 +23,11 @@ public class User {
     @Column(unique = true, length = 32)
     private String email;
 
-    @Column(length = 8)
+    @Column(length = 16)
     private String name;
+
+    @Column(length = 8)
+    private Integer enroll;
 
     @Column(length = 16)
     private String nickName;
@@ -38,6 +41,8 @@ public class User {
 
     public User update(BsmResourceResponse resource){
         this.email = resource.getEmail();
+        this.name = resource.getStudent().getName();
+        this.enroll = resource.getStudent().getEnrolledAt();
         this.nickName = resource.getNickname();
         return this;
     }

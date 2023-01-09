@@ -6,12 +6,17 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
+import com.project.bumawiki.domain.docs.exception.CannotChangeYourDocsException;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsTitleUpdateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.image.service.ImageService;
+import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.exception.UserNotFoundException;
+import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.domain.user.service.UserService;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +36,20 @@ public class DocsUpdateService {
     private final ContributeService contributeService;
     private final ImageService imageService;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Transactional
     public DocsResponseDto execute(String bearer, Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
 
-        userService.checkIsLoginUser(bearer);
+        String authId = userService.checkIsLoginUser(bearer);
 
-        Docs FoundDocs = docsRepository.findById(docsId)
+        Docs foundDocs = docsRepository.findById(docsId)
                         .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+
+        updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId);
+
         if(files != null) {
-            setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, FoundDocs.getTitle()));
+            setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
         }
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
@@ -51,6 +60,16 @@ public class DocsUpdateService {
 
         return new DocsResponseDto(docs);
     }
+
+    private void updateDocsOneself(String title, Integer enroll, String authId){
+        User user = userRepository.findByEmail(authId)
+                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
+
+        if(title.contains(user.getName()) && enroll.equals(user.getEnroll())){
+            throw CannotChangeYourDocsException.EXCEPTION;
+        }
+    }
+
 
     public DocsResponseDto titleUpdate(Long docsId, DocsTitleUpdateRequestDto requestDto){
         Docs docs = docsRepository.findById(docsId)

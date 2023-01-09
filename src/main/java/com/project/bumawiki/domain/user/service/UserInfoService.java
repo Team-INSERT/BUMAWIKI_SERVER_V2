@@ -8,9 +8,6 @@ import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @ServiceWithTransactionalReadOnly
 @RequiredArgsConstructor
@@ -18,13 +15,17 @@ public class UserInfoService {
 
     private final UserRepository userRepository;
 
-    public UserResponseDto findUserInfo(){
+    public UserResponseDto findMyInfo(){
         User user1 = SecurityUtil.getCurrentUser().getUser();
         User user = userRepository.findById(user1.getId())
+                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
+
+        return new UserResponseDto(user);
+    }
+    
+    public UserResponseDto findAnotherInfo(Long id){
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-        if(user == null){
-            throw UserNotLoginException.EXCEPTION;
-        }
 
         return new UserResponseDto(user);
     }

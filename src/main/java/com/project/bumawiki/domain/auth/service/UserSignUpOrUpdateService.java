@@ -55,10 +55,12 @@ public class UserSignUpOrUpdateService {
     protected User saveUser(BsmResourceResponse resource) {
         return userRepository.save(
                 User.builder()
-                .email(resource.getEmail())
-                .nickName(resource.getNickname())
-                .authority(Authority.USER)
-                .build()
+                        .email(resource.getEmail())
+                        .nickName(resource.getNickname())
+                        .authority(Authority.USER)
+                        .enroll(resource.getStudent().getEnrolledAt())
+                        .name(resource.getStudent().getName())
+                        .build()
                 );
     }
 }

@@ -10,11 +10,12 @@ import lombok.Getter;
 public enum ErrorCode {
 
     NO_IMAGE(400,"IMG-400-1","NO Image"),
-    NO_UPDATABLE_POST(403, "POST-404-1", "No Post You Want To Update"),
-    DOCS_NOT_FOUND(404, "POST-404-2", "Doesn't Not Found"),
-    POST_TITLE_ALREADY_EXIST(403, "POST-403-1", "Post_Already_Exist"),
+    NO_UPDATABLE_POST(403, "DOCS-404-1", "No Post You Want To Update"),
+    DOCS_NOT_FOUND(404, "DOCS-404-2", "Doesn't Not Found"),
+    POST_TITLE_ALREADY_EXIST(403, "DOCS-403-1", "Post_Already_Exist"),
     FORBIDDEN(403, "COMMON-403-1", "Forbidden"),
     USER_NOT_LOGIN(403,"USER-403-1", "User Not Login"),
+    CANNOT_CHANGE_YOUR_DOCS(403, "DOCS-403-2", "Cannot Change Your Docs"),
     INVALID_TOKEN(403, "TOKEN-403-1", "Access with Invalid Token"),
     EXPIRED_JWT(403, "TOKEN-403-2", "Access Token Expired"),
     REFRESH_TOKEN_EXPIRED(403, "TOKEN-403-3", "Refresh Token Expired"),
