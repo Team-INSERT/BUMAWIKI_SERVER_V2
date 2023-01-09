@@ -23,6 +23,9 @@ public class User {
     @Column(unique = true, length = 32)
     private String email;
 
+    @Column(length = 8)
+    private String name;
+
     @Column(length = 16)
     private String nickName;
 
