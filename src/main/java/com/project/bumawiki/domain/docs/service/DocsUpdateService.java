@@ -79,6 +79,7 @@ public class DocsUpdateService {
     }
 
 
+    @Transactional
     public DocsResponseDto titleUpdate(Long docsId, DocsTitleUpdateRequestDto requestDto){
         Docs docs = docsRepository.findById(docsId)
                 .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
