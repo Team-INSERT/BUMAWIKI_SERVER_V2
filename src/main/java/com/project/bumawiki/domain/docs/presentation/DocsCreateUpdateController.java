@@ -28,9 +28,9 @@ public class DocsCreateUpdateController {
     }
     private final DocsCreateService docsCreateService;
 
-    @PutMapping("/update/{id}")
-    public DocsResponseDto updateDocs(@RequestHeader("Authorization")String bearer, @PathVariable Long id,@RequestPart DocsUpdateRequestDto request,@RequestPart(required = false) MultipartFile[] files) throws IOException {
-        return docsUpdateService.execute(bearer, id, request, files);
+    @PutMapping("/update/{title}")
+    public DocsResponseDto updateDocs(@RequestHeader("Authorization")String bearer, @PathVariable String title,@RequestPart DocsUpdateRequestDto request,@RequestPart(required = false) MultipartFile[] files) throws IOException {
+        return docsUpdateService.execute(bearer, title, request, files);
     }
 
     @PutMapping("/update/title/{id}")

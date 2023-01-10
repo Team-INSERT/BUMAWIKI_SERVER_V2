@@ -40,11 +40,11 @@ public class DocsUpdateService {
     private final UserRepository userRepository;
 
     @Transactional
-    public DocsResponseDto execute(String bearer, Long docsId, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
+    public DocsResponseDto execute(String bearer, String title, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
 
         String authId = userService.checkIsLoginUser(bearer);
 
-        Docs foundDocs = docsRepository.findById(docsId)
+        Docs foundDocs = docsRepository.findByTitle(title)
                         .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
         updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId, foundDocs.getDocsType());
@@ -52,7 +52,7 @@ public class DocsUpdateService {
         if(files != null) {
             setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
         }
-        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, docsId);
+        VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId());
         Docs docs = setVersionDocsToDocs(savedVersionDocs);
         docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
 
