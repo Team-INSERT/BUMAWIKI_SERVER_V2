@@ -37,6 +37,7 @@ public class JwtProvider {
                 .id(authId)
                 .refreshToken(refreshToken)
                 .ttl(jwtProperties.getRefreshExp())
+                .expiredAt(getExpiredTime())
                 .build()
         );
 

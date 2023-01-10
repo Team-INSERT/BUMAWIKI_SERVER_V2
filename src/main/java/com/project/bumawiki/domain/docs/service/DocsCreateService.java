@@ -28,12 +28,9 @@ public class DocsCreateService {
     private final VersionDocsRepository versionDocsRepository;
     private final ImageService imageService;
     private final ContributeService contributeService;
-    private final UserService userService;
 
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer, MultipartFile[] files) throws IOException {
-
-        userService.checkIsLoginUser(bearer);
 
         if(files != null ){
             ArrayList<String> FileUrl = imageService.GetFileUrl(files, docsCreateRequestDto.getTitle());

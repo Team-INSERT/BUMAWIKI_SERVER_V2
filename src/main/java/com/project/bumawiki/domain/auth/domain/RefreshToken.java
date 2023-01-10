@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.Id;
+import java.time.ZonedDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +23,8 @@ public class RefreshToken {
 
     @TimeToLive
     private long ttl;
+
+    private ZonedDateTime expiredAt;
 
     public RefreshToken update(String refreshToken, long ttl) {
         this.refreshToken = refreshToken;

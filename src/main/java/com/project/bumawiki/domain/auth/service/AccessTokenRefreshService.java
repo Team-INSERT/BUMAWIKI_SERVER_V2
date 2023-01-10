@@ -27,6 +27,7 @@ public class AccessTokenRefreshService {
         return TokenResponseDto.builder()
                 .accessToken(newAccessToken)
                 .refreshToken(redisRefreshToken.getRefreshToken())
+                .expiredAt(redisRefreshToken.getExpiredAt())
                 .build();
     }
 }
