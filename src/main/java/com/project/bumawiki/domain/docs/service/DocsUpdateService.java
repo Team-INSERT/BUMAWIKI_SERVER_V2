@@ -80,8 +80,8 @@ public class DocsUpdateService {
 
 
     @Transactional
-    public DocsResponseDto titleUpdate(Long docsId, DocsTitleUpdateRequestDto requestDto){
-        Docs docs = docsRepository.findById(docsId)
+    public DocsResponseDto titleUpdate(String title, DocsTitleUpdateRequestDto requestDto){
+        Docs docs = docsRepository.findByTitle(title)
                 .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
 
         docs.updateTitle(requestDto.getTitle());

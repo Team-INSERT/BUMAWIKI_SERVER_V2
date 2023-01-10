@@ -33,8 +33,8 @@ public class DocsCreateUpdateController {
         return docsUpdateService.execute(bearer, title, request, files);
     }
 
-    @PutMapping("/update/title/{id}")
-    public DocsResponseDto updateDocsTitle(@RequestBody DocsTitleUpdateRequestDto requestDto, @PathVariable Long id) {
-        return docsUpdateService.titleUpdate(id, requestDto);
+    @PutMapping("/update/title/{title}")
+    public DocsResponseDto updateDocsTitle(@RequestBody DocsTitleUpdateRequestDto requestDto, @PathVariable String title) {
+        return docsUpdateService.titleUpdate(title, requestDto);
     }
 }
