@@ -51,19 +51,19 @@ public class DocsInformationController {
 
 
 
-    @GetMapping("/find/title/{title}")
+    @GetMapping("/find/all/title/{title}")
     public List<DocsResponseDto> findByTitle(@PathVariable String title) {
         return docsInformationService.findByTitle(title);
     }
 
-    @GetMapping("/find/id/{id}")
-    public DocsResponseDto findById(@PathVariable Long id){
-        return docsInformationService.findDocs(id);
+    @GetMapping("/find/title/{title}")
+    public DocsResponseDto findById(@PathVariable String title){
+        return docsInformationService.findDocs(title);
     }
 
-    @GetMapping("/find/{id}/version")
-    public VersionResponseDto showDocsVersion(@PathVariable Long id){
-        return docsInformationService.findDocsVersion(id);
+    @GetMapping("/find/{title}/version")
+    public VersionResponseDto showDocsVersion(@PathVariable String title){
+        return docsInformationService.findDocsVersion(title);
     }
 
     @GetMapping("/find/modified")

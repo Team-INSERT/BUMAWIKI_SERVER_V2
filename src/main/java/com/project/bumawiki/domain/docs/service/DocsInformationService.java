@@ -64,7 +64,7 @@ public class DocsInformationService {
 
     @Transactional(readOnly = true)
     public List<DocsResponseDto> findByTitle(String title){
-        List<Docs> docs = docsRepository.findByTitle(title);
+        List<Docs> docs = docsRepository.findAllByTitle(title);
         if(docs.size() == 0){
             throw DocsNotFoundException.EXCEPTION;
         }
@@ -75,16 +75,16 @@ public class DocsInformationService {
     }
 
     @Transactional
-    public DocsResponseDto findDocs(Long id) {
-        Docs docs = docsRepository.findById(id).
+    public DocsResponseDto findDocs(String title) {
+        Docs docs = docsRepository.findByTitle(title).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
         docs.increaseView();
 
         return new DocsResponseDto(docs);
     }
 
-    public VersionResponseDto findDocsVersion(Long id) {
-        Docs docs = docsRepository.findById(id)
+    public VersionResponseDto findDocsVersion(String title) {
+        Docs docs = docsRepository.findByTitle(title)
                 .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
         List<VersionDocsResponseDto> versionDocs = docs.getDocsVersion()
