@@ -38,18 +38,24 @@ public class DocsInformationController {
     }
 
     @GetMapping("/majorTeacher")
-
     public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
         return docsInformationService.findAllMajorTeacher();
     }
 
+    @GetMapping("/mentorTeacher")
+    public List<DocsNameAndEnrollResponseDto> findAllMentorTeacher(){
+        return docsInformationService.findAllMentorTeacher();
+    }
 
     @GetMapping("/club")
     public List<DocsNameAndEnrollResponseDto> findAllClub(){
         return docsInformationService.findAllClub();
     }
 
-
+    @GetMapping("/freeClub")
+    public List<DocsNameAndEnrollResponseDto> findAllFreeClub(){
+        return docsInformationService.findALLFreeClub();
+    }
 
     @GetMapping("/find/all/title/{title}")
     public List<DocsResponseDto> findByTitle(@PathVariable String title) {

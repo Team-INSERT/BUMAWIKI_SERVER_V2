@@ -24,7 +24,7 @@ public class Docs {
     @Column(name = "docs_id")
     private Long id;
 
-    @Column(length = 32)
+    @Column(length = 32, unique = true)
     @NotNull
     private String title;
 

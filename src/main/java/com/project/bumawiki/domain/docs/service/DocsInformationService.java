@@ -38,14 +38,6 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
-        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.MAJOR_TEACHER);
-
-        return allTeacher.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
     public List<DocsNameAndEnrollResponseDto> findAllTeacher(){
         List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER);
 
@@ -54,10 +46,34 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndEnrollResponseDto> findAllClub(){
-        List<Docs> allClub = docsRepository.findByDocsType(DocsType.CLUB);
+    public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
+        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.MAJOR_TEACHER);
 
-        return allClub.stream()
+        return allTeacher.stream()
+                .map(DocsNameAndEnrollResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DocsNameAndEnrollResponseDto> findAllMentorTeacher(){
+        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.MENTOR_TEACHER);
+
+        return allTeacher.stream()
+                .map(DocsNameAndEnrollResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DocsNameAndEnrollResponseDto> findAllClub(){
+        List<Docs> findClub = docsRepository.findByDocsType(DocsType.CLUB);
+
+        return findClub.stream()
+                .map(DocsNameAndEnrollResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DocsNameAndEnrollResponseDto> findALLFreeClub(){
+        List<Docs> findFreeClub = docsRepository.findByDocsType(DocsType.FREE_CLUB);
+
+        return findFreeClub.stream()
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }

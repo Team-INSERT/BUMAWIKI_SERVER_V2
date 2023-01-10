@@ -32,7 +32,7 @@ public class DocsCreateService {
     @Transactional
     public DocsResponseDto execute(DocsCreateRequestDto docsCreateRequestDto, String bearer, MultipartFile[] files) throws IOException {
 
-        if(files != null ){
+        if(files != null){
             ArrayList<String> FileUrl = imageService.GetFileUrl(files, docsCreateRequestDto.getTitle());
             setImageUrlInContents(docsCreateRequestDto,FileUrl);
         }
