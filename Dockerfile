@@ -3,8 +3,8 @@ FROM eclipse-temurin:11-jre-focal
 EXPOSE 8080
 ENV TZ=Asia/Seoul
 
-COPY ./build/libs/ bumawiki-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java","-jar","/bumawiki-0.0.1-SNAPSHOT.jar"]
+COPY ./build/libs/bumawiki-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
 
 
 # docker images
