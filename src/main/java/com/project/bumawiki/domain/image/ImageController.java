@@ -30,7 +30,6 @@ public class ImageController {
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-            System.out.println(contentType);
         } catch (IOException ex) {
         }
         if(contentType == null) {
