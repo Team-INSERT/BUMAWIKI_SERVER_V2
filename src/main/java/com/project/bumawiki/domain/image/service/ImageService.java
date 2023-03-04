@@ -1,12 +1,19 @@
 package com.project.bumawiki.domain.image.service;
 
 import com.project.bumawiki.domain.image.exception.NoImageException;
+import org.imgscalr.Scalr;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -15,13 +22,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 @Service
 public class ImageService {
     private static final String uploadPath = "/home/t/Desktop/image/";
-
-
 
     private static String getRandomStr(){
         int leftLimit = 97; // letter 'a'
@@ -32,6 +38,7 @@ public class ImageService {
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+
         System.out.println("random : " + generatedString);
         return generatedString;
     }
@@ -49,7 +56,15 @@ public class ImageService {
 
         try (InputStream inputStream = file.getInputStream()) {
             Path filePath = uploadPath.resolve(fileName);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            BufferedImage image = ImageIO.read(inputStream);
+
+            if (image.getWidth() <= 500 && image.getHeight() <= 500) {
+                ImageIO.write(image, "webp", filePath.toFile());
+            } else {
+                BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC,(int) (image.getWidth() * 0.5),(int) (image.getHeight() * 0.5), Scalr.OP_ANTIALIAS);
+                ImageIO.write(resizedImage, "webp", filePath.toFile());
+            }
             return fileName;
         } catch (IOException ioe) {
             throw new IOException("Could not save image file: " + fileName, ioe);

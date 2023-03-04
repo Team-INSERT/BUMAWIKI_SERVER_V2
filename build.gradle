@@ -46,6 +46,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0'
 
 	implementation 'com.github.leehj050211:bsm-oauth-java:1.0.0'
+	implementation 'org.imgscalr:imgscalr-lib:4.2'
 
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 }
