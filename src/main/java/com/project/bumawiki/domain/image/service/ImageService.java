@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.image.service;
 
 import com.project.bumawiki.domain.image.exception.NoImageException;
+import io.netty.util.internal.StringUtil;
 import org.imgscalr.Scalr;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -16,22 +17,21 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ImageService {
     private static final String uploadPath = "/home/t/Desktop/image/";
     private final String file_extension = "webp";
-    private final String[] allowed_extension = Arrays.asList("bmp", "gif", "jpg", "jpeg", "png", "wbmp");
+    private final List<String> allowed_extension = Arrays.asList("bmp", "gif", "jpg", "jpeg", "png", "wbmp");
 
     public String saveFile(MultipartFile file, String userName) throws IOException{
         //이미지 크기 제한은 스프링 설정
-        if (file.getSize() <= 0) throw IOException("Image couldn't be empty"); //change proper Exception code
-        if (allowed_extension.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) throw IOException("Not Allowed Format"); //ditto
+        if (file.getSize() <= 0) throw new IOException("Image couldn't be empty"); //change proper Exception code
+        if (allowed_extension.contains( StringUtils.getFilenameExtension(file.getOriginalFilename()))) throw new IOException("Not Allowed Format"); //ditto
         
-        String randomStr = UUID.randomUUID();
+        UUID randomStr = UUID.randomUUID();
+        if (file.getOriginalFilename() == null) throw new IOException("Filename does not exist"); //ditto
         String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
 
 //        Path uploadPath = Paths.get("~/image/"+userName);
@@ -52,6 +52,7 @@ public class ImageService {
 
             BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC,(int) (image.getWidth() * 0.5),(int) (image.getHeight() * 0.5), Scalr.OP_ANTIALIAS);
             ImageIO.write(resizedImage, file_extension, filePath.toFile());
+
             return fileName;
         } catch (IOException ioe) {
             throw new IOException("Could not save image file: " + fileName, ioe);
