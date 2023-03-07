@@ -24,12 +24,13 @@ import java.util.UUID;
 public class ImageService {
     private static final String uploadPath = "/home/t/Desktop/image/";
     private final String file_extension = "webp";
-    private final String[] allowed_extension = {"bmp", "gif", "jpg", "jpeg", "png", "wbmp"};
+    private final String[] allowed_extension = Arrays.asList("bmp", "gif", "jpg", "jpeg", "png", "wbmp");
 
     public String saveFile(MultipartFile file, String userName) throws IOException{
         //이미지 크기 제한은 스프링 설정
         if (file.getSize() <= 0) throw IOException("Image couldn't be empty"); //change proper Exception code
-        if (FilenameUtils.getExtension(file.getOriginalFilename())) throw IOException("Not Allowed Format"); //ditto
+        if (allowed_extension.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) throw IOException("Not Allowed Format"); //ditto
+        
         String randomStr = UUID.randomUUID();
         String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
 
