@@ -13,4 +13,14 @@ public class WebMvcMapping implements WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowedHeaders("*");
     }
+    
+    @Bean
+    public FilterRegistrationBean<XssEscapeServletFilter>  FilterRegistrationBean() {
+        FilterRegistrationBean<XssEscapeServletFilter> filterRegistration = new FilterRegistrationBean<>();
+		//Xss attack disabled
+        filterRegistration.setFilter(new XssEscapeServletFilter());
+		filterRegistration.setOrder(1);
+		filterRegistration.addUrlPatterns("/*");
+		return filterRegistration;
+    }
 }

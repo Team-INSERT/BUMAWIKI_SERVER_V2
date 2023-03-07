@@ -18,28 +18,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class ImageService {
     private static final String uploadPath = "/home/t/Desktop/image/";
-
-    private static String getRandomStr(){
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-
-        System.out.println("random : " + generatedString);
-        return generatedString;
-    }
+    private final String file_extension = "webp";
+    private final String[] allowed_extension = {"bmp", "gif", "jpg", "jpeg", "png", "wbmp"};
 
     public String saveFile(MultipartFile file, String userName) throws IOException{
-
-        String randomStr = getRandomStr();
+        //이미지 크기 제한은 스프링 설정
+        if (file.getSize() <= 0) throw IOException("Image couldn't be empty"); //change proper Exception code
+        if (FilenameUtils.getExtension(file.getOriginalFilename())) throw IOException("Not Allowed Format"); //ditto
+        String randomStr = UUID.randomUUID();
         String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
 
 //        Path uploadPath = Paths.get("~/image/"+userName);
@@ -52,13 +43,14 @@ public class ImageService {
             Path filePath = uploadPath.resolve(fileName);
 
             BufferedImage image = ImageIO.read(inputStream);
-
+            
             if (image.getWidth() <= 500 && image.getHeight() <= 500) {
-                ImageIO.write(image, "webp", filePath.toFile());
-            } else {
-                BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC,(int) (image.getWidth() * 0.5),(int) (image.getHeight() * 0.5), Scalr.OP_ANTIALIAS);
-                ImageIO.write(resizedImage, "webp", filePath.toFile());
+                ImageIO.write(image, file_extension, filePath.toFile());
+                return fileName;
             }
+
+            BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC,(int) (image.getWidth() * 0.5),(int) (image.getHeight() * 0.5), Scalr.OP_ANTIALIAS);
+            ImageIO.write(resizedImage, file_extension, filePath.toFile());
             return fileName;
         } catch (IOException ioe) {
             throw new IOException("Could not save image file: " + fileName, ioe);
