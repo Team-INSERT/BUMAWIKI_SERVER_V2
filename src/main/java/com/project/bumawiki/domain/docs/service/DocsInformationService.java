@@ -78,6 +78,14 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
+    public List<DocsNameAndEnrollResponseDto> findAllFrame(){
+        List<Docs> findFrame = docsRepository.findByDocsType(DocsType.FRAME);
+
+        return findFrame.stream()
+                .map(DocsNameAndEnrollResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
     @Transactional(readOnly = true)
     public List<DocsResponseDto> findByTitle(String title){
         List<Docs> docs = docsRepository.findAllByTitle(title);

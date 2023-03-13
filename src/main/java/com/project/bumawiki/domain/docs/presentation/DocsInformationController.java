@@ -57,6 +57,11 @@ public class DocsInformationController {
         return docsInformationService.findALLFreeClub();
     }
 
+    @GetMapping("/frame")
+    public List<DocsNameAndEnrollResponseDto> findAllFrame(){
+        return docsInformationService.findAllFrame();
+    }
+
     @GetMapping("/find/all/title/{title}")
     public List<DocsResponseDto> findByTitle(@PathVariable String title) {
         return docsInformationService.findByTitle(title);
