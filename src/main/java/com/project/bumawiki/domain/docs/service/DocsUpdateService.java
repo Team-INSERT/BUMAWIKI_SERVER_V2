@@ -67,7 +67,7 @@ public class DocsUpdateService {
                 .orElseThrow(() -> UserNotLoginException.EXCEPTION);
 
         if(docsType.equals(DocsType.STUDENT)){
-            if(title.equals(user.getName()) && enroll.equals(user.getEnroll())){
+            if(title.contains(user.getName()) && enroll.equals(user.getEnroll())){
                 throw CannotChangeYourDocsException.EXCEPTION;
             }
         } else{
