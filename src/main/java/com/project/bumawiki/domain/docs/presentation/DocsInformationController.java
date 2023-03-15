@@ -78,7 +78,12 @@ public class DocsInformationController {
     }
 
     @GetMapping("/find/modified")
-    public List<DocsResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 16) Pageable pageable){
+    public List<DocsResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable){
         return docsInformationService.showDocsModifiedAtDesc(pageable);
+    }
+
+    @GetMapping("/find/modified/all")
+    public List<DocsResponseDto> showDocsModifiedTimeDesc(){
+        return docsInformationService.showDocsModifiedAtDescAll();
     }
 }

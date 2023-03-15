@@ -126,6 +126,10 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
+    public List<DocsResponseDto> showDocsModifiedAtDescAll(){
+        return docsRepository.findByLastModifiedAtAll().stream().map(DocsResponseDto::new).collect(Collectors.toList());
+    }
+
 
 }
 
