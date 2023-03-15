@@ -83,7 +83,7 @@ public class DocsInformationController {
     }
 
     @GetMapping("/find/modified/all")
-    public List<DocsResponseDto> showDocsModifiedTimeDesc(){
+    public List<DocsResponseDto> showDocsModifiedTimeDescAll(){
         return docsInformationService.showDocsModifiedAtDescAll();
     }
 }
