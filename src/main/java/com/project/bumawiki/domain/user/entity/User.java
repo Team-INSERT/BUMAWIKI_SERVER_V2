@@ -4,7 +4,6 @@ import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -45,6 +44,10 @@ public class User {
         this.enroll = resource.getStudent().getEnrolledAt();
         this.nickName = resource.getNickname();
         return this;
+    }
+
+    public void changeUserAuthority(Authority authority){
+        this.authority = authority;
     }
 
 

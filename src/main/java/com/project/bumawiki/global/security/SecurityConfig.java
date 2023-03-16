@@ -1,14 +1,12 @@
 package com.project.bumawiki.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.bumawiki.domain.user.entity.authority.Authority;
 import com.project.bumawiki.global.error.CustomAuthenticationEntryPoint;
 import com.project.bumawiki.global.jwt.auth.JwtAuth;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -43,6 +41,7 @@ public class SecurityConfig {
                 .antMatchers(PUT, "/api/docs/update/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(DELETE,"/api/docs/delete/**").hasAuthority("ADMIN")
                 .antMatchers(PUT,"/api/docs/update/title/**").hasAuthority("ADMIN")
+                .antMatchers(PUT,"/api/set/authority").hasAuthority("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))

@@ -9,13 +9,11 @@ import com.project.bumawiki.global.jwt.config.JwtProperties;
 import com.project.bumawiki.global.jwt.util.JwtProvider;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
 @ServiceWithTransactionalReadOnly
 @RequiredArgsConstructor
-@Transactional
 public class UserLoginService {
     private final UserSignUpOrUpdateService userSignUpORUpdateService;
     private final JwtProvider jwtProvider;
