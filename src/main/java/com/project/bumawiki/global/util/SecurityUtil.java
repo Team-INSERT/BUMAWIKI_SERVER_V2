@@ -2,7 +2,6 @@ package com.project.bumawiki.global.util;
 
 
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
-import com.project.bumawiki.global.error.GlobalExceptionHandler;
 import com.project.bumawiki.global.security.auth.AuthDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 

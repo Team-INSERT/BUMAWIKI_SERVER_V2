@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Objects;
+
 import static com.project.bumawiki.global.jwt.config.JwtConstants.*;
 
 @Component
@@ -28,7 +30,7 @@ public class JwtUtil {
     }
 
     public String parseToken(String bearer){
-        if(bearer != "" && bearer != null){
+        if(!Objects.equals(bearer, "") && bearer != null){
             String token = bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
             checkingIfJwtExpired(token);
             return token;
@@ -55,10 +57,5 @@ public class JwtUtil {
     public Claims getJwtBody(String bearer){
         Jws<Claims> jwt = getJwt(parseToken(bearer));
         return jwt.getBody();
-    }
-
-    public JwsHeader getHeader(String bearer) {
-        Jws<Claims> jwt = getJwt(parseToken(bearer));
-        return jwt.getHeader();
     }
 }

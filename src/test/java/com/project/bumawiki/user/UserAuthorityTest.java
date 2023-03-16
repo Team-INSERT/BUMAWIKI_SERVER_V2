@@ -22,13 +22,11 @@ public class UserAuthorityTest {
     @Mock
     static UserRepository userRepository;
     static User user = User.builder()
-            .id(1L)
             .name("홍길동")
             .email("checkbanworkwell@bssm.hs.kr")
             .authority(Authority.USER)
             .enroll(2022)
             .nickName("홍길동전")
-            .contributeDocs(null)
             .build();
 
 

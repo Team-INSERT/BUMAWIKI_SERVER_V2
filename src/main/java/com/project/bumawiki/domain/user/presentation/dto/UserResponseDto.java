@@ -1,6 +1,6 @@
 package com.project.bumawiki.domain.user.presentation.dto;
 
-import com.project.bumawiki.domain.contribute.dto.ContributeDto;
+import com.project.bumawiki.domain.contribute.dto.ContributeResponseDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class UserResponseDto {
 
     private Authority authority;
 
-    private List<ContributeDto> contributeDocs;
+    private List<ContributeResponseDto> contributeDocs;
 
     public UserResponseDto(User user){
         this.id = user.getId();
@@ -27,7 +27,7 @@ public class UserResponseDto {
         this.authority = user.getAuthority();
         this.contributeDocs = user.getContributeDocs()
                 .stream()
-                .map(ContributeDto::new)
+                .map(ContributeResponseDto::new)
                 .collect(Collectors.toList());
     }
 }

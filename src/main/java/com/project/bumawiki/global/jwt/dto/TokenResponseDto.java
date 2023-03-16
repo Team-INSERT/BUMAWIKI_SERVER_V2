@@ -8,8 +8,8 @@ import java.time.ZonedDateTime;
 
 @Getter
 public class TokenResponseDto {
-    private String accessToken;
-    private String refreshToken;
+    private final String accessToken;
+    private final String refreshToken;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private final ZonedDateTime expiredAt;

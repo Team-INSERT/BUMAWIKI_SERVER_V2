@@ -52,7 +52,7 @@ public class UserSignUpOrUpdateService {
     }
 
     @Transactional
-    protected User saveUser(BsmResourceResponse resource) {
+    protected User saveUser(final BsmResourceResponse resource) {
         return userRepository.save(
                 User.builder()
                         .email(resource.getEmail())

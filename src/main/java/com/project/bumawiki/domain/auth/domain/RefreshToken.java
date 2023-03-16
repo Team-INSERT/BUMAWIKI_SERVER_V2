@@ -26,7 +26,7 @@ public class RefreshToken {
 
     private ZonedDateTime expiredAt;
 
-    public RefreshToken update(String refreshToken, long ttl) {
+    public RefreshToken update(final String refreshToken, final long ttl) {
         this.refreshToken = refreshToken;
         this.ttl = ttl;
         return this;

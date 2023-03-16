@@ -102,6 +102,7 @@ public class DocsInformationService {
     public DocsResponseDto findDocs(String title) {
         Docs docs = docsRepository.findByTitle(title).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+
         docs.increaseView();
 
         return new DocsResponseDto(docs);
@@ -129,8 +130,6 @@ public class DocsInformationService {
     public List<DocsResponseDto> showDocsModifiedAtDescAll(){
         return docsRepository.findByLastModifiedAtAll().stream().map(DocsResponseDto::new).collect(Collectors.toList());
     }
-
-
 }
 
 
