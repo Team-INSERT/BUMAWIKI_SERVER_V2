@@ -6,22 +6,21 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class ContributeDto {
+public class ContributeResponseDto {
 
-    private Long userId;
-    private String userNickName;
-    private Long docsId;
-    private LocalDateTime createTime;
-    private String title;
-    private Long versionDocsId;
+    private final Long userId;
+    private final String userNickName;
+    private final Long docsId;
+    private final LocalDateTime createTime;
+    private final String title;
+    private final Long versionDocsId;
 
-    public ContributeDto(Contribute contribute){
+    public ContributeResponseDto(Contribute contribute){
         this.userId = contribute.getContributor().getId();
         this.userNickName = contribute.getContributor().getNickName();
         this.docsId = contribute.getDocs().getId();
         this.createTime = contribute.getCreatedAt();
         this.title = contribute.getDocs().getTitle();
         this.versionDocsId = contribute.getVersionDocs().getId();
-        int a;
     }
 }

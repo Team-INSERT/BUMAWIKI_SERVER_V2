@@ -1,5 +1,7 @@
 package com.project.bumawiki.domain.docs.presentation;
 
+import com.project.bumawiki.domain.docs.domain.type.DocsType;
+import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
@@ -22,44 +24,13 @@ import java.util.List;
 public class DocsInformationController {
     private final DocsInformationService docsInformationService;
 
-    @GetMapping("/student")
-    public List<DocsNameAndEnrollResponseDto> findAllStudent(){
-        return docsInformationService.findAllStudent();
-    }
+    @GetMapping("/{stringDocsType}")
+    public List<DocsNameAndEnrollResponseDto> findAllStudent(@PathVariable String stringDocsType){
 
-    @GetMapping("/accident")
-    public List<DocsNameAndEnrollResponseDto> findAllAccident(){
-        return docsInformationService.findAllAccident();
-    }
+        DocsType docsType = DocsType.valueOfLabel(stringDocsType);
+        if(docsType == null) throw DocsTypeNotFoundException.EXCEPTION;
 
-    @GetMapping("/teacher")
-    public List<DocsNameAndEnrollResponseDto> findAllTeacher(){
-        return docsInformationService.findAllTeacher();
-    }
-
-    @GetMapping("/majorTeacher")
-    public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
-        return docsInformationService.findAllMajorTeacher();
-    }
-
-    @GetMapping("/mentorTeacher")
-    public List<DocsNameAndEnrollResponseDto> findAllMentorTeacher(){
-        return docsInformationService.findAllMentorTeacher();
-    }
-
-    @GetMapping("/club")
-    public List<DocsNameAndEnrollResponseDto> findAllClub(){
-        return docsInformationService.findAllClub();
-    }
-
-    @GetMapping("/freeClub")
-    public List<DocsNameAndEnrollResponseDto> findAllFreeClub(){
-        return docsInformationService.findALLFreeClub();
-    }
-
-    @GetMapping("/frame")
-    public List<DocsNameAndEnrollResponseDto> findAllFrame(){
-        return docsInformationService.findAllFrame();
+        return docsInformationService.findByDocsType(docsType);
     }
 
     @GetMapping("/find/all/title/{title}")

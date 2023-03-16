@@ -16,7 +16,7 @@ public enum JwtConstants {
     REFRESH_KEY("refresh_token");
 
 
-    public String message;
+    public final String message;
 
 
 }

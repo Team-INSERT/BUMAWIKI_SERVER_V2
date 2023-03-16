@@ -12,8 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -38,6 +36,16 @@ public class User {
     @OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL)
     private List<Contribute> contributeDocs = new ArrayList<>();
 
+    @Builder
+    private User(final String email, final String name, final Integer enroll,
+                   final String nickName, final Authority authority){
+        this.email = email;
+        this.name = name;
+        this.enroll = enroll;
+        this.nickName = nickName;
+        this.authority = authority;
+    }
+
     public User update(BsmResourceResponse resource){
         this.email = resource.getEmail();
         this.name = resource.getStudent().getName();
@@ -50,9 +58,7 @@ public class User {
         this.authority = authority;
     }
 
-
     public void setContributeDocs(List<Contribute> contribute){
         this.contributeDocs = contribute;
     }
-
 }

@@ -10,6 +10,7 @@ import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.CannotChangeYourDocsException;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
+import com.project.bumawiki.domain.docs.facade.DocsFacade;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsTitleUpdateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 @ServiceWithTransactionalReadOnly
 public class DocsUpdateService {
+    private final DocsFacade docsFacade;
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
     private final ContributeService contributeService;
@@ -62,6 +64,30 @@ public class DocsUpdateService {
         return new DocsResponseDto(docs);
     }
 
+    @Transactional
+    public DocsResponseDto titleUpdate(String title, DocsTitleUpdateRequestDto requestDto){
+
+        docsFacade.checkTitleAlreadyExist(requestDto.getTitle());
+
+        Docs docs = docsRepository.findByTitle(title)
+                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
+
+        docs.updateTitle(requestDto.getTitle());
+
+        return new DocsResponseDto(docs);
+    }
+
+    @Transactional
+    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto,Long docsId){
+        return versionDocsRepository.save(
+                VersionDocs.builder()
+                        .docsId(docsId)
+                        .thisVersionCreatedAt(LocalDateTime.now())
+                        .contents(docsUpdateRequestDto.getContents())
+                        .build()
+        );
+    }
+
     private void updateDocsOneself(String title, Integer enroll, String authId, DocsType docsType){
         User user = userRepository.findByEmail(authId)
                 .orElseThrow(() -> UserNotLoginException.EXCEPTION);
@@ -79,27 +105,6 @@ public class DocsUpdateService {
     }
 
 
-    @Transactional
-    public DocsResponseDto titleUpdate(String title, DocsTitleUpdateRequestDto requestDto){
-        Docs docs = docsRepository.findByTitle(title)
-                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
-
-        docs.updateTitle(requestDto.getTitle());
-
-        return new DocsResponseDto(docs);
-    }
-
-
-    @Transactional
-    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto,Long docsId){
-        return versionDocsRepository.save(
-                VersionDocs.builder()
-                        .docsId(docsId)
-                        .thisVersionCreatedAt(LocalDateTime.now())
-                        .contents(docsUpdateRequestDto.getContents())
-                        .build()
-        );
-    }
 
     @Transactional
     private Docs setVersionDocsToDocs(VersionDocs versionDocs){

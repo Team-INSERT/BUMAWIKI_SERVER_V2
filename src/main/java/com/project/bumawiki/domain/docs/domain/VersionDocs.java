@@ -6,10 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Clob;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -19,7 +16,7 @@ import java.util.List;
 public class VersionDocs {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "versionDocs_id")
+    @Column(name = "version_docs_id")
     private Long id;
 
     @NotNull

@@ -9,17 +9,15 @@ import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
-import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
-import com.project.bumawiki.domain.user.service.UserService;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @ServiceWithTransactionalReadOnly
 @RequiredArgsConstructor
@@ -37,6 +35,11 @@ public class ContributeService {
         Docs docs = docsRepository.findById(versionDocs.getDocsId())
                 .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
+        return setContributeAtUserAndDocs(versionDocs, user, docs);
+    }
+
+    @NotNull
+    private Contribute setContributeAtUserAndDocs(VersionDocs versionDocs, User user, Docs docs) {
         Contribute contribute = createContribute(docs, user, versionDocs);
 
         ArrayList<Contribute> contributes = new ArrayList<>();
@@ -44,12 +47,11 @@ public class ContributeService {
 
         setFirstContribute(contributes, user);
         docs.setContributor(contributes);
-
         return contribute;
     }
 
     @Transactional
-    public Contribute updateContribute(VersionDocs versionDocs){
+    public Contribute updateContribute(final VersionDocs versionDocs){
 
         User user = findUser();
 
@@ -70,7 +72,7 @@ public class ContributeService {
     }
 
     @Transactional
-    public void setFirstContribute(List<Contribute> contributes, User user){
+    public void setFirstContribute(final List<Contribute> contributes, final User user){
         user.setContributeDocs(contributes);
     }
 
@@ -95,18 +97,4 @@ public class ContributeService {
         return userRepository.findById(user.getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
-
-//    @Transactional
-//    private void setContribute(Docs docs, UserResponseDto userResponseDto) {
-//        User user = SecurityUtil.getCurrentUser().getUser();
-//        Contribute contribute = Contribute.builder()
-//                .docs(docs)
-//                .contributor(user)
-//                .createdAt(LocalDateTime.now())
-//                .build();
-//        userResponseDto.updateContribute(contribute);
-//        docs.updateContribute(contribute);
-//
-//        user.setContributeDocs(userResponseDto.getContributeDocs());
-//    }
 }

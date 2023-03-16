@@ -6,7 +6,6 @@ import com.project.bumawiki.global.jwt.config.JwtProperties;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,9 +23,8 @@ public class JwtProvider {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public String generateAccessToken(String authId, String role){
-        String accessToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage() ,jwtProperties.getAccessExp());
 
-        return accessToken;
+        return jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage() ,jwtProperties.getAccessExp());
     }
 
     public TokenResponseDto generateToken(String authId, String role){

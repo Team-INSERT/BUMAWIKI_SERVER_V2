@@ -6,6 +6,7 @@ import com.project.bumawiki.domain.user.entity.repository.UserRepository;
 import com.project.bumawiki.domain.user.presentation.dto.UserAuthorityDto;
 import com.project.bumawiki.domain.user.service.UserAuthorityService;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,13 +23,11 @@ public class UserAuthorityTest {
     @Mock
     static UserRepository userRepository;
     static User user = User.builder()
-            .id(1L)
             .name("홍길동")
             .email("checkbanworkwell@bssm.hs.kr")
             .authority(Authority.USER)
             .enroll(2022)
             .nickName("홍길동전")
-            .contributeDocs(null)
             .build();
 
 

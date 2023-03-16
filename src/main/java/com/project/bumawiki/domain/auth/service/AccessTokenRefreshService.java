@@ -14,14 +14,13 @@ public class AccessTokenRefreshService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProvider jwtProvider;
 
-    public TokenResponseDto execute(String bearerRefreshToken) {
+    public TokenResponseDto execute(final String bearerRefreshToken) {
         RefreshToken redisRefreshToken = refreshTokenRepository.findByRefreshToken(bearerRefreshToken)
                 .orElseThrow(() -> RefreshTokenExpiredException.EXCEPTION);
         return getNewAccessTokens(redisRefreshToken);
     }
 
-    private TokenResponseDto getNewAccessTokens(RefreshToken redisRefreshToken) {
-
+    private TokenResponseDto getNewAccessTokens(final RefreshToken redisRefreshToken) {
         String newAccessToken = jwtProvider.generateAccessToken(redisRefreshToken.getId(), redisRefreshToken.getRole());
 
         return TokenResponseDto.builder()

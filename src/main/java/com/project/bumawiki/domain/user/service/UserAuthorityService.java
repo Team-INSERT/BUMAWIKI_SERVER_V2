@@ -18,15 +18,16 @@ import java.util.Optional;
 public class UserAuthorityService {
     private final UserRepository userRepository;
 
-    public Authority execute(UserAuthorityDto userAuthorityDto) {
+    public Authority execute(final UserAuthorityDto userAuthorityDto) {
         Optional<User> userFindByEmail = userRepository.findByEmail(userAuthorityDto.getEmail());
 
-        if(!userFindByEmail.isPresent()){
+        if(userFindByEmail.isEmpty()){
             throw UserNotFoundException.EXCEPTION;
         }
 
         User user = userFindByEmail.get();
         user.changeUserAuthority(userAuthorityDto.getAuthority());
+
         return user.getAuthority();
     }
 }

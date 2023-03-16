@@ -23,8 +23,8 @@ public class DocsCreateUpdateController {
     private final DocsUpdateService docsUpdateService;
 
     @PostMapping("/create")
-    public DocsResponseDto createDocs(@RequestHeader("Authorization")String bearer, @RequestPart DocsCreateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {
-        return docsCreateService.execute(request, bearer,files);
+    public DocsResponseDto createDocs(@RequestPart DocsCreateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {
+        return docsCreateService.execute(request,files);
     }
     private final DocsCreateService docsCreateService;
 
