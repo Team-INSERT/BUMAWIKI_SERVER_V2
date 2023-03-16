@@ -10,8 +10,9 @@ import lombok.Getter;
 public enum ErrorCode {
 
     NO_IMAGE(400,"IMG-400-1","NO Image"),
-    NO_UPDATABLE_POST(403, "DOCS-404-1", "No Post You Want To Update"),
-    DOCS_NOT_FOUND(404, "DOCS-404-2", "Doesn't Not Found"),
+    DOCS_NOT_FOUND(404, "DOCS-404-2", "Docs Not Found"),
+    DOCS_TYPE_NOT_FOUND(404, "DOCS-404-3", "Docs Type Not Found"),
+    NO_UPDATABLE_POST(403, "DOCS-403-1", "No Post You Want To Update"),
     POST_TITLE_ALREADY_EXIST(403, "DOCS-403-1", "Post_Already_Exist"),
     FORBIDDEN(403, "COMMON-403-1", "Forbidden"),
     USER_NOT_LOGIN(403,"USER-403-1", "User Not Login"),
