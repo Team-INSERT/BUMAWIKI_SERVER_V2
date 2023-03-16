@@ -22,66 +22,10 @@ import java.util.stream.Collectors;
 public class DocsInformationService {
     private final DocsRepository docsRepository;
 
-    public List<DocsNameAndEnrollResponseDto> findAllStudent(){
-        List<Docs> allStudent = docsRepository.findByDocsType(DocsType.STUDENT);
+    public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType){
+        List<Docs> allStudent = docsRepository.findByDocsType(docsType);
 
         return allStudent.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndEnrollResponseDto> findAllAccident(){
-        List<Docs> allAccident = docsRepository.findByDocsType(DocsType.ACCIDENT);
-
-        return allAccident.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndEnrollResponseDto> findAllTeacher(){
-        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.TEACHER);
-
-        return allTeacher.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndEnrollResponseDto> findAllMajorTeacher(){
-        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.MAJOR_TEACHER);
-
-        return allTeacher.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndEnrollResponseDto> findAllMentorTeacher(){
-        List<Docs> allTeacher = docsRepository.findByDocsType(DocsType.MENTOR_TEACHER);
-
-        return allTeacher.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndEnrollResponseDto> findAllClub(){
-        List<Docs> findClub = docsRepository.findByDocsType(DocsType.CLUB);
-
-        return findClub.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndEnrollResponseDto> findALLFreeClub(){
-        List<Docs> findFreeClub = docsRepository.findByDocsType(DocsType.FREE_CLUB);
-
-        return findFreeClub.stream()
-                .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndEnrollResponseDto> findAllFrame(){
-        List<Docs> findFrame = docsRepository.findByDocsType(DocsType.FRAME);
-
-        return findFrame.stream()
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
