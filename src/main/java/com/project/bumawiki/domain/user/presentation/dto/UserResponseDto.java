@@ -1,10 +1,13 @@
 package com.project.bumawiki.domain.user.presentation.dto;
 
+import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.contribute.dto.ContributeResponseDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +28,17 @@ public class UserResponseDto {
         this.email = user.getEmail();
         this.nickName = user.getNickName();
         this.authority = user.getAuthority();
-        this.contributeDocs = user.getContributeDocs()
-                .stream()
-                .map(ContributeResponseDto::new)
-                .collect(Collectors.toList());
+        List<Contribute> contributeDocs = getContributeReversed(user);
+        this.contributeDocs = contributeDocs
+                        .stream()
+                        .map(ContributeResponseDto::new)
+                        .collect(Collectors.toList());
+    }
+
+    @NotNull
+    private static List<Contribute> getContributeReversed(User user) {
+        List<Contribute> contributeDocs = user.getContributeDocs();
+        Collections.reverse(contributeDocs);
+        return contributeDocs;
     }
 }
