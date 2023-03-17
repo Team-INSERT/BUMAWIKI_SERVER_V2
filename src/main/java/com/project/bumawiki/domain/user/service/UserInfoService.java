@@ -27,6 +27,7 @@ public class UserInfoService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
+
         return new UserResponseDto(user);
     }
 }
