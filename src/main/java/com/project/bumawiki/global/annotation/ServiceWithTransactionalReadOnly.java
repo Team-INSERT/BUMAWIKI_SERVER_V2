@@ -11,7 +11,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target(TYPE)
 @Retention(RUNTIME)
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 @Service
 public @interface ServiceWithTransactionalReadOnly {
+
 }
