@@ -104,6 +104,15 @@ public class DocsUpdateService {
 
     }
 
+    @Transactional
+    public DocsResponseDto DocsTypeUpdate(String title, DocsType docsType){
+        Docs docs = docsRepository.findByTitle(title)
+                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
+
+        docs.updateDocsType(docsType);
+        return new DocsResponseDto(docs);
+    }
+
 
 
     @Transactional

@@ -1,10 +1,9 @@
 package com.project.bumawiki.domain.docs.presentation;
 
 
-import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsTitleUpdateRequestDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
+import com.project.bumawiki.domain.docs.domain.type.DocsType;
+import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
+import com.project.bumawiki.domain.docs.presentation.dto.*;
 import com.project.bumawiki.domain.docs.service.DocsCreateService;
 import com.project.bumawiki.domain.docs.service.DocsUpdateService;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +35,13 @@ public class DocsCreateUpdateController {
     @PutMapping("/update/title/{title}")
     public DocsResponseDto updateDocsTitle(@RequestBody DocsTitleUpdateRequestDto requestDto, @PathVariable String title) {
         return docsUpdateService.titleUpdate(title, requestDto);
+    }
+
+    @PutMapping("/update/docsType")
+    public DocsResponseDto findAllStudent(@RequestBody DocsTypeUpdateDto requestDto){
+        DocsType docsType = DocsType.valueOfLabel(requestDto.getDocsType());
+        if(docsType == null) throw DocsTypeNotFoundException.EXCEPTION;
+
+        return docsUpdateService.DocsTypeUpdate(requestDto.getTitle(),docsType);
     }
 }
