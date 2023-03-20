@@ -9,8 +9,8 @@ import javax.validation.constraints.NotBlank;
 public class DocsTypeUpdateDto {
 
     @NotBlank
-    String title;
+    Long id;
     @NotBlank
-    String docsType;
+    DocsType docsType;
 
 }

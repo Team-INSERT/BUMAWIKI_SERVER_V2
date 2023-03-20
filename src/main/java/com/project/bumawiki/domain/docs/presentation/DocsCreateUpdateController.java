@@ -39,9 +39,6 @@ public class DocsCreateUpdateController {
 
     @PutMapping("/update/docsType")
     public DocsResponseDto findAllStudent(@RequestBody DocsTypeUpdateDto requestDto){
-        DocsType docsType = DocsType.valueOfLabel(requestDto.getDocsType());
-        if(docsType == null) throw DocsTypeNotFoundException.EXCEPTION;
-
-        return docsUpdateService.DocsTypeUpdate(requestDto.getTitle(),docsType);
+        return docsUpdateService.DocsTypeUpdate(requestDto);
     }
 }

@@ -19,7 +19,7 @@ public enum DocsType {
     FREE_CLUB("free_club"),
     FRAME("frame"),
     NOTICE("notice"),
-    ReadOnly("readonly");
+    READONLY("readonly");
 
     private final String name;
 
