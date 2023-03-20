@@ -69,11 +69,17 @@ public class DocsInformationService {
     }
 
     public List<DocsResponseDto> showDocsModifiedAtDescAll(){
-        return docsRepository.findByLastModifiedAtAll().stream().map(DocsResponseDto::new).collect(Collectors.toList());
+        return docsRepository.findByLastModifiedAtAll()
+                .stream()
+                .map(DocsResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     public List<DocsNameAndViewResponseDto> showDocsPopular(){
-        return docsRepository.findByView().stream().map(DocsNameAndViewResponseDto::new).collect(Collectors.toList());
+        return docsRepository.findByView()
+                .stream()
+                .map(DocsNameAndViewResponseDto::new)
+                .collect(Collectors.toList());
     }
 
 }

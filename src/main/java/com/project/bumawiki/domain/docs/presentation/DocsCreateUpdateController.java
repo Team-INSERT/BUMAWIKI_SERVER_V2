@@ -38,7 +38,7 @@ public class DocsCreateUpdateController {
     }
 
     @PutMapping("/update/docsType")
-    public DocsResponseDto findAllStudent(@RequestBody DocsTypeUpdateDto requestDto){
+    public DocsResponseDto updateDocsType(@RequestBody DocsTypeUpdateDto requestDto){
         return docsUpdateService.DocsTypeUpdate(requestDto);
     }
 }
