@@ -3,6 +3,7 @@ package com.project.bumawiki.domain.docs.presentation;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndViewResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
@@ -58,7 +59,7 @@ public class DocsInformationController {
         return docsInformationService.showDocsModifiedAtDescAll();
     }
     @GetMapping("/find/popular")
-    public List<DocsResponseDto> showPopularDocs(){
+    public List<DocsNameAndViewResponseDto> showPopularDocs(){
         return docsInformationService.showDocsPopular();
     }
 }
