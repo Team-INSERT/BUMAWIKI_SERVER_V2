@@ -74,6 +74,11 @@ public class DocsInformationService {
     public List<DocsResponseDto> showDocsModifiedAtDescAll(){
         return docsRepository.findByLastModifiedAtAll().stream().map(DocsResponseDto::new).collect(Collectors.toList());
     }
+
+    public List<DocsResponseDto> showDocsPopular(){
+        return docsRepository.findByView().stream().map(DocsResponseDto::new).collect(Collectors.toList());
+    }
+
 }
 
 

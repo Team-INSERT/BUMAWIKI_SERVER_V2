@@ -57,4 +57,8 @@ public class DocsInformationController {
     public List<DocsResponseDto> showDocsModifiedTimeDescAll(){
         return docsInformationService.showDocsModifiedAtDescAll();
     }
+    @GetMapping("/find/popular")
+    public List<DocsResponseDto> showPopularDocs(){
+        return docsInformationService.showDocsPopular();
+    }
 }
