@@ -27,4 +27,7 @@ public interface DocsRepository extends JpaRepository<Docs, Long> {
 
     @Query("select d from Docs d order by d.lastModifiedAt desc")
     List<Docs> findByLastModifiedAtAll();
+
+    @Query("select d from Docs d where d.docsType != 'FRAME' order by d.view desc")
+    List<Docs> findByView();
 }

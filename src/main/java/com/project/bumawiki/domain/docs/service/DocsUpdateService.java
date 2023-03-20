@@ -13,6 +13,7 @@ import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsTitleUpdateRequestDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsTypeUpdateDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsUpdateRequestDto;
 import com.project.bumawiki.domain.image.service.ImageService;
 import com.project.bumawiki.domain.user.entity.User;
@@ -102,6 +103,15 @@ public class DocsUpdateService {
             }
         }
 
+    }
+
+    @Transactional
+    public DocsResponseDto DocsTypeUpdate(final DocsTypeUpdateDto docsTypeUpdateDto){
+        Docs docs = docsRepository.findById(docsTypeUpdateDto.getId())
+                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
+
+        docs.updateDocsType(docsTypeUpdateDto.getDocsType());
+        return new DocsResponseDto(docs);
     }
 
 

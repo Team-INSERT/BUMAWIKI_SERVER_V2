@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .antMatchers(PUT, "/api/docs/update/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(DELETE,"/api/docs/delete/**").hasAuthority("ADMIN")
                 .antMatchers(PUT,"/api/docs/update/title/**").hasAuthority("ADMIN")
+                .antMatchers(PUT, "/api/docs/update/docsType").hasAuthority("ADMIN")
                 .antMatchers(PUT,"/api/set/authority").hasAuthority("ADMIN")
                 .anyRequest().permitAll()
                 .and()

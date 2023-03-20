@@ -48,7 +48,9 @@ public class Docs {
     @OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
     private List<Contribute> contributor = new ArrayList<>();
 
-
+    public void updateDocsType(DocsType docsType) {
+        this.docsType = docsType;
+    }
     public void setVersionDocs(List<VersionDocs> versionDocs){
         this.docsVersion = versionDocs;
     }
