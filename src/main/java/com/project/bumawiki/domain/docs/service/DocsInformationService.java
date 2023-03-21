@@ -61,17 +61,17 @@ public class DocsInformationService {
         return new VersionResponseDto(new DocsResponseDto(docs), versionDocs);
     }
 
-    public List<DocsResponseDto> showDocsModifiedAtDesc(Pageable pageable){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable){
         return docsRepository.findByLastModifiedAt(pageable)
                 .stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<DocsResponseDto> showDocsModifiedAtDescAll(){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDescAll(){
         return docsRepository.findByLastModifiedAtAll()
                 .stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
