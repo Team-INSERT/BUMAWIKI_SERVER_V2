@@ -15,6 +15,7 @@ public class AccessTokenRefreshService {
     private final JwtProvider jwtProvider;
 
     public TokenResponseDto execute(final String bearerRefreshToken) {
+        if(bearerRefreshToken == null) throw RefreshTokenExpiredException.EXCEPTION;
         RefreshToken redisRefreshToken = refreshTokenRepository.findByRefreshToken(bearerRefreshToken)
                 .orElseThrow(() -> RefreshTokenExpiredException.EXCEPTION);
         return getNewAccessTokens(redisRefreshToken);
