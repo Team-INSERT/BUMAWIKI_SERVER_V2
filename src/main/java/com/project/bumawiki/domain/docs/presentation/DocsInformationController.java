@@ -26,7 +26,7 @@ public class DocsInformationController {
     private final DocsInformationService docsInformationService;
 
     @GetMapping("/{stringDocsType}")
-    public List<DocsNameAndEnrollResponseDto> findAllStudent(@PathVariable String stringDocsType){
+    public List<DocsNameAndEnrollResponseDto> findAllByDocsType(@PathVariable String stringDocsType){
 
         DocsType docsType = DocsType.valueOfLabel(stringDocsType);
         if(docsType == null) throw DocsTypeNotFoundException.EXCEPTION;
@@ -50,12 +50,12 @@ public class DocsInformationController {
     }
 
     @GetMapping("/find/modified")
-    public List<DocsResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable){
         return docsInformationService.showDocsModifiedAtDesc(pageable);
     }
 
     @GetMapping("/find/modified/all")
-    public List<DocsResponseDto> showDocsModifiedTimeDescAll(){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDescAll(){
         return docsInformationService.showDocsModifiedAtDescAll();
     }
     @GetMapping("/find/popular")
