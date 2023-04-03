@@ -51,7 +51,7 @@ public class DocsUpdateService {
                         .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
         updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId, foundDocs.getDocsType());
-
+        updateReadOnlyDocs(authId,foundDocs.getDocsType());
         if(files != null) {
             setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
         }
@@ -103,6 +103,13 @@ public class DocsUpdateService {
             }
         }
 
+    }
+
+    private void updateReadOnlyDocs(String authId, DocsType docsType){
+        User user = userRepository.findByEmail(authId)
+                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
+
+        if(docsType.equals(DocsType.READONLY)) throw NoUpdatableDocsException.EXCEPTION;
     }
 
     @Transactional
