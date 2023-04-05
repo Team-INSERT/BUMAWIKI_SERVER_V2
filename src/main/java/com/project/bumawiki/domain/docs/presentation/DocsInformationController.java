@@ -2,10 +2,7 @@ package com.project.bumawiki.domain.docs.presentation;
 
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndViewResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.*;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +49,12 @@ public class DocsInformationController {
     @GetMapping("/find/modified")
     public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable){
         return docsInformationService.showDocsModifiedAtDesc(pageable);
+    }
+
+    @GetMapping("/find/version/{title}/different/{version}")
+    public VersionDocsDiffResponseDto showVersionDocsDiff(@PathVariable String title, @PathVariable int version) {
+
+        return docsInformationService.showVersionDocsDiff(title,version);
     }
 
     @GetMapping("/find/modified/all")

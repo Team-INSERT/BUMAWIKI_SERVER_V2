@@ -9,7 +9,9 @@ import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.bitbucket.cowwoc.diffmatchpatch.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,6 +83,21 @@ public class DocsInformationService {
                 .map(DocsNameAndViewResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    public VersionDocsDiffResponseDto showVersionDocsDiff(String title, int version){
+        VersionResponseDto versionDocs = findDocsVersion(title);
+
+        String baseDocs = versionDocs.docsResponseDto.getContents();
+
+        String versionedDocs = versionDocs.versionDocsResponseDto.get(version).getContents();
+
+        DiffMatchPatch dmp = new DiffMatchPatch();
+        LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
+        dmp.diffCleanupSemantic(diff);
+
+        return new VersionDocsDiffResponseDto(diff);
+    }
+
 
 }
 
