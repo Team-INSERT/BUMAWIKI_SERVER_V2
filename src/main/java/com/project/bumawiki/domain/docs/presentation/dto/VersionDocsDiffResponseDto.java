@@ -1,16 +1,15 @@
 package com.project.bumawiki.domain.docs.presentation.dto;
 
 import lombok.Getter;
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
-
-import java.util.LinkedList;
+import java.util.ArrayList;
+import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 
 @Getter
 public class VersionDocsDiffResponseDto {
 
-    LinkedList<DiffMatchPatch.Diff> diff;
+    ArrayList<Diff> diff;
 
-    public VersionDocsDiffResponseDto(LinkedList<DiffMatchPatch.Diff> diff) {
+    public VersionDocsDiffResponseDto(ArrayList<Diff> diff) {
         this.diff = diff;
     }
 }
