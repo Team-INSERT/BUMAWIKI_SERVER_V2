@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import org.bitbucket.cowwoc.diffmatchpatch.*;
+import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -100,7 +100,7 @@ public class DocsInformationService {
             }
 
             DiffMatchPatch dmp = new DiffMatchPatch();
-            LinkedList<DiffMatchPatch.Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
+            LinkedList<Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
             dmp.diffCleanupSemantic(diff);
 
             return new VersionDocsDiffResponseDto(new ArrayList<>(diff));
