@@ -87,7 +87,7 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-    public VersionDocsDiffResponseDto showVersionDocsDiff(String title, int version) {
+    public VersionDocsDiffResponseDto showVersionDocsDiff(String title, Long version) {
         Docs docs = docsRepository.findByTitle(title).orElseThrow(
                 () -> DocsNotFoundException.EXCEPTION
         );
