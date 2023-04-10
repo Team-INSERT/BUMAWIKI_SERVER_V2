@@ -95,9 +95,9 @@ public class DocsInformationService {
         String versionedDocs;
         try {
             List<VersionDocs> versionDocs = docs.getDocsVersion();
-            versionedDocs = versionDocs.get(version).getContents();
+            versionedDocs = versionDocs.get(version.intValue()).getContents();
             if (version > 0) {
-                baseDocs = versionDocs.get(version - 1).getContents();
+                baseDocs = versionDocs.get((int) (version - 1)).getContents();
             }
         } catch (IndexOutOfBoundsException e) {
             throw VersionNotExistException.EXCEPTION;
