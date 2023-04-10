@@ -7,7 +7,7 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 @Getter
 public class VersionDocsDiffResponseDto {
 
-    ArrayList<Diff> diff;
+    private ArrayList<Diff> diff;
 
     public VersionDocsDiffResponseDto(ArrayList<Diff> diff) {
         this.diff = diff;

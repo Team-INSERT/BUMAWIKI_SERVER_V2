@@ -91,23 +91,25 @@ public class DocsInformationService {
         Docs docs = docsRepository.findByTitle(title).orElseThrow(
                 () -> DocsNotFoundException.EXCEPTION
         );
+        String baseDocs = "";
+        String versionedDocs;
         try {
-            String baseDocs = "";
             List<VersionDocs> versionDocs = docs.getDocsVersion();
-            String versionedDocs = versionDocs.get(version).getContents();
+            versionedDocs = versionDocs.get(version).getContents();
             if (version > 0) {
                 baseDocs = versionDocs.get(version - 1).getContents();
             }
-
-            DiffMatchPatch dmp = new DiffMatchPatch();
-            LinkedList<Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
-            dmp.diffCleanupSemantic(diff);
-
-            return new VersionDocsDiffResponseDto(new ArrayList<>(diff));
         } catch (IndexOutOfBoundsException e) {
             throw VersionNotExistException.EXCEPTION;
         }
+
+        DiffMatchPatch dmp = new DiffMatchPatch();
+        LinkedList<Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
+        dmp.diffCleanupSemantic(diff);
+
+        return new VersionDocsDiffResponseDto(new ArrayList<>(diff));
     }
+
 }
 
 

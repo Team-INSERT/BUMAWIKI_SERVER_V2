@@ -53,7 +53,6 @@ public class DocsInformationController {
 
     @GetMapping("/find/version/{title}/different/{version}")
     public VersionDocsDiffResponseDto showVersionDocsDiff(@PathVariable String title, @PathVariable int version) {
-
         return docsInformationService.showVersionDocsDiff(title,version);
     }
 
