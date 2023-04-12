@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,8 @@ public class DocsInformationService {
                 .stream()
                 .map(VersionDocsResponseDto::new)
                 .collect(Collectors.toList());
+
+        Collections.reverse(versionDocs);
 
         return new VersionResponseDto(new DocsResponseDto(docs), versionDocs);
     }
