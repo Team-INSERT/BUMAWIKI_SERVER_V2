@@ -3,9 +3,8 @@ package com.project.bumawiki.domain.docs.presentation;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndViewResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +25,10 @@ public class DocsInformationController {
     private final DocsInformationService docsInformationService;
 
     @GetMapping("/{stringDocsType}")
-    public List<DocsNameAndEnrollResponseDto> findAllByDocsType(@PathVariable String stringDocsType){
+    public List<DocsNameAndEnrollResponseDto> findAllByDocsType(@PathVariable String stringDocsType) {
 
         DocsType docsType = DocsType.valueOfLabel(stringDocsType);
-        if(docsType == null) throw DocsTypeNotFoundException.EXCEPTION;
+        if (docsType == null) throw DocsTypeNotFoundException.EXCEPTION;
 
         return docsInformationService.findByDocsType(docsType);
     }
@@ -40,26 +39,22 @@ public class DocsInformationController {
     }
 
     @GetMapping("/find/title/{title}")
-    public DocsResponseDto findById(@PathVariable String title){
+    public DocsResponseDto findById(@PathVariable String title) {
         return docsInformationService.findDocs(title);
     }
 
     @GetMapping("/find/{title}/version")
-    public VersionResponseDto showDocsVersion(@PathVariable String title){
+    public VersionResponseDto showDocsVersion(@PathVariable String title) {
         return docsInformationService.findDocsVersion(title);
     }
 
     @GetMapping("/find/modified")
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable) {
         return docsInformationService.showDocsModifiedAtDesc(pageable);
     }
 
     @GetMapping("/find/modified/all")
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDescAll(){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDescAll() {
         return docsInformationService.showDocsModifiedAtDescAll();
-    }
-    @GetMapping("/find/popular")
-    public List<DocsNameAndViewResponseDto> showPopularDocs(){
-        return docsInformationService.showDocsPopular();
     }
 }

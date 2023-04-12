@@ -4,7 +4,10 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
-import com.project.bumawiki.domain.docs.presentation.dto.*;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 public class DocsInformationService {
     private final DocsRepository docsRepository;
 
-    public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType){
+    public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType) {
         List<Docs> allStudent = docsRepository.findByDocsType(docsType);
 
         return allStudent.stream()
@@ -28,9 +31,9 @@ public class DocsInformationService {
     }
 
     @Transactional(readOnly = true)
-    public List<DocsResponseDto> findByTitle(String title){
+    public List<DocsResponseDto> findByTitle(String title) {
         List<Docs> docs = docsRepository.findAllByTitle(title);
-        if(docs.size() == 0){
+        if (docs.size() == 0) {
             throw DocsNotFoundException.EXCEPTION;
         }
 
@@ -43,8 +46,6 @@ public class DocsInformationService {
     public DocsResponseDto findDocs(String title) {
         Docs docs = docsRepository.findByTitle(title).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
-
-        docs.increaseView();
 
         return new DocsResponseDto(docs);
     }
@@ -61,27 +62,19 @@ public class DocsInformationService {
         return new VersionResponseDto(new DocsResponseDto(docs), versionDocs);
     }
 
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable) {
         return docsRepository.findByLastModifiedAt(pageable)
                 .stream()
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDescAll(){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDescAll() {
         return docsRepository.findByLastModifiedAtAll()
                 .stream()
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
-
-    public List<DocsNameAndViewResponseDto> showDocsPopular(){
-        return docsRepository.findByView()
-                .stream()
-                .map(DocsNameAndViewResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
 }
 
 

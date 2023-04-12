@@ -30,9 +30,9 @@ public class DocsResponseDto {
         this.lastModifiedAt = docs.getLastModifiedAt();
         this.docsType = docs.getDocsType();
         this.enroll = docs.getEnroll();
-        this.view = docs.getView();
     }
-    public DocsResponseDto updateContent(String setContent){
+
+    public DocsResponseDto updateContent(String setContent) {
         this.contents = setContent;
         return this;
     }
