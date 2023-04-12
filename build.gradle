@@ -49,6 +49,8 @@ dependencies {
 	implementation 'com.github.leehj050211:bsm-oauth-java:1.0.0'
 
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+
+	implementation 'org.bitbucket.cowwoc:diff-match-patch:1.2'
 }
 
 tasks.named('test') {

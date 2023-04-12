@@ -19,6 +19,8 @@ public class UserResponseDto {
 
     private String nickName;
 
+    private String name;
+
     private Authority authority;
 
     private List<ContributeResponseDto> contributeDocs;
@@ -28,6 +30,7 @@ public class UserResponseDto {
         this.email = user.getEmail();
         this.nickName = user.getNickName();
         this.authority = user.getAuthority();
+        this.name = user.getName();
         List<Contribute> contributeDocs = getContributeReversed(user);
         this.contributeDocs = contributeDocs
                         .stream()

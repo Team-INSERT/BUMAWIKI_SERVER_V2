@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
-
+    VERSION_NOT_EXIST(400,"DOCS-400-1","Version Not Exist"),
     NO_IMAGE(400,"IMG-400-1","NO Image"),
     DOCS_NOT_FOUND(404, "DOCS-404-2", "Docs Not Found"),
     DOCS_TYPE_NOT_FOUND(404, "DOCS-404-3", "Docs Type Not Found"),
