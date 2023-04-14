@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Contribute {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +33,4 @@ public class Contribute {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "version_docs_id")
     private VersionDocs versionDocs;
-
-    @Builder
-    private Contribute(final LocalDateTime createdAt, final User contributor,
-                       final Docs docs, final VersionDocs versionDocs){
-        this.createdAt = createdAt;
-        this.contributor = contributor;
-        this.docs = docs;
-        this.versionDocs = versionDocs;
-    }
 }
