@@ -10,6 +10,8 @@ import lombok.Getter;
 public enum ErrorCode {
 
     NO_IMAGE(400,"IMG-400-1","NO Image"),
+    ALREADY_LIKE(400,"LIKE-400-1","Already Like This Docs"),
+    YOU_DONT_LIKE_THIS_DOCS(400,"LIKE-400-2","You Dont Like This Docs"),
     DOCS_NOT_FOUND(404, "DOCS-404-2", "Docs Not Found"),
     DOCS_TYPE_NOT_FOUND(404, "DOCS-404-3", "Docs Type Not Found"),
     NO_UPDATABLE_POST(403, "DOCS-403-1", "No Post You Want To Update"),

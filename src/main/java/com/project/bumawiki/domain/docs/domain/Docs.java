@@ -2,10 +2,11 @@ package com.project.bumawiki.domain.docs.domain;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.project.bumawiki.domain.like.domain.Like;
+import com.project.bumawiki.domain.like.exception.AlreadyLikeException;
+import com.project.bumawiki.domain.like.exception.YouDontLikeThisDocs;
+import com.project.bumawiki.domain.user.entity.User;
+import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -15,6 +16,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Docs {
 
@@ -34,19 +37,16 @@ public class Docs {
 
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<VersionDocs> docsVersion = new ArrayList<>();
+
     @OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
     private List<Contribute> contributor = new ArrayList<>();
 
-    @Builder
-    private Docs(final String title, final int enroll,
-                 final DocsType docsType, final LocalDateTime lastModifiedAt) {
-        this.title = title;
-        this.enroll = enroll;
-        this.docsType = docsType;
-        this.lastModifiedAt = lastModifiedAt;
-    }
+    @OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Like> likes = new ArrayList<>();
 
     public void updateDocsType(DocsType docsType) {
         this.docsType = docsType;
@@ -66,5 +66,30 @@ public class Docs {
 
     public void updateTitle(String title) {
         this.title = title;
+    }
+
+    public int likesLength() {
+        return likes.size();
+    }
+
+    public void cancelLike(Like like) {
+        if (!likes.contains(like)) {
+            throw YouDontLikeThisDocs.EXCEPTION;
+        }
+
+        likes.remove(like);
+    }
+
+    public boolean doesUserLike(User user) {
+        return likes
+                .stream()
+                .anyMatch(like -> like.doesUserLikes(user));
+    }
+
+    public void addLike(Like like) {
+        if (likes.contains(like)) {
+            throw AlreadyLikeException.EXCEPTION;
+        }
+        this.likes.add(like);
     }
 }

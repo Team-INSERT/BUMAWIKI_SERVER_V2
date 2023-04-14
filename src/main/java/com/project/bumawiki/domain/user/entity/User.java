@@ -1,6 +1,9 @@
 package com.project.bumawiki.domain.user.entity;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.like.domain.Like;
+import com.project.bumawiki.domain.like.exception.AlreadyLikeException;
+import com.project.bumawiki.domain.like.exception.YouDontLikeThisDocs;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
@@ -11,9 +14,12 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -36,17 +42,11 @@ public class User {
     @OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL)
     private List<Contribute> contributeDocs = new ArrayList<>();
 
-    @Builder
-    private User(final String email, final String name, final Integer enroll,
-                   final String nickName, final Authority authority){
-        this.email = email;
-        this.name = name;
-        this.enroll = enroll;
-        this.nickName = nickName;
-        this.authority = authority;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Like> likes = new ArrayList<>();
 
-    public User update(BsmResourceResponse resource){
+    public User update(BsmResourceResponse resource) {
         this.email = resource.getEmail();
         this.name = resource.getStudent().getName();
         this.enroll = resource.getStudent().getEnrolledAt();
@@ -54,11 +54,29 @@ public class User {
         return this;
     }
 
-    public void changeUserAuthority(Authority authority){
+    public void changeUserAuthority(Authority authority) {
         this.authority = authority;
     }
 
-    public void setContributeDocs(List<Contribute> contribute){
+    public void setContributeDocs(List<Contribute> contribute) {
         this.contributeDocs = contribute;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void addLike(Like like) {
+        if (likes.contains(like)) {
+            throw AlreadyLikeException.EXCEPTION;
+        }
+        this.likes.add(like);
+    }
+
+    public void cancelLike(Like like) {
+        if (!likes.contains(like)) {
+            throw YouDontLikeThisDocs.EXCEPTION;
+        }
+        likes.remove(like);
     }
 }
