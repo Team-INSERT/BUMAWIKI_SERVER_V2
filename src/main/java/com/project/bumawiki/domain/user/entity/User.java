@@ -1,9 +1,9 @@
 package com.project.bumawiki.domain.user.entity;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.like.domain.Like;
-import com.project.bumawiki.domain.like.exception.AlreadyLikeException;
-import com.project.bumawiki.domain.like.exception.YouDontLikeThisDocs;
+import com.project.bumawiki.domain.like.domain.Likes;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
@@ -42,9 +42,9 @@ public class User {
     @OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL)
     private List<Contribute> contributeDocs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Like> likes = new ArrayList<>();
+    private Likes likes = new Likes();
 
     public User update(BsmResourceResponse resource) {
         this.email = resource.getEmail();
@@ -62,21 +62,15 @@ public class User {
         this.contributeDocs = contribute;
     }
 
-    public List<Like> getLikes() {
-        return likes;
+    public void addLike(Like like) {
+        likes.addLike(like);
     }
 
-    public void addLike(Like like) {
-        if (likes.contains(like)) {
-            throw AlreadyLikeException.EXCEPTION;
-        }
-        this.likes.add(like);
+    public boolean doesLikeDocs(Docs docs) {
+        return likes.doesUserLike(this);
     }
 
     public void cancelLike(Like like) {
-        if (!likes.contains(like)) {
-            throw YouDontLikeThisDocs.EXCEPTION;
-        }
-        likes.remove(like);
+        likes.cancelLike(like);
     }
 }

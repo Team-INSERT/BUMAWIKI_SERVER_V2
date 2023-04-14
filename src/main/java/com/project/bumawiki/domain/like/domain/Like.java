@@ -26,16 +26,11 @@ public class Like {
     @JoinColumn(name = "likes")
     private Docs docs;
 
-    public Like(User user, Docs docs) {
-        this.user = user;
-        this.docs = docs;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "likes")
+    private Likes likes;
 
     public boolean doesUserLikes(User user) {
-        if (this.user.equals(user)) {
-            return true;
-        }
-
-        return false;
+        return this.user.equals(user);
     }
 }
