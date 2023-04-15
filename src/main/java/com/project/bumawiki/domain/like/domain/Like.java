@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"id"})
 public class Like {
 
     @Id

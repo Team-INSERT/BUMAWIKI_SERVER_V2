@@ -36,6 +36,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_EXPIRED(403, "TOKEN-403-3", "Refresh Token Expired"),
 
     //ServerError
+    INVALID_ARGUMENT(400, "ARG-400-1", "Arg Is Not Valid"),
     BSM_AUTH_INVALID_CLIENT(500, "BSM-500-1", "Bsm Client Is Invalid"),
     INTERNAL_SERVER_ERROR(500, "SERVER-500-1", "Internal Server Error");
 

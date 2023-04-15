@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"id"})
 public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +27,11 @@ public class Likes {
     }
 
     public void cancelLike(Like like) {
-        if (!likes.contains(like)) {
+        boolean removed = likes.removeIf(savedLike -> savedLike.equals(like));
+
+        if (!removed){
             throw YouDontLikeThisDocs.EXCEPTION;
         }
-
-        likes.remove(like);
     }
 
     public boolean doesUserLike(User user) {
