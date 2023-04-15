@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.like.domain;
 
+import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.like.exception.AlreadyLikeException;
 import com.project.bumawiki.domain.like.exception.YouDontLikeThisDocs;
 import com.project.bumawiki.domain.user.entity.User;
@@ -38,6 +39,12 @@ public class Likes {
         return likes
                 .stream()
                 .anyMatch(like -> like.doesUserLikes(user));
+    }
+
+    public boolean doYouLike(Docs docs) {
+        return likes
+                .stream()
+                .anyMatch(like -> like.doYouLike(docs));
     }
 
     public void addLike(Like like) {

@@ -66,8 +66,8 @@ public class User {
         likes.addLike(like);
     }
 
-    public boolean doesLikeDocs(Docs docs) {
-        return likes.doesUserLike(this);
+    public boolean doYouLike(Docs docs) {
+        return likes.doYouLike(docs);
     }
 
     public void cancelLike(Like like) {

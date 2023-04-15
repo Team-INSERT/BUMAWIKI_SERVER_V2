@@ -2,7 +2,6 @@ package com.project.bumawiki.domain.docs.facade;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
-import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.DocsTitleAlreadyExistException;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
 import com.project.bumawiki.global.error.exception.BumawikiException;
@@ -29,8 +28,6 @@ public class DocsFacade {
         Optional<Docs> byTitle = docsRepository.findByTitle(title);
         if (byTitle.isPresent()) throw DocsTitleAlreadyExistException.EXCEPTION;
     }
-
-    ;
 
     @Transactional
     public Docs createDocs(final DocsCreateRequestDto docsCreateRequestDto) {

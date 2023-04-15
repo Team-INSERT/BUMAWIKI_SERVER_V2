@@ -4,8 +4,6 @@ import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.like.domain.Like;
 import com.project.bumawiki.domain.like.domain.Likes;
-import com.project.bumawiki.domain.like.exception.AlreadyLikeException;
-import com.project.bumawiki.domain.like.exception.YouDontLikeThisDocs;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -71,10 +69,6 @@ public class Docs {
 
     public void addLike(Like like) {
         likes.addLike(like);
-    }
-
-    public int likesLength() {
-        return likes.likesLength();
     }
 
     public boolean doesUserLike(User user) {

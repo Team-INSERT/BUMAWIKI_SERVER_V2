@@ -92,7 +92,7 @@ public class LikeTest {
         assertAll(
                 () -> assertThat(docs.doesUserLike(user))
                         .isFalse(),
-                () -> assertThat(user.doesLikeDocs(docs))
+                () -> assertThat(user.doYouLike(docs))
                         .isFalse());
     }
 

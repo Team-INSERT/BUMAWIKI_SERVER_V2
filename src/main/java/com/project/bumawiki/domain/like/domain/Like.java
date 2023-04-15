@@ -33,4 +33,8 @@ public class Like {
     public boolean doesUserLikes(User user) {
         return this.user.equals(user);
     }
+
+    public boolean doYouLike(Docs docs) {
+        return this.docs.equals(docs);
+    }
 }
