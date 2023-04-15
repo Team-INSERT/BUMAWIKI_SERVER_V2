@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Builder
+@Table(name = "like")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(exclude = {"id"})
@@ -19,15 +20,15 @@ public class Like {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "likes")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "likes")
+    @JoinColumn(name = "docs_id")
     private Docs docs;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "likes")
+    @JoinColumn(name = "likes_id")
     private Likes likes;
 
     public boolean doesUserLikes(User user) {

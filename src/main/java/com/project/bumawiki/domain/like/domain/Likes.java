@@ -23,9 +23,6 @@ public class Likes {
     @Builder.Default
     private List<Like> likes = new ArrayList<>();
 
-    public int likesLength() {
-        return likes.size();
-    }
 
     public void cancelLike(Like like) {
         boolean removed = likes.removeIf(savedLike -> savedLike.equals(like));
