@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class LikesService {
+public class LikeService {
     private final DocsFacade docsFacade;
 
     @Transactional
