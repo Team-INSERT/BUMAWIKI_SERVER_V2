@@ -13,9 +13,9 @@ public enum ErrorCode {
     NO_IMAGE(400,"IMG-400-1","NO Image"),
 
     //Like
-    ALREADY_LIKE(400,"LIKE-400-1","Already Like This Docs"),
-    YOU_DONT_LIKE_THIS_DOCS(400,"LIKE-400-2","You Dont Like This Docs"),
-    NO_DOCS_YOU_LIKE(404,"LIKE-404-1","No Docs You Like"),
+    ALREADY_THUMBS_UP(400,"THUMBSUP-400-1","Already Thumbs Up This Docs"),
+    YOU_DONT_THUMBS_UP_THIS_DOCS(400,"THUMBSUP-400-2","You Dont Thumbs Up This Docs"),
+    NO_DOCS_YOU_THUMBS_UP(404,"THUMBSUP-404-1","No Docs You Thumbs Up"),
 
     //Docs
     DOCS_NOT_FOUND(404, "DOCS-404-2", "Docs Not Found"),

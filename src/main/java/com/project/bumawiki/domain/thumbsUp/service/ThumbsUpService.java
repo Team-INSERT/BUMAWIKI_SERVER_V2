@@ -1,9 +1,9 @@
-package com.project.bumawiki.domain.like.service;
+package com.project.bumawiki.domain.thumbsUp.service;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
-import com.project.bumawiki.domain.like.domain.Like;
-import com.project.bumawiki.domain.like.presentation.dto.LikeRequestDto;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
+import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpRequestDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.error.exception.ErrorCode;
 import com.project.bumawiki.global.util.SecurityUtil;
@@ -14,11 +14,11 @@ import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class LikeService {
+public class ThumbsUpService {
     private final DocsFacade docsFacade;
 
     @Transactional
-    public void createDocsLike(LikeRequestDto likeRequestDto) {
+    public void createDocsLike(ThumbsUpRequestDto likeRequestDto) {
         Docs foundDocs = getDocs(likeRequestDto);
         User user = getUser();
 
@@ -27,7 +27,7 @@ public class LikeService {
     }
 
     @Transactional
-    public void removeLike(LikeRequestDto likeRequestDto) {
+    public void removeLike(ThumbsUpRequestDto likeRequestDto) {
         Docs foundDocs = getDocs(likeRequestDto);
         User user = getUser();
 
@@ -53,10 +53,10 @@ public class LikeService {
     }
 
     //Docs, User 가져오기
-    private Docs getDocs(LikeRequestDto likeRequestDto) {
+    private Docs getDocs(ThumbsUpRequestDto likeRequestDto) {
         return docsFacade.findById(
                 likeRequestDto.getDocsId(),
-                ErrorCode.NO_DOCS_YOU_LIKE
+                ErrorCode.NO_DOCS_YOU_THUMBS_UP
         );
     }
 
@@ -67,19 +67,19 @@ public class LikeService {
     }
 
     //Docs, User Like 만들기
-    private Like createDocsLike(Docs foundDocs, User user) {
-        return Like.builder()
+    private ThumbsUp createDocsLike(Docs foundDocs, User user) {
+        return ThumbsUp.builder()
                 .docs(foundDocs)
                 .user(user)
-                .likes(foundDocs.getLikes())
+                .thumbUps(foundDocs.getThumbUps())
                 .build();
     }
 
-    private Like createUserLike(Docs foundDocs, User user) {
-        return Like.builder()
+    private ThumbsUp createUserLike(Docs foundDocs, User user) {
+        return ThumbsUp.builder()
                 .docs(foundDocs)
                 .user(user)
-                .likes(user.getLikes())
+                .thumbUps(user.getThumbUps())
                 .build();
     }
 }

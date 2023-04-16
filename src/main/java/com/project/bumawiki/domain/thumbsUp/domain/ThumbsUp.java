@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.like.domain;
+package com.project.bumawiki.domain.thumbsUp.domain;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.user.entity.User;
@@ -8,15 +8,14 @@ import javax.persistence.*;
 
 @Entity
 @Builder
-@Table(name = "like")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(exclude = {"id"})
-public class Like {
+public class ThumbsUp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_id")
+    @Column(name = "thumbs_up_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,8 +27,8 @@ public class Like {
     private Docs docs;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "likes_id")
-    private Likes likes;
+    @JoinColumn(name = "thumb_ups_id")
+    private ThumbUps thumbUps;
 
     public boolean doesUserLikes(User user) {
         return this.user.equals(user);

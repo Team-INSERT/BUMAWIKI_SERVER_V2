@@ -2,8 +2,8 @@ package com.project.bumawiki.domain.user.entity;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.Docs;
-import com.project.bumawiki.domain.like.domain.Like;
-import com.project.bumawiki.domain.like.domain.Likes;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbUps;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
@@ -44,7 +44,7 @@ public class User {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
-    private Likes likes = new Likes();
+    private ThumbUps thumbUps = new ThumbUps();
 
     public User update(BsmResourceResponse resource) {
         this.email = resource.getEmail();
@@ -62,15 +62,15 @@ public class User {
         this.contributeDocs = contribute;
     }
 
-    public void addLike(Like like) {
-        likes.addLike(like);
+    public void addLike(ThumbsUp thumbsUp) {
+        thumbUps.addLike(thumbsUp);
     }
 
     public boolean doYouLike(Docs docs) {
-        return likes.doYouLike(docs);
+        return thumbUps.doYouLike(docs);
     }
 
-    public void cancelLike(Like like) {
-        likes.cancelLike(like);
+    public void cancelLike(ThumbsUp thumbsUp) {
+        thumbUps.cancelLike(thumbsUp);
     }
 }

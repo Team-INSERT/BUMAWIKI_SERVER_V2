@@ -1,8 +1,8 @@
-package com.project.bumawiki.domain.like;
+package com.project.bumawiki.domain.thumbsUp;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
-import com.project.bumawiki.domain.like.domain.Like;
-import com.project.bumawiki.domain.like.domain.Likes;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbUps;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.DataForTest;
 import com.project.bumawiki.global.error.exception.BumawikiException;
@@ -13,18 +13,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-public class LikeTest {
+public class ThumbsUpTest {
 
     //metaData
     private final DataForTest dataForTest = new DataForTest();
     private User user;
     private Docs docs;
     //초기에 객체에 들어갈 Like
-    private Like userLike;
-    private Like docsLike;
+    private ThumbsUp userThumbsUp;
+    private ThumbsUp docsThumbsUp;
     //삭제하거나 새로 생성할 때 들어갈 Like
-    private Like userLikeToCompare;
-    private Like docsLikeToCompare;
+    private ThumbsUp userThumbsUpToCompare;
+    private ThumbsUp docsThumbsUpToCompare;
 
     @BeforeEach
     void init() {
@@ -32,62 +32,62 @@ public class LikeTest {
         docs = dataForTest.getDocs();
 
         //user, docs에 들어갈 좋아요 생성
-        userLike = Like.builder()
+        userThumbsUp = ThumbsUp.builder()
                 .id(1L)
                 .docs(docs)
                 .user(user)
-                .likes(user.getLikes())
+                .thumbUps(user.getThumbUps())
                 .build();
 
-        docsLike = Like.builder()
+        docsThumbsUp = ThumbsUp.builder()
                 .id(2L)
                 .docs(docs)
                 .user(user)
-                .likes(docs.getLikes())
+                .thumbUps(docs.getThumbUps())
                 .build();
 
         //Likes에 추가
-        user.addLike(userLike);
-        docs.addLike(docsLike);
+        user.addLike(userThumbsUp);
+        docs.addLike(docsThumbsUp);
 
 
-        userLikeToCompare = Like.builder()
+        userThumbsUpToCompare = ThumbsUp.builder()
                 .id(3L)
                 .user(user)
                 .docs(docs)
-                .likes(user.getLikes())
+                .thumbUps(user.getThumbUps())
                 .build();
 
-        docsLikeToCompare = Like.builder()
+        docsThumbsUpToCompare = ThumbsUp.builder()
                 .id(4L)
                 .user(user)
                 .docs(docs)
-                .likes(docs.getLikes())
+                .thumbUps(docs.getThumbUps())
                 .build();
     }
 
     @Test
     void 생성() {
         //when
-        Likes userLikes = new Likes();
-        Likes docsLikes = new Likes();
+        ThumbUps userThumbUps = new ThumbUps();
+        ThumbUps docsThumbUps = new ThumbUps();
 
-        userLikes.addLike(userLike);
-        docsLikes.addLike(docsLike);
+        userThumbUps.addLike(userThumbsUp);
+        docsThumbUps.addLike(docsThumbsUp);
         //then
         assertAll(
-                () -> assertThat(docs.getLikes().equals(docsLikes))
+                () -> assertThat(docs.getThumbUps().equals(docsThumbUps))
                         .isEqualTo(true),
 
-                () -> assertThat(user.getLikes().equals(userLikes))
+                () -> assertThat(user.getThumbUps().equals(userThumbUps))
                         .isEqualTo(true));
     }
 
     @Test
     void 삭제() {
         //when
-        docs.cancelLike(docsLikeToCompare);
-        user.cancelLike(userLikeToCompare);
+        docs.cancelLike(docsThumbsUpToCompare);
+        user.cancelLike(userThumbsUpToCompare);
         //then
         assertAll(
                 () -> assertThat(docs.doesUserLike(user))
@@ -99,30 +99,30 @@ public class LikeTest {
     @Test
     void 생성_중복_방지() {
         //when, then
-        assertAll(() -> assertThatThrownBy(() -> docs.addLike(docsLikeToCompare))
+        assertAll(() -> assertThatThrownBy(() -> docs.addLike(docsThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class),
-                () -> assertThatThrownBy(() -> user.addLike(userLikeToCompare))
+                () -> assertThatThrownBy(() -> user.addLike(userThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class));
     }
 
     @Test
     void 삭제_중복_방지() {
         //given
-        docs.cancelLike(docsLikeToCompare);
-        user.cancelLike(userLikeToCompare);
+        docs.cancelLike(docsThumbsUpToCompare);
+        user.cancelLike(userThumbsUpToCompare);
         //when, then
-        assertAll(() -> assertThatThrownBy(() -> docs.cancelLike(docsLikeToCompare))
+        assertAll(() -> assertThatThrownBy(() -> docs.cancelLike(docsThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class),
-                () -> assertThatThrownBy(() -> user.cancelLike(userLikeToCompare))
+                () -> assertThatThrownBy(() -> user.cancelLike(userThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class));
     }
 
     @Test
     void 사용자_조회() {
-        Likes likes = new Likes();
-        likes.addLike(userLike);
+        ThumbUps thumbUps = new ThumbUps();
+        thumbUps.addLike(userThumbsUp);
         //when,then
-        assertThat(user.getLikes().equals(likes))
+        assertThat(user.getThumbUps().equals(thumbUps))
                 .isEqualTo(true);
     }
 }
