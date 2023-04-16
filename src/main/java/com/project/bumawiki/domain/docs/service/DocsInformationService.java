@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.docs.service;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
+import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
@@ -8,12 +9,17 @@ import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollRespon
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
+import com.project.bumawiki.domain.docs.exception.VersionNotExistException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
+import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +84,38 @@ public class DocsInformationService {
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+
+    public List<DocsNameAndViewResponseDto> showDocsPopular(){
+        return docsRepository.findByView()
+                .stream()
+                .map(DocsNameAndViewResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public VersionDocsDiffResponseDto showVersionDocsDiff(String title, Long version) {
+        Docs docs = docsRepository.findByTitle(title).orElseThrow(
+                () -> DocsNotFoundException.EXCEPTION
+        );
+        String baseDocs = "";
+        String versionedDocs;
+        try {
+            List<VersionDocs> versionDocs = docs.getDocsVersion();
+            versionedDocs = versionDocs.get(version.intValue()).getContents();
+            if (version > 0) {
+                baseDocs = versionDocs.get((int) (version - 1)).getContents();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            throw VersionNotExistException.EXCEPTION;
+        }
+
+        DiffMatchPatch dmp = new DiffMatchPatch();
+        LinkedList<Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
+        dmp.diffCleanupSemantic(diff);
+
+        return new VersionDocsDiffResponseDto(new ArrayList<>(diff));
+    }
+
 }
 
 
