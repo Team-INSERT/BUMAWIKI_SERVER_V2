@@ -48,11 +48,11 @@ public class DocsUpdateService {
 
 
         Docs foundDocs = docsRepository.findByTitle(title)
-                        .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+                .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
         updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId, foundDocs.getDocsType());
-        updateReadOnlyDocs(authId,foundDocs.getDocsType());
-        if(files != null) {
+        updateReadOnlyDocs(authId, foundDocs.getDocsType());
+        if (files != null) {
             setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
         }
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId());
@@ -66,7 +66,7 @@ public class DocsUpdateService {
     }
 
     @Transactional
-    public DocsResponseDto titleUpdate(String title, DocsTitleUpdateRequestDto requestDto){
+    public DocsResponseDto titleUpdate(String title, DocsTitleUpdateRequestDto requestDto) {
 
         docsFacade.checkTitleAlreadyExist(requestDto.getTitle());
 
@@ -79,7 +79,7 @@ public class DocsUpdateService {
     }
 
     @Transactional
-    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto,Long docsId){
+    private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, Long docsId) {
         return versionDocsRepository.save(
                 VersionDocs.builder()
                         .docsId(docsId)
@@ -89,31 +89,31 @@ public class DocsUpdateService {
         );
     }
 
-    private void updateDocsOneself(String title, Integer enroll, String authId, DocsType docsType){
+    private void updateDocsOneself(String title, Integer enroll, String authId, DocsType docsType) {
         User user = userRepository.findByEmail(authId)
                 .orElseThrow(() -> UserNotLoginException.EXCEPTION);
 
-        if(docsType.equals(DocsType.STUDENT)){
-            if(title.contains(user.getName()) && enroll.equals(user.getEnroll())){
+        if (docsType.equals(DocsType.STUDENT)) {
+            if (title.contains(user.getName()) && enroll.equals(user.getEnroll())) {
                 throw CannotChangeYourDocsException.EXCEPTION;
             }
-        } else{
-            if(title.contains(user.getName())){
+        } else {
+            if (title.contains(user.getName())) {
                 throw CannotChangeYourDocsException.EXCEPTION;
             }
         }
 
     }
 
-    private void updateReadOnlyDocs(String authId, DocsType docsType){
+    private void updateReadOnlyDocs(String authId, DocsType docsType) {
         User user = userRepository.findByEmail(authId)
                 .orElseThrow(() -> UserNotLoginException.EXCEPTION);
 
-        if(docsType.equals(DocsType.READONLY)) throw NoUpdatableDocsException.EXCEPTION;
+        if (docsType.equals(DocsType.READONLY)) throw NoUpdatableDocsException.EXCEPTION;
     }
 
     @Transactional
-    public DocsResponseDto DocsTypeUpdate(final DocsTypeUpdateDto docsTypeUpdateDto){
+    public DocsResponseDto DocsTypeUpdate(final DocsTypeUpdateDto docsTypeUpdateDto) {
         Docs docs = docsRepository.findById(docsTypeUpdateDto.getId())
                 .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
 
@@ -122,9 +122,8 @@ public class DocsUpdateService {
     }
 
 
-
     @Transactional
-    private Docs setVersionDocsToDocs(VersionDocs versionDocs){
+    private Docs setVersionDocsToDocs(VersionDocs versionDocs) {
         Docs docs = docsRepository.findById(versionDocs.getDocsId())
                 .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
 
@@ -136,10 +135,10 @@ public class DocsUpdateService {
     /**
      * 프론트가 [사진1]이라고 보낸거 우리가 저장한 이미지 주소로 바꾸는 로직
      */
-    public void setImageUrlInContents(DocsUpdateRequestDto docsUpdateRequestDto, ArrayList<String> urls){
+    public void setImageUrlInContents(DocsUpdateRequestDto docsUpdateRequestDto, ArrayList<String> urls) {
         String content = docsUpdateRequestDto.getContents();
         for (String url : urls) {
-            content = content.replaceFirst("<<사진>>",url);
+            content = content.replaceFirst("<<사진>>", url);
         }
         docsUpdateRequestDto.updateContent(content);
     }

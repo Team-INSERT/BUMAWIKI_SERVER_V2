@@ -6,17 +6,25 @@ import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.VersionNotExistException;
-import com.project.bumawiki.domain.docs.presentation.dto.*;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndViewResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsDiffResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsSummaryDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 
 
 @RequiredArgsConstructor
@@ -24,7 +32,7 @@ import java.util.stream.Collectors;
 public class DocsInformationService {
     private final DocsRepository docsRepository;
 
-    public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType){
+    public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType) {
         List<Docs> allStudent = docsRepository.findByDocsType(docsType);
 
         return allStudent.stream()
@@ -33,9 +41,9 @@ public class DocsInformationService {
     }
 
     @Transactional(readOnly = true)
-    public List<DocsResponseDto> findByTitle(String title){
+    public List<DocsResponseDto> findByTitle(String title) {
         List<Docs> docs = docsRepository.findAllByTitle(title);
-        if(docs.size() == 0){
+        if (docs.size() == 0) {
             throw DocsNotFoundException.EXCEPTION;
         }
 
@@ -66,21 +74,21 @@ public class DocsInformationService {
         return new VersionResponseDto(new DocsResponseDto(docs), versionDocs);
     }
 
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable) {
         return docsRepository.findByLastModifiedAt(pageable)
                 .stream()
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDescAll(){
+    public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDescAll() {
         return docsRepository.findByLastModifiedAtAll()
                 .stream()
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<DocsNameAndViewResponseDto> showDocsPopular(){
+    public List<DocsNameAndViewResponseDto> showDocsPopular() {
         return docsRepository.findByView()
                 .stream()
                 .map(DocsNameAndViewResponseDto::new)
@@ -107,7 +115,7 @@ public class DocsInformationService {
         LinkedList<Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
         dmp.diffCleanupSemantic(diff);
 
-        return new VersionDocsDiffResponseDto(docs.getTitle(),docs.getDocsType(),versionDocs.get(version.intValue()),new ArrayList<>(diff));
+        return new VersionDocsDiffResponseDto(docs.getTitle(), docs.getDocsType(), new VersionDocsSummaryDto(versionDocs.get(version.intValue())), new ArrayList<>(diff));
     }
 
 }
