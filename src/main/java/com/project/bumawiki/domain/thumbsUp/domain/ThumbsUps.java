@@ -7,14 +7,15 @@ import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
+@Getter
 @EqualsAndHashCode(exclude = {"id"})
 public class ThumbsUps {
     @Id
@@ -48,7 +49,11 @@ public class ThumbsUps {
     }
 
     public void addThumbsUp(ThumbsUp thumbsUp) {
-        if (thumbsUps.contains(thumbsUp)) {
+        boolean anyMatch = thumbsUps
+                .stream()
+                .anyMatch(iterThumbsUp -> iterThumbsUp.equals(thumbsUp));
+
+        if (anyMatch) {
             throw AlreadyThumbsUpexception.EXCEPTION;
         }
         this.thumbsUps.add(thumbsUp);
@@ -57,7 +62,11 @@ public class ThumbsUps {
     public List<ThumbsUpResponseDto> getList() {
         return this.thumbsUps
                 .stream()
-                .map(ThumbsUpResponseDto::new)
+                .map(ThumbsUp::getDto)
                 .collect(Collectors.toList());
+    }
+
+    public int getThumbsUpsCount() {
+        return thumbsUps.size();
     }
 }

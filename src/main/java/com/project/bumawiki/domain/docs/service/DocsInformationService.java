@@ -11,6 +11,7 @@ import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
-@ServiceWithTransactionalReadOnly
+@Service
+@Transactional(readOnly = true)
 public class DocsInformationService {
     private final DocsRepository docsRepository;
 

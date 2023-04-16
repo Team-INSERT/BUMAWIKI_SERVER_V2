@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.thumbsUp.domain;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
+import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.*;
 
@@ -39,11 +40,13 @@ public class ThumbsUp {
         return this.docs.equals(docs);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ThumbsUp thumbsUp = (ThumbsUp) o;
-        return Objects.equals(user, thumbsUp.user) && Objects.equals(docs, thumbsUp.docs) && Objects.equals(thumbsUps, thumbsUp.thumbsUps);
+    public boolean equals(ThumbsUp thumbsUp) {
+        return Objects.equals(user, thumbsUp.getUser()) &&
+                Objects.equals(docs, thumbsUp.docs) &&
+                Objects.equals(thumbsUps, thumbsUp.thumbsUps);
+    }
+
+    public ThumbsUpResponseDto getDto() {
+        return new ThumbsUpResponseDto(docs.getTitle(), docs.getDocsType());
     }
 }

@@ -6,6 +6,8 @@ import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpRequestDto;
 import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.global.error.exception.ErrorCode;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ThumbsUpManipulateService {
     private final DocsFacade docsFacade;
+    private final UserRepository userRepository;
+
+    private static void checkUserThumbsUpFirst(User user) {
+        if (user.getThumbsUps() == null) {
+            user.firstThumbsUp(new ThumbsUps());
+        }
+    }
 
     @Transactional
     public void createDocsLike(ThumbsUpRequestDto likeRequestDto) {
@@ -32,8 +41,8 @@ public class ThumbsUpManipulateService {
 
     @Transactional
     public void removeLike(ThumbsUpRequestDto likeRequestDto) {
-        Docs foundDocs = getDocs(likeRequestDto);
         User user = getUser();
+        Docs foundDocs = getDocs(likeRequestDto);
 
         cancelDocsLike(foundDocs, user);
         cancelUserLike(foundDocs, user);
@@ -43,12 +52,6 @@ public class ThumbsUpManipulateService {
     private void checkDocsThumbsUpFirst(Docs docs) {
         if (docs.getThumbsUps() == null) {
             docs.firstThumbsUp(new ThumbsUps());
-        }
-    }
-
-    private static void checkUserThumbsUpFirst(User user) {
-        if (user.getThumbsUps() == null) {
-            user.firstThumbsUp(new ThumbsUps());
         }
     }
 
@@ -78,10 +81,14 @@ public class ThumbsUpManipulateService {
         );
     }
 
-    private static User getUser() {
-        return SecurityUtil
+    private User getUser() {
+        Long userId = SecurityUtil
                 .getCurrentUser()
-                .getUser();
+                .getUser()
+                .getId();
+
+        return userRepository.findById(userId)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
     //Docs, User Like 만들기

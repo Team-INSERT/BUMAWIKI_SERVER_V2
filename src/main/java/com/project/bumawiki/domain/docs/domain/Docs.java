@@ -82,4 +82,11 @@ public class Docs {
     public void cancelLike(ThumbsUp thumbsUp) {
         thumbsUps.cancelLike(thumbsUp);
     }
+
+    public int getThumbsUpsCount() {
+        if (thumbsUps == null) {
+            return 0;
+        }
+        return thumbsUps.getThumbsUpsCount();
+    }
 }
