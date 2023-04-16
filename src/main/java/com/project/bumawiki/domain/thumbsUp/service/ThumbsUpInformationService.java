@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.thumbsUp.service;
 
+import com.project.bumawiki.domain.thumbsUp.exception.NoDocsYouThumbsUpException;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.util.SecurityUtil;
@@ -14,6 +15,10 @@ public class ThumbsUpInformationService {
     @Transactional(readOnly = true)
     public List<ThumbsUpResponseDto> getThumbsUpList() {
         User user = SecurityUtil.getCurrentUser().getUser();
+
+        if (user.getThumbsUps() == null) {
+            throw NoDocsYouThumbsUpException.EXCEPTION;
+        }
 
         return user.getThumbsUps().getList();
     }

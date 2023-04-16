@@ -62,8 +62,12 @@ public class User {
         this.contributeDocs = contribute;
     }
 
-    public void addLike(ThumbsUp thumbsUp) {
+    public void addThumbsUp(ThumbsUp thumbsUp) {
         thumbsUps.addThumbsUp(thumbsUp);
+    }
+
+    public void firstThumbsUp(ThumbsUps thumbsUps) {
+        this.thumbsUps = thumbsUps;
     }
 
     public boolean doYouLike(Docs docs) {

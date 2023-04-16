@@ -71,6 +71,9 @@ public class Docs {
         thumbsUps.addThumbsUp(thumbsUp);
     }
 
+    public void firstThumbsUp(ThumbsUps thumbsUps) {
+        this.thumbsUps = thumbsUps;
+    }
 
     public boolean doesUserLike(User user) {
         return thumbsUps.doesUserLike(user);

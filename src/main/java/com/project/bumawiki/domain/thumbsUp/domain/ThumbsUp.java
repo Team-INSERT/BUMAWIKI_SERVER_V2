@@ -5,13 +5,13 @@ import com.project.bumawiki.domain.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(exclude = {"id"})
 public class ThumbsUp {
 
     @Id
@@ -37,5 +37,13 @@ public class ThumbsUp {
 
     public boolean doYouLike(Docs docs) {
         return this.docs.equals(docs);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ThumbsUp thumbsUp = (ThumbsUp) o;
+        return Objects.equals(user, thumbsUp.user) && Objects.equals(docs, thumbsUp.docs) && Objects.equals(thumbsUps, thumbsUp.thumbsUps);
     }
 }

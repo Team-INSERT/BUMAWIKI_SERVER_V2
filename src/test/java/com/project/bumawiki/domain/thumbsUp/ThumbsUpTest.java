@@ -47,7 +47,7 @@ public class ThumbsUpTest {
                 .build();
 
         //Likes에 추가
-        user.addLike(userThumbsUp);
+        user.addThumbsUp(userThumbsUp);
         docs.addThumbsUp(docsThumbsUp);
 
 
@@ -101,7 +101,7 @@ public class ThumbsUpTest {
         //when, then
         assertAll(() -> assertThatThrownBy(() -> docs.addThumbsUp(docsThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class),
-                () -> assertThatThrownBy(() -> user.addLike(userThumbsUpToCompare))
+                () -> assertThatThrownBy(() -> user.addThumbsUp(userThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class));
     }
 

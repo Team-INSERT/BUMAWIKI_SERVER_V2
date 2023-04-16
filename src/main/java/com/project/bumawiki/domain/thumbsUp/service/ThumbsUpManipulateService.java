@@ -3,6 +3,7 @@ package com.project.bumawiki.domain.thumbsUp.service;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpRequestDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.error.exception.ErrorCode;
@@ -18,8 +19,12 @@ public class ThumbsUpManipulateService {
 
     @Transactional
     public void createDocsLike(ThumbsUpRequestDto likeRequestDto) {
-        Docs foundDocs = getDocs(likeRequestDto);
         User user = getUser();
+        checkUserThumbsUpFirst(user);
+
+        Docs foundDocs = getDocs(likeRequestDto);
+        checkDocsThumbsUpFirst(foundDocs);
+
 
         addDocsLike(foundDocs, user);
         addUserLike(foundDocs, user);
@@ -34,12 +39,26 @@ public class ThumbsUpManipulateService {
         cancelUserLike(foundDocs, user);
     }
 
+    //처음 좋아요를 누른 건지 확인
+    private void checkDocsThumbsUpFirst(Docs docs) {
+        if (docs.getThumbsUps() == null) {
+            docs.firstThumbsUp(new ThumbsUps());
+        }
+    }
+
+    private static void checkUserThumbsUpFirst(User user) {
+        if (user.getThumbsUps() == null) {
+            user.firstThumbsUp(new ThumbsUps());
+        }
+    }
+
     //Like 추가
     private void addDocsLike(Docs foundDocs, User user) {
         foundDocs.addThumbsUp(createDocsLike(foundDocs, user));
     }
+
     private void addUserLike(Docs foundDocs, User user) {
-        user.addLike(createUserLike(foundDocs, user));
+        user.addThumbsUp(createUserLike(foundDocs, user));
     }
 
     //Like 삭제
