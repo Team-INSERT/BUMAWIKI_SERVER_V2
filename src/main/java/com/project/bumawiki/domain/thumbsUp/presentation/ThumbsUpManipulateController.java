@@ -1,16 +1,16 @@
 package com.project.bumawiki.domain.thumbsUp.presentation;
 
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpRequestDto;
-import com.project.bumawiki.domain.thumbsUp.service.ThumbsUpService;
+import com.project.bumawiki.domain.thumbsUp.service.ThumbsUpManipulateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/thumbs/up")
 @RequiredArgsConstructor
-public class ThumbsUpController {
+public class ThumbsUpManipulateController {
 
-    private final ThumbsUpService likesService;
+    private final ThumbsUpManipulateService likesService;
 
     @PostMapping("/create")
     public void createLike(@RequestBody ThumbsUpRequestDto likeRequestDto) {

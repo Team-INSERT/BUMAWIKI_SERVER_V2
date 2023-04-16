@@ -3,6 +3,7 @@ package com.project.bumawiki.domain.thumbsUp.domain;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.thumbsUp.exception.AlreadyThumbsUpexception;
 import com.project.bumawiki.domain.thumbsUp.exception.YouDontThumbsUpThisDocs;
+import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -10,16 +11,17 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @EqualsAndHashCode(exclude = {"id"})
-public class ThumbUps {
+public class ThumbsUps {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "thumb_ups_id")
+    @Column(name = "thumbs_ups_id")
     private Long id;
 
-    @OneToMany(mappedBy = "thumbUps", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "thumbsUps", cascade = CascadeType.ALL)
     @Builder.Default
     private List<ThumbsUp> thumbsUps = new ArrayList<>();
 
@@ -27,7 +29,7 @@ public class ThumbUps {
     public void cancelLike(ThumbsUp thumbsUp) {
         boolean removed = thumbsUps.removeIf(savedLike -> savedLike.equals(thumbsUp));
 
-        if (!removed){
+        if (!removed) {
             throw YouDontThumbsUpThisDocs.EXCEPTION;
         }
     }
@@ -44,10 +46,17 @@ public class ThumbUps {
                 .anyMatch(like -> like.doYouLike(docs));
     }
 
-    public void addLike(ThumbsUp thumbsUp) {
+    public void addThumbsUp(ThumbsUp thumbsUp) {
         if (thumbsUps.contains(thumbsUp)) {
             throw AlreadyThumbsUpexception.EXCEPTION;
         }
         this.thumbsUps.add(thumbsUp);
+    }
+
+    public List<ThumbsUpResponseDto> getList() {
+        return this.thumbsUps
+                .stream()
+                .map(ThumbsUpResponseDto::new)
+                .collect(Collectors.toList());
     }
 }

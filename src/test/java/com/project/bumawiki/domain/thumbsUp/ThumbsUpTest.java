@@ -2,7 +2,7 @@ package com.project.bumawiki.domain.thumbsUp;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.ThumbUps;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.DataForTest;
 import com.project.bumawiki.global.error.exception.BumawikiException;
@@ -36,50 +36,50 @@ public class ThumbsUpTest {
                 .id(1L)
                 .docs(docs)
                 .user(user)
-                .thumbUps(user.getThumbUps())
+                .thumbsUps(user.getThumbsUps())
                 .build();
 
         docsThumbsUp = ThumbsUp.builder()
                 .id(2L)
                 .docs(docs)
                 .user(user)
-                .thumbUps(docs.getThumbUps())
+                .thumbsUps(docs.getThumbsUps())
                 .build();
 
         //Likes에 추가
         user.addLike(userThumbsUp);
-        docs.addLike(docsThumbsUp);
+        docs.addThumbsUp(docsThumbsUp);
 
 
         userThumbsUpToCompare = ThumbsUp.builder()
                 .id(3L)
                 .user(user)
                 .docs(docs)
-                .thumbUps(user.getThumbUps())
+                .thumbsUps(user.getThumbsUps())
                 .build();
 
         docsThumbsUpToCompare = ThumbsUp.builder()
                 .id(4L)
                 .user(user)
                 .docs(docs)
-                .thumbUps(docs.getThumbUps())
+                .thumbsUps(docs.getThumbsUps())
                 .build();
     }
 
     @Test
     void 생성() {
         //when
-        ThumbUps userThumbUps = new ThumbUps();
-        ThumbUps docsThumbUps = new ThumbUps();
+        ThumbsUps userThumbsUps = new ThumbsUps();
+        ThumbsUps docsThumbsUps = new ThumbsUps();
 
-        userThumbUps.addLike(userThumbsUp);
-        docsThumbUps.addLike(docsThumbsUp);
+        userThumbsUps.addThumbsUp(userThumbsUp);
+        docsThumbsUps.addThumbsUp(docsThumbsUp);
         //then
         assertAll(
-                () -> assertThat(docs.getThumbUps().equals(docsThumbUps))
+                () -> assertThat(docs.getThumbsUps().equals(docsThumbsUps))
                         .isEqualTo(true),
 
-                () -> assertThat(user.getThumbUps().equals(userThumbUps))
+                () -> assertThat(user.getThumbsUps().equals(userThumbsUps))
                         .isEqualTo(true));
     }
 
@@ -99,7 +99,7 @@ public class ThumbsUpTest {
     @Test
     void 생성_중복_방지() {
         //when, then
-        assertAll(() -> assertThatThrownBy(() -> docs.addLike(docsThumbsUpToCompare))
+        assertAll(() -> assertThatThrownBy(() -> docs.addThumbsUp(docsThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class),
                 () -> assertThatThrownBy(() -> user.addLike(userThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class));
@@ -119,10 +119,10 @@ public class ThumbsUpTest {
 
     @Test
     void 사용자_조회() {
-        ThumbUps thumbUps = new ThumbUps();
-        thumbUps.addLike(userThumbsUp);
+        ThumbsUps thumbsUps = new ThumbsUps();
+        thumbsUps.addThumbsUp(userThumbsUp);
         //when,then
-        assertThat(user.getThumbUps().equals(thumbUps))
+        assertThat(user.getThumbsUps().equals(thumbsUps))
                 .isEqualTo(true);
     }
 }

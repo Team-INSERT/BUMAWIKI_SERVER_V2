@@ -9,12 +9,11 @@ import com.project.bumawiki.global.error.exception.ErrorCode;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ThumbsUpService {
+public class ThumbsUpManipulateService {
     private final DocsFacade docsFacade;
 
     @Transactional
@@ -37,7 +36,7 @@ public class ThumbsUpService {
 
     //Like 추가
     private void addDocsLike(Docs foundDocs, User user) {
-        foundDocs.addLike(createDocsLike(foundDocs, user));
+        foundDocs.addThumbsUp(createDocsLike(foundDocs, user));
     }
     private void addUserLike(Docs foundDocs, User user) {
         user.addLike(createUserLike(foundDocs, user));
@@ -71,7 +70,7 @@ public class ThumbsUpService {
         return ThumbsUp.builder()
                 .docs(foundDocs)
                 .user(user)
-                .thumbUps(foundDocs.getThumbUps())
+                .thumbsUps(foundDocs.getThumbsUps())
                 .build();
     }
 
@@ -79,7 +78,7 @@ public class ThumbsUpService {
         return ThumbsUp.builder()
                 .docs(foundDocs)
                 .user(user)
-                .thumbUps(user.getThumbUps())
+                .thumbsUps(user.getThumbsUps())
                 .build();
     }
 }

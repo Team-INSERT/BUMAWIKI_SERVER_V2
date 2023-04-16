@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Builder
+@Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(exclude = {"id"})
@@ -27,8 +28,8 @@ public class ThumbsUp {
     private Docs docs;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "thumb_ups_id")
-    private ThumbUps thumbUps;
+    @JoinColumn(name = "thumbs_ups_id")
+    private ThumbsUps thumbsUps;
 
     public boolean doesUserLikes(User user) {
         return this.user.equals(user);

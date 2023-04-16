@@ -3,7 +3,7 @@ package com.project.bumawiki.domain.docs.domain;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.ThumbUps;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -45,7 +45,7 @@ public class Docs {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
-    private ThumbUps thumbUps = new ThumbUps();
+    private ThumbsUps thumbsUps = new ThumbsUps();
 
     public void updateDocsType(DocsType docsType) {
         this.docsType = docsType;
@@ -67,15 +67,16 @@ public class Docs {
         this.title = title;
     }
 
-    public void addLike(ThumbsUp thumbsUp) {
-        thumbUps.addLike(thumbsUp);
+    public void addThumbsUp(ThumbsUp thumbsUp) {
+        thumbsUps.addThumbsUp(thumbsUp);
     }
 
+
     public boolean doesUserLike(User user) {
-        return thumbUps.doesUserLike(user);
+        return thumbsUps.doesUserLike(user);
     }
 
     public void cancelLike(ThumbsUp thumbsUp) {
-        thumbUps.cancelLike(thumbsUp);
+        thumbsUps.cancelLike(thumbsUp);
     }
 }
