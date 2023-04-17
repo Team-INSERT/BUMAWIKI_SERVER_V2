@@ -20,16 +20,22 @@ public class ThumbsUpManipulateService {
     private final DocsFacade docsFacade;
     private final UserRepository userRepository;
 
+    private static void checkUserThumbsUpFirst(User user) {
+        if (user.getThumbsUps() == null) {
+            user.firstThumbsUp(new ThumbsUps());
+        }
+    }
+
     @Transactional
-    public void createDocsLike(ThumbsUpRequestDto likeRequestDto) {
+    public void createDocsThumbsUp(ThumbsUpRequestDto likeRequestDto) {
         User user = getUser();
         checkUserThumbsUpFirst(user);
 
         Docs foundDocs = getDocs(likeRequestDto);
         checkDocsThumbsUpFirst(foundDocs);
 
-        addDocsLike(foundDocs, user);
-        addUserLike(foundDocs, user);
+        addDocsThumbsUp(foundDocs, user);
+        addUserThumbsUp(foundDocs, user);
     }
 
     @Transactional
@@ -37,14 +43,8 @@ public class ThumbsUpManipulateService {
         User user = getUser();
         Docs foundDocs = getDocs(likeRequestDto);
 
-        cancelDocsLike(foundDocs, user);
-        cancelUserLike(foundDocs, user);
-    }
-
-    private static void checkUserThumbsUpFirst(User user) {
-        if (user.getThumbsUps() == null) {
-            user.firstThumbsUp(new ThumbsUps());
-        }
+        cancelDocsThumbsUp(foundDocs, user);
+        cancelUserThumbsUp(foundDocs, user);
     }
 
     //처음 좋아요를 누른 건지 확인
@@ -55,21 +55,21 @@ public class ThumbsUpManipulateService {
     }
 
     //Like 추가
-    private void addDocsLike(Docs foundDocs, User user) {
-        foundDocs.addThumbsUp(createDocsLike(foundDocs, user));
+    private void addDocsThumbsUp(Docs foundDocs, User user) {
+        foundDocs.addThumbsUp(createDocsThumbsUp(foundDocs, user));
     }
 
-    private void addUserLike(Docs foundDocs, User user) {
-        user.addThumbsUp(createUserLike(foundDocs, user));
+    private void addUserThumbsUp(Docs foundDocs, User user) {
+        user.addThumbsUp(createUserThumbsUp(foundDocs, user));
     }
 
     //Like 삭제
-    private void cancelDocsLike(Docs foundDocs, User user) {
-        foundDocs.cancelLike(createDocsLike(foundDocs, user));
+    private void cancelDocsThumbsUp(Docs foundDocs, User user) {
+        foundDocs.cancelThumbsUp(createDocsThumbsUp(foundDocs, user));
     }
 
-    private void cancelUserLike(Docs foundDocs, User user) {
-        user.cancelLike(createUserLike(foundDocs, user));
+    private void cancelUserThumbsUp(Docs foundDocs, User user) {
+        user.thumbsUp(createUserThumbsUp(foundDocs, user));
     }
 
     //Docs, User 가져오기
@@ -91,7 +91,7 @@ public class ThumbsUpManipulateService {
     }
 
     //Docs, User Like 만들기
-    private ThumbsUp createDocsLike(Docs foundDocs, User user) {
+    private ThumbsUp createDocsThumbsUp(Docs foundDocs, User user) {
         return ThumbsUp.builder()
                 .docs(foundDocs)
                 .user(user)
@@ -99,7 +99,7 @@ public class ThumbsUpManipulateService {
                 .build();
     }
 
-    private ThumbsUp createUserLike(Docs foundDocs, User user) {
+    private ThumbsUp createUserThumbsUp(Docs foundDocs, User user) {
         return ThumbsUp.builder()
                 .docs(foundDocs)
                 .user(user)

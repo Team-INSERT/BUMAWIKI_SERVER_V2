@@ -79,7 +79,7 @@ public class Docs {
         return thumbsUps.doesUserLike(user);
     }
 
-    public void cancelLike(ThumbsUp thumbsUp) {
+    public void cancelThumbsUp(ThumbsUp thumbsUp) {
         thumbsUps.cancelLike(thumbsUp);
     }
 

@@ -14,7 +14,7 @@ public class ThumbsUpManipulateController {
 
     @PostMapping("/create")
     public void createLike(@RequestBody ThumbsUpRequestDto likeRequestDto) {
-        likesService.createDocsLike(likeRequestDto);
+        likesService.createDocsThumbsUp(likeRequestDto);
     }
 
     @DeleteMapping("/delete")

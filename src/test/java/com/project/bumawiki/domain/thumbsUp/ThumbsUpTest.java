@@ -86,8 +86,8 @@ public class ThumbsUpTest {
     @Test
     void 삭제() {
         //when
-        docs.cancelLike(docsThumbsUpToCompare);
-        user.cancelLike(userThumbsUpToCompare);
+        docs.cancelThumbsUp(docsThumbsUpToCompare);
+        user.thumbsUp(userThumbsUpToCompare);
         //then
         assertAll(
                 () -> assertThat(docs.doesUserLike(user))
@@ -108,12 +108,12 @@ public class ThumbsUpTest {
     @Test
     void 삭제_중복_방지() {
         //given
-        docs.cancelLike(docsThumbsUpToCompare);
-        user.cancelLike(userThumbsUpToCompare);
+        docs.cancelThumbsUp(docsThumbsUpToCompare);
+        user.thumbsUp(userThumbsUpToCompare);
         //when, then
-        assertAll(() -> assertThatThrownBy(() -> docs.cancelLike(docsThumbsUpToCompare))
+        assertAll(() -> assertThatThrownBy(() -> docs.cancelThumbsUp(docsThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class),
-                () -> assertThatThrownBy(() -> user.cancelLike(userThumbsUpToCompare))
+                () -> assertThatThrownBy(() -> user.thumbsUp(userThumbsUpToCompare))
                         .isInstanceOf(BumawikiException.class));
     }
 

@@ -74,7 +74,7 @@ public class User {
         return thumbsUps.doYouLike(docs);
     }
 
-    public void cancelLike(ThumbsUp thumbsUp) {
+    public void thumbsUp(ThumbsUp thumbsUp) {
         thumbsUps.cancelLike(thumbsUp);
     }
 
