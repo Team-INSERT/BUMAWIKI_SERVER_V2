@@ -21,8 +21,6 @@ import java.util.Random;
 public class ImageService {
     private static final String uploadPath = "/home/t/Desktop/image/";
 
-
-
     private static String getRandomStr(){
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
