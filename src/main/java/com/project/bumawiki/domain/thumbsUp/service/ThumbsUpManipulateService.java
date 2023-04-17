@@ -20,12 +20,6 @@ public class ThumbsUpManipulateService {
     private final DocsFacade docsFacade;
     private final UserRepository userRepository;
 
-    private static void checkUserThumbsUpFirst(User user) {
-        if (user.getThumbsUps() == null) {
-            user.firstThumbsUp(new ThumbsUps());
-        }
-    }
-
     @Transactional
     public void createDocsLike(ThumbsUpRequestDto likeRequestDto) {
         User user = getUser();
@@ -33,7 +27,6 @@ public class ThumbsUpManipulateService {
 
         Docs foundDocs = getDocs(likeRequestDto);
         checkDocsThumbsUpFirst(foundDocs);
-
 
         addDocsLike(foundDocs, user);
         addUserLike(foundDocs, user);
@@ -46,6 +39,12 @@ public class ThumbsUpManipulateService {
 
         cancelDocsLike(foundDocs, user);
         cancelUserLike(foundDocs, user);
+    }
+
+    private static void checkUserThumbsUpFirst(User user) {
+        if (user.getThumbsUps() == null) {
+            user.firstThumbsUp(new ThumbsUps());
+        }
     }
 
     //처음 좋아요를 누른 건지 확인

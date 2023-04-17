@@ -27,10 +27,11 @@ public class ThumbsUps {
     @Builder.Default
     private List<ThumbsUp> thumbsUps = new ArrayList<>();
 
-
     public void cancelLike(ThumbsUp thumbsUp) {
-        boolean removed = thumbsUps.removeIf(savedLike -> savedLike.equals(thumbsUp));
-
+        System.out.println(thumbsUps.size());
+        boolean removed = thumbsUps
+                .removeIf(thumbsUp::equals);
+        System.out.println(thumbsUps.size());
         if (!removed) {
             throw YouDontThumbsUpThisDocs.EXCEPTION;
         }
