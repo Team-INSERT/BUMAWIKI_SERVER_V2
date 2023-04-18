@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.docs.presentation.dto;
+package com.project.bumawiki.domain.docs.presentation.dto.response;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;

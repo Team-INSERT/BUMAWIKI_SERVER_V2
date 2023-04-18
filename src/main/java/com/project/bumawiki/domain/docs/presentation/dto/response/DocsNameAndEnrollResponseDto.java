@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.docs.presentation.dto;
+package com.project.bumawiki.domain.docs.presentation.dto.response;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
@@ -16,7 +16,6 @@ public class DocsNameAndEnrollResponseDto {
     private int enroll;
     private DocsType docsType;
     private LocalDateTime lastModifiedAt;
-    private boolean doesUserLike;
 
     public DocsNameAndEnrollResponseDto(Docs docs) {
         this.id = docs.getId();
@@ -24,9 +23,5 @@ public class DocsNameAndEnrollResponseDto {
         this.enroll = docs.getEnroll();
         this.docsType = docs.getDocsType();
         this.lastModifiedAt = docs.getLastModifiedAt();
-    }
-
-    public void setDoesUserLike(boolean doesUserLike) {
-        this.doesUserLike = doesUserLike;
     }
 }

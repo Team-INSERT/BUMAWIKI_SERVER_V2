@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.docs.presentation.dto;
+package com.project.bumawiki.domain.docs.presentation.dto.response;
 
 import lombok.Getter;
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
 package com.project.bumawiki.domain.thumbsUp.presentation;
 
-import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.thumbsUp.service.ThumbsUpInformationService;
 import lombok.RequiredArgsConstructor;

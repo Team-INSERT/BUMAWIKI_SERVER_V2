@@ -1,13 +1,8 @@
-package com.project.bumawiki.domain.docs.presentation.dto;
+package com.project.bumawiki.domain.docs.presentation.dto.request;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
-import java.sql.Clob;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 public class DocsUpdateRequestDto {

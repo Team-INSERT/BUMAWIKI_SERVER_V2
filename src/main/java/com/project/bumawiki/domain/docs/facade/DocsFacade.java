@@ -3,7 +3,7 @@ package com.project.bumawiki.domain.docs.facade;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.exception.DocsTitleAlreadyExistException;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
+import com.project.bumawiki.domain.docs.presentation.dto.request.DocsCreateRequestDto;
 import com.project.bumawiki.global.error.exception.BumawikiException;
 import com.project.bumawiki.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
