@@ -23,15 +23,16 @@ public class ThumbsUps {
     @Column(name = "thumbs_ups_id")
     private Long id;
 
-    @OneToMany(mappedBy = "thumbsUps", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "thumbsUps",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @Builder.Default
     private List<ThumbsUp> thumbsUps = new ArrayList<>();
 
     public void cancelLike(ThumbsUp thumbsUp) {
-        System.out.println(thumbsUps.size());
         boolean removed = thumbsUps
                 .removeIf(thumbsUp::equals);
-        System.out.println(thumbsUps.size());
+
         if (!removed) {
             throw YouDontThumbsUpThisDocs.EXCEPTION;
         }

@@ -5,10 +5,7 @@ import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.*;
 import com.project.bumawiki.domain.docs.exception.VersionNotExistException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
@@ -84,14 +81,6 @@ public class DocsInformationService {
         return docsRepository.findByLastModifiedAtAll()
                 .stream()
                 .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-
-    public List<DocsNameAndViewResponseDto> showDocsPopular(){
-        return docsRepository.findByView()
-                .stream()
-                .map(DocsNameAndViewResponseDto::new)
                 .collect(Collectors.toList());
     }
 

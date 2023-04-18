@@ -5,6 +5,7 @@ import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
 
 import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsDiffResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
