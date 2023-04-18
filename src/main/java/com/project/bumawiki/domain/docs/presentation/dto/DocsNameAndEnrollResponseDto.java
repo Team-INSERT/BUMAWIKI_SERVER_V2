@@ -15,13 +15,18 @@ public class DocsNameAndEnrollResponseDto {
     private String title;
     private int enroll;
     private DocsType docsType;
-
     private LocalDateTime lastModifiedAt;
-    public DocsNameAndEnrollResponseDto(Docs docs){
+    private boolean doesUserLike;
+
+    public DocsNameAndEnrollResponseDto(Docs docs) {
         this.id = docs.getId();
         this.title = docs.getTitle();
         this.enroll = docs.getEnroll();
         this.docsType = docs.getDocsType();
         this.lastModifiedAt = docs.getLastModifiedAt();
+    }
+
+    public void setDoesUserLike(boolean doesUserLike) {
+        this.doesUserLike = doesUserLike;
     }
 }

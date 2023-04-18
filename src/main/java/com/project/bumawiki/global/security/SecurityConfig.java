@@ -37,12 +37,18 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                //user
+                .antMatchers(PUT, "/api/set/authority").hasAuthority("ADMIN")
+                //docs
                 .antMatchers(POST, "/api/docs/create").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers(PUT, "/api/docs/update/**").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(DELETE,"/api/docs/delete/**").hasAuthority("ADMIN")
-                .antMatchers(PUT,"/api/docs/update/title/**").hasAuthority("ADMIN")
+                .antMatchers(DELETE, "/api/docs/delete/**").hasAuthority("ADMIN")
+                .antMatchers(PUT, "/api/docs/update/title/**").hasAuthority("ADMIN")
                 .antMatchers(PUT, "/api/docs/update/docsType").hasAuthority("ADMIN")
-                .antMatchers(PUT,"/api/set/authority").hasAuthority("ADMIN")
+                //thumbsUp
+                .antMatchers(POST, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(DELETE, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(GET, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))

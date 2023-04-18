@@ -90,10 +90,8 @@ public class ContributeService {
 
 
     private User findUser(){
-        User user = SecurityUtil.getCurrentUser().getUser();
-        if(user == null){
-            throw UserNotFoundException.EXCEPTION;
-        }
+        User user = SecurityUtil.getCurrentUserWithLogin();
+
         return userRepository.findById(user.getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }

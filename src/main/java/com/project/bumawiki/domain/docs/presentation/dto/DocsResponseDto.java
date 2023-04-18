@@ -10,13 +10,14 @@ import java.time.LocalDateTime;
 @Getter
 public class DocsResponseDto {
 
-    private Long id;
-    private String title;
-    private String contents;
-    private DocsType docsType;
-    private LocalDateTime lastModifiedAt;
-    private int enroll;
-    private int thumbsUpsCounts;
+    private final Long id;
+    private final String title;
+    private final String contents;
+    private final DocsType docsType;
+    private final LocalDateTime lastModifiedAt;
+    private final int enroll;
+    private final int thumbsUpsCounts;
+    private boolean youLikeThis;
 
     public DocsResponseDto(Docs docs) {
         int lastValueOfDocsVersion = docs.getDocsVersion().size() - 1;
@@ -29,6 +30,12 @@ public class DocsResponseDto {
         this.docsType = docs.getDocsType();
         this.enroll = docs.getEnroll();
         this.thumbsUpsCounts = docs.getThumbsUpsCount();
+        this.youLikeThis = false;
+    }
+
+    public DocsResponseDto setYouLikeThis(boolean youLikeThis) {
+        this.youLikeThis = youLikeThis;
+        return this;
     }
 }
 

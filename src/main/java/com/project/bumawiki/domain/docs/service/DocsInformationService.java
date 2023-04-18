@@ -5,21 +5,22 @@ import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
-import com.project.bumawiki.domain.docs.presentation.dto.*;
 import com.project.bumawiki.domain.docs.exception.VersionNotExistException;
-import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
+import com.project.bumawiki.domain.docs.presentation.dto.*;
+import com.project.bumawiki.domain.user.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 
 
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class DocsInformationService {
     private final DocsRepository docsRepository;
+    private final UserFacade userFacade;
 
     public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType) {
         List<Docs> allStudent = docsRepository.findByDocsType(docsType);
@@ -39,6 +41,7 @@ public class DocsInformationService {
     @Transactional(readOnly = true)
     public List<DocsResponseDto> findByTitle(String title) {
         List<Docs> docs = docsRepository.findAllByTitle(title);
+
         if (docs.size() == 0) {
             throw DocsNotFoundException.EXCEPTION;
         }
@@ -53,7 +56,8 @@ public class DocsInformationService {
         Docs docs = docsRepository.findByTitle(title).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
-        return new DocsResponseDto(docs);
+        return new DocsResponseDto(docs)
+                .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
     }
 
     public VersionResponseDto findDocsVersion(String title) {
@@ -67,7 +71,10 @@ public class DocsInformationService {
 
         Collections.reverse(versionDocs);
 
-        return new VersionResponseDto(new DocsResponseDto(docs), versionDocs);
+        return new VersionResponseDto(
+                new DocsResponseDto(docs)
+                        .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()))
+                , versionDocs);
     }
 
     public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable) {
@@ -106,7 +113,4 @@ public class DocsInformationService {
 
         return new VersionDocsDiffResponseDto(new ArrayList<>(diff));
     }
-
 }
-
-

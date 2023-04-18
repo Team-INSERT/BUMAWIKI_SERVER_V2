@@ -21,7 +21,7 @@ public class ThumbsUpInformationService {
 
     @Transactional(readOnly = true)
     public List<ThumbsUpResponseDto> getThumbsUpList() {
-        Long userId = SecurityUtil.getCurrentUser().getUser().getId();
+        Long userId = SecurityUtil.getCurrentUserWithLogin().getId();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);

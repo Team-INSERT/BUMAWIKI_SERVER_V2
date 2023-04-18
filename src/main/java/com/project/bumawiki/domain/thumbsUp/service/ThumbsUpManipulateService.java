@@ -82,8 +82,7 @@ public class ThumbsUpManipulateService {
 
     private User getUser() {
         Long userId = SecurityUtil
-                .getCurrentUser()
-                .getUser()
+                .getCurrentUserWithLogin()
                 .getId();
 
         return userRepository.findById(userId)

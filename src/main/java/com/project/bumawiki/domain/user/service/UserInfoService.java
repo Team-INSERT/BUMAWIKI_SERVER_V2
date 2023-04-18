@@ -16,7 +16,7 @@ public class UserInfoService {
     private final UserRepository userRepository;
 
     public UserResponseDto findMyInfo(){
-        User user1 = SecurityUtil.getCurrentUser().getUser();
+        User user1 = SecurityUtil.getCurrentUserWithLogin();
         User user = userRepository.findById(user1.getId())
                 .orElseThrow(() -> UserNotLoginException.EXCEPTION);
 
