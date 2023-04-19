@@ -57,7 +57,7 @@ public class DocsInformationService {
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
         return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
+                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
     }
 
     public VersionResponseDto findDocsVersion(String title) {
@@ -73,7 +73,7 @@ public class DocsInformationService {
 
         return new VersionResponseDto(
                 new DocsResponseDto(docs)
-                        .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()))
+                        .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()))
                 , versionDocs);
     }
 

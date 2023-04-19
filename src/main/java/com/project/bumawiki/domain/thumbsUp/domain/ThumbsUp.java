@@ -32,11 +32,11 @@ public class ThumbsUp {
     @JoinColumn(name = "thumbs_ups_id")
     private ThumbsUps thumbsUps;
 
-    public boolean doesUserLikes(User user) {
+    public boolean doesUserThumbsUp(User user) {
         return this.user.equals(user);
     }
 
-    public boolean doYouLike(Docs docs) {
+    public boolean doYouThumbsUp(Docs docs) {
         return this.docs.equals(docs);
     }
 

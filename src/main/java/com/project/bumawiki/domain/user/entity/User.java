@@ -71,7 +71,7 @@ public class User {
     }
 
     public boolean doYouLike(Docs docs) {
-        return thumbsUps.doYouLike(docs);
+        return thumbsUps.doYouThumbsUp(docs);
     }
 
     public void thumbsUp(ThumbsUp thumbsUp) {

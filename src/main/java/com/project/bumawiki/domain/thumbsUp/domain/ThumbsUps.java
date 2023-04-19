@@ -38,16 +38,16 @@ public class ThumbsUps {
         }
     }
 
-    public boolean doesUserLike(User user) {
+    public boolean doesUserThumbsUp(User user) {
         return thumbsUps
                 .stream()
-                .anyMatch(like -> like.doesUserLikes(user));
+                .anyMatch(like -> like.doesUserThumbsUp(user));
     }
 
-    public boolean doYouLike(Docs docs) {
+    public boolean doYouThumbsUp(Docs docs) {
         return thumbsUps
                 .stream()
-                .anyMatch(like -> like.doYouLike(docs));
+                .anyMatch(like -> like.doYouThumbsUp(docs));
     }
 
     public void addThumbsUp(ThumbsUp thumbsUp) {

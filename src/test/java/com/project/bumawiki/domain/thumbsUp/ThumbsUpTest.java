@@ -90,7 +90,7 @@ public class ThumbsUpTest {
         user.thumbsUp(userThumbsUpToCompare);
         //then
         assertAll(
-                () -> assertThat(docs.doesUserLike(user))
+                () -> assertThat(docs.doesUserThumbsUp(user))
                         .isFalse(),
                 () -> assertThat(user.doYouLike(docs))
                         .isFalse());

@@ -8,7 +8,6 @@ import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.CannotChangeYourDocsException;
-import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
 import com.project.bumawiki.domain.docs.presentation.dto.response.DocsResponseDto;
@@ -55,7 +54,7 @@ public class DocsUpdateService {
         setContribute(savedVersionDocs);
 
         return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
+                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
     }
 
     private void setImages(DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files, Docs foundDocs) throws IOException {
@@ -73,7 +72,7 @@ public class DocsUpdateService {
         docs.updateTitle(requestDto.getTitle());
 
         return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
+                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
     }
 
     @Transactional
@@ -83,7 +82,7 @@ public class DocsUpdateService {
 
         docs.updateDocsType(docsTypeUpdateDto.getDocsType());
         return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
+                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
     }
 
     @NotNull

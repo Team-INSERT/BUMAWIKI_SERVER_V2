@@ -75,8 +75,8 @@ public class Docs {
         this.thumbsUps = thumbsUps;
     }
 
-    public boolean doesUserLike(User user) {
-        return thumbsUps.doesUserLike(user);
+    public boolean doesUserThumbsUp(User user) {
+        return thumbsUps.doesUserThumbsUp(user);
     }
 
     public void cancelThumbsUp(ThumbsUp thumbsUp) {
