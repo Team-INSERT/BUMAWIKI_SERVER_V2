@@ -36,8 +36,8 @@ public class DocsInformationController {
     }
 
     @GetMapping("/find/all/title/{title}")
-    public List<DocsResponseDto> findByTitle(@PathVariable String title) {
-        return docsInformationService.findByTitle(title);
+    public List<DocsNameAndEnrollResponseDto> findAllByTitle(@PathVariable String title) {
+        return docsInformationService.findAllByTitle(title);
     }
 
     @GetMapping("/find/title/{title}")

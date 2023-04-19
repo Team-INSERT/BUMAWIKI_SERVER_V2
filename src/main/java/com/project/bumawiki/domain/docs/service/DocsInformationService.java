@@ -39,7 +39,7 @@ public class DocsInformationService {
     }
 
     @Transactional(readOnly = true)
-    public List<DocsResponseDto> findByTitle(String title) {
+    public List<DocsNameAndEnrollResponseDto> findAllByTitle(String title) {
         List<Docs> docs = docsRepository.findAllByTitle(title);
 
         if (docs.size() == 0) {
@@ -47,7 +47,7 @@ public class DocsInformationService {
         }
 
         return docs.stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
