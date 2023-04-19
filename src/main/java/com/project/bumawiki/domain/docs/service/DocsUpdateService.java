@@ -21,6 +21,7 @@ import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.service.UserService;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,25 +44,24 @@ public class DocsUpdateService {
     @Transactional
     public DocsResponseDto execute(String bearer, String title, DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files) throws IOException {
         String authId = userService.checkIsLoginUser(bearer);
-        Docs foundDocs = docsRepository.findByTitle(title)
-                .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
+        Docs foundDocs = findDocsByTitle(title);
+        validate(authId, foundDocs);
 
-        updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId, foundDocs.getDocsType());
-        updateReadOnlyDocs(foundDocs.getDocsType());
-
-        if (files != null) {
-            setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
-        }
+        setImages(docsUpdateRequestDto, files, foundDocs);
 
         VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId());
-        Docs docs = setVersionDocsToDocs(savedVersionDocs);
-        docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
+        Docs docs = setVersionDocs(savedVersionDocs);
 
-        Contribute contribute = contributeService.updateContribute(savedVersionDocs);
-        savedVersionDocs.updateContributor(contribute);
+        setContribute(savedVersionDocs);
 
         return new DocsResponseDto(docs)
                 .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
+    }
+
+    private void setImages(DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files, Docs foundDocs) throws IOException {
+        if (files != null) {
+            setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
+        }
     }
 
     @Transactional
@@ -69,13 +69,43 @@ public class DocsUpdateService {
 
         docsFacade.checkTitleAlreadyExist(requestDto.getTitle());
 
-        Docs docs = docsRepository.findByTitle(title)
-                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
-
+        Docs docs = findDocsByTitle(title);
         docs.updateTitle(requestDto.getTitle());
 
         return new DocsResponseDto(docs)
                 .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
+    }
+
+    @Transactional
+    public DocsResponseDto DocsTypeUpdate(final DocsTypeUpdateDto docsTypeUpdateDto) {
+        Docs docs = docsRepository.findById(docsTypeUpdateDto.getId())
+                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
+
+        docs.updateDocsType(docsTypeUpdateDto.getDocsType());
+        return new DocsResponseDto(docs)
+                .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
+    }
+
+    @NotNull
+    private Docs setVersionDocs(VersionDocs savedVersionDocs) {
+        Docs docs = setVersionDocsToDocs(savedVersionDocs);
+        docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
+        return docs;
+    }
+
+    private void setContribute(VersionDocs savedVersionDocs) {
+        Contribute contribute = contributeService.updateContribute(savedVersionDocs);
+        savedVersionDocs.updateContributor(contribute);
+    }
+
+    private Docs findDocsByTitle(String title) {
+        return docsRepository.findByTitle(title)
+                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
+    }
+
+    private void validate(String authId, Docs foundDocs) {
+        updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId, foundDocs.getDocsType());
+        updateReadOnlyDocs(foundDocs.getDocsType());
     }
 
     private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, Long docsId) {
@@ -95,27 +125,17 @@ public class DocsUpdateService {
             if (title.contains(user.getName()) && enroll.equals(user.getEnroll())) {
                 throw CannotChangeYourDocsException.EXCEPTION;
             }
-        } else {
-            if (title.contains(user.getName())) {
-                throw CannotChangeYourDocsException.EXCEPTION;
-            }
+            return;
         }
 
+        if (title.contains(user.getName())) {
+            throw CannotChangeYourDocsException.EXCEPTION;
+        }
     }
 
     private void updateReadOnlyDocs(DocsType docsType) {
 
         if (docsType.equals(DocsType.READONLY)) throw NoUpdatableDocsException.EXCEPTION;
-    }
-
-    @Transactional
-    public DocsResponseDto DocsTypeUpdate(final DocsTypeUpdateDto docsTypeUpdateDto) {
-        Docs docs = docsRepository.findById(docsTypeUpdateDto.getId())
-                .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
-
-        docs.updateDocsType(docsTypeUpdateDto.getDocsType());
-        return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserLike(userFacade.getCurrentUser()));
     }
 
 
