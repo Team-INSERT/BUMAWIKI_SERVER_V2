@@ -36,7 +36,7 @@ public interface DocsRepository extends JpaRepository<Docs, Long> {
     @Query(nativeQuery = true,
             value = "select title, enroll, docs_type as DocsType, count(thumbs_up_id) as ThumbsUpCount " +
                     "from Docs d left outer join Thumbs_up t " +
-                    "on d.thumbs_ups_thumbs_ups_id = t.thumbs_ups_id " +
+                    "on d.docs_id = t.docs_id " +
                     "group by title, enroll, docs_type " +
                     "order by count(thumbs_up_id) desc")
     Page<DocsPopularWrapper> findByThumbsUpsDesc(Pageable pageable);
