@@ -38,12 +38,13 @@ public class Docs {
     private LocalDateTime lastModifiedAt;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(referencedColumnName = "docs_id")
     private List<VersionDocs> docsVersion = new ArrayList<>();
 
     @OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
     private List<Contribute> contributor = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Embedded
     @Builder.Default
     private ThumbsUps thumbsUps = new ThumbsUps();
 
