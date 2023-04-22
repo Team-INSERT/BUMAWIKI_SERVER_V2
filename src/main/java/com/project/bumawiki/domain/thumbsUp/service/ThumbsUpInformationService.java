@@ -1,6 +1,6 @@
 package com.project.bumawiki.domain.thumbsUp.service;
 
-import com.project.bumawiki.domain.thumbsUp.domain.thumbsups.UserThumbsUps;
+import com.project.bumawiki.domain.thumbsUp.domain.collection.UserThumbsUps;
 import com.project.bumawiki.domain.thumbsUp.exception.NoDocsYouThumbsUpException;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.user.entity.User;

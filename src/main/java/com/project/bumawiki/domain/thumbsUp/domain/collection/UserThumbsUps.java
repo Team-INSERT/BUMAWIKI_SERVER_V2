@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.thumbsUp.domain.thumbsups;
+package com.project.bumawiki.domain.thumbsUp.domain.collection;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;

@@ -3,7 +3,6 @@ package com.project.bumawiki.domain.thumbsUp.service;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.thumbsups.UserThumbsUps;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpRequestDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;

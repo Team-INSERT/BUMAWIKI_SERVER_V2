@@ -3,7 +3,7 @@ package com.project.bumawiki.domain.docs.domain;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.thumbsups.DocsThumbsUps;
+import com.project.bumawiki.domain.thumbsUp.domain.collection.DocsThumbsUps;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
