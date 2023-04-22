@@ -28,10 +28,6 @@ public class ThumbsUp {
     @JoinColumn(name = "docs_id")
     private Docs docs;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "thumbs_ups_id")
-    private ThumbsUps thumbsUps;
-
     public boolean doesUserThumbsUp(User user) {
         return this.user.equals(user);
     }
@@ -42,8 +38,7 @@ public class ThumbsUp {
 
     public boolean equals(ThumbsUp thumbsUp) {
         return Objects.equals(user, thumbsUp.getUser()) &&
-                Objects.equals(docs, thumbsUp.docs) &&
-                Objects.equals(thumbsUps, thumbsUp.thumbsUps);
+                Objects.equals(docs, thumbsUp.docs);
     }
 
     public ThumbsUpResponseDto getDto() {

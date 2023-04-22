@@ -3,7 +3,7 @@ package com.project.bumawiki.domain.thumbsUp.service;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
+import com.project.bumawiki.domain.thumbsUp.domain.thumbsups.UserThumbsUps;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpRequestDto;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;
@@ -20,22 +20,12 @@ public class ThumbsUpManipulateService {
     private final DocsFacade docsFacade;
     private final UserRepository userRepository;
 
-    private static void checkUserThumbsUpFirst(User user) {
-        if (user.getThumbsUps() == null) {
-            user.firstThumbsUp(new ThumbsUps());
-        }
-    }
-
     @Transactional
     public void createDocsThumbsUp(ThumbsUpRequestDto likeRequestDto) {
         User user = getUser();
-        checkUserThumbsUpFirst(user);
-
         Docs foundDocs = getDocs(likeRequestDto);
-        checkDocsThumbsUpFirst(foundDocs);
 
-        addDocsThumbsUp(foundDocs, user);
-        addUserThumbsUp(foundDocs, user);
+        addThumbsUp(foundDocs, user);
     }
 
     @Transactional
@@ -43,33 +33,47 @@ public class ThumbsUpManipulateService {
         User user = getUser();
         Docs foundDocs = getDocs(likeRequestDto);
 
-        cancelDocsThumbsUp(foundDocs, user);
-        cancelUserThumbsUp(foundDocs, user);
+        cancelThumbsUp(foundDocs, user);
     }
 
-    //처음 좋아요를 누른 건지 확인
-    private void checkDocsThumbsUpFirst(Docs docs) {
-        if (docs.getThumbsUps() == null) {
-            docs.firstThumbsUp(new ThumbsUps());
-        }
-    }
+//    private void checkThumbsUp(User user, Docs foundDocs) {
+//        checkUserThumbsUpFirst(user);
+//        checkDocsThumbsUpFirst(foundDocs);
+//    }
+//
+//    private static void checkUserThumbsUpFirst(User user) {
+//        if (user.getUserThumbsUps() == null) {
+//            user.firstThumbsUp(new UserThumbsUps());
+//        }
+//    }
+//
+//    //처음 좋아요를 누른 건지 확인
+//    private void checkDocsThumbsUpFirst(Docs docs) {
+//        if (docs.getUserThumbsUps() == null) {
+//            docs.firstThumbsUp(new UserThumbsUps());
+//        }
+//    }
 
     //Like 추가
-    private void addDocsThumbsUp(Docs foundDocs, User user) {
-        foundDocs.addThumbsUp(createDocsThumbsUp(foundDocs, user));
-    }
-
-    private void addUserThumbsUp(Docs foundDocs, User user) {
-        user.addThumbsUp(createUserThumbsUp(foundDocs, user));
+    private void addThumbsUp(Docs foundDocs, User user) {
+        ThumbsUp thumbsUp = createThumbsUp(foundDocs, user);
+        foundDocs.addThumbsUp(thumbsUp);
+        user.addThumbsUp(thumbsUp);
     }
 
     //Like 삭제
-    private void cancelDocsThumbsUp(Docs foundDocs, User user) {
-        foundDocs.cancelThumbsUp(createDocsThumbsUp(foundDocs, user));
+    private void cancelThumbsUp(Docs foundDocs, User user) {
+        ThumbsUp thumbsUpToDelete = createThumbsUp(foundDocs, user);
+        foundDocs.cancelThumbsUp(thumbsUpToDelete);
+        user.cancelThumbsUp(thumbsUpToDelete);
     }
 
-    private void cancelUserThumbsUp(Docs foundDocs, User user) {
-        user.thumbsUp(createUserThumbsUp(foundDocs, user));
+    //Docs, User Like 만들기
+    private ThumbsUp createThumbsUp(Docs foundDocs, User user) {
+        return ThumbsUp.builder()
+                .docs(foundDocs)
+                .user(user)
+                .build();
     }
 
     //Docs, User 가져오기
@@ -87,22 +91,5 @@ public class ThumbsUpManipulateService {
 
         return userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-    }
-
-    //Docs, User Like 만들기
-    private ThumbsUp createDocsThumbsUp(Docs foundDocs, User user) {
-        return ThumbsUp.builder()
-                .docs(foundDocs)
-                .user(user)
-                .thumbsUps(foundDocs.getThumbsUps())
-                .build();
-    }
-
-    private ThumbsUp createUserThumbsUp(Docs foundDocs, User user) {
-        return ThumbsUp.builder()
-                .docs(foundDocs)
-                .user(user)
-                .thumbsUps(user.getThumbsUps())
-                .build();
     }
 }

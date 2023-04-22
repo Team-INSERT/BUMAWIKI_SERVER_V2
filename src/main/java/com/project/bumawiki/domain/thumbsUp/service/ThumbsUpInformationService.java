@@ -1,6 +1,6 @@
 package com.project.bumawiki.domain.thumbsUp.service;
 
-import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
+import com.project.bumawiki.domain.thumbsUp.domain.thumbsups.UserThumbsUps;
 import com.project.bumawiki.domain.thumbsUp.exception.NoDocsYouThumbsUpException;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.user.entity.User;
@@ -19,6 +19,13 @@ public class ThumbsUpInformationService {
 
     private final UserRepository userRepository;
 
+    private static void validateThumbsUps(User user, UserThumbsUps userThumbsUps) {
+        if (userThumbsUps == null ||
+                user.getUserThumbsUps().getThumbsUpsCount() == 0) {
+            throw NoDocsYouThumbsUpException.EXCEPTION;
+        }
+    }
+
     @Transactional(readOnly = true)
     public List<ThumbsUpResponseDto> getThumbsUpList() {
         Long userId = SecurityUtil.getCurrentUserWithLogin().getId();
@@ -26,18 +33,11 @@ public class ThumbsUpInformationService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        ThumbsUps thumbsUps = user.getThumbsUps();
+        UserThumbsUps userThumbsUps = user.getUserThumbsUps();
 
-        validateThumbsUps(user, thumbsUps);
+        validateThumbsUps(user, userThumbsUps);
 
-        return thumbsUps.getList();
-    }
-
-    private static void validateThumbsUps(User user, ThumbsUps thumbsUps) {
-        if (thumbsUps == null ||
-                user.getThumbsUps().getThumbsUpsCount() == 0) {
-            throw NoDocsYouThumbsUpException.EXCEPTION;
-        }
+        return userThumbsUps.getList();
     }
 }
 

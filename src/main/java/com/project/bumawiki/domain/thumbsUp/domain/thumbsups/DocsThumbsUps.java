@@ -1,12 +1,12 @@
-package com.project.bumawiki.domain.thumbsUp.domain;
+package com.project.bumawiki.domain.thumbsUp.domain.thumbsups;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
 import com.project.bumawiki.domain.thumbsUp.exception.AlreadyThumbsUpexception;
 import com.project.bumawiki.domain.thumbsUp.exception.YouDontThumbsUpThisDocs;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -14,20 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
 @Getter
-@EqualsAndHashCode(exclude = {"id"})
-public class ThumbsUps {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "thumbs_ups_id")
-    private Long id;
+@Embeddable
+public class DocsThumbsUps {
 
-    @OneToMany(mappedBy = "thumbsUps",
+    @OneToMany(
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @Builder.Default
-    private List<ThumbsUp> thumbsUps = new ArrayList<>();
+    private final List<ThumbsUp> thumbsUps = new ArrayList<>();
 
     public void cancelLike(ThumbsUp thumbsUp) {
         boolean removed = thumbsUps

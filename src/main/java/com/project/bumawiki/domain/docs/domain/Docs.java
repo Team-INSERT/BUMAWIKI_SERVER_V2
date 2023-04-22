@@ -3,7 +3,7 @@ package com.project.bumawiki.domain.docs.domain;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
+import com.project.bumawiki.domain.thumbsUp.domain.thumbsups.DocsThumbsUps;
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -46,7 +46,7 @@ public class Docs {
 
     @Embedded
     @Builder.Default
-    private ThumbsUps thumbsUps = new ThumbsUps();
+    private DocsThumbsUps userThumbsUps = new DocsThumbsUps();
 
     public void updateDocsType(DocsType docsType) {
         this.docsType = docsType;
@@ -69,25 +69,21 @@ public class Docs {
     }
 
     public void addThumbsUp(ThumbsUp thumbsUp) {
-        thumbsUps.addThumbsUp(thumbsUp);
-    }
-
-    public void firstThumbsUp(ThumbsUps thumbsUps) {
-        this.thumbsUps = thumbsUps;
+        userThumbsUps.addThumbsUp(thumbsUp);
     }
 
     public boolean doesUserThumbsUp(User user) {
-        return thumbsUps.doesUserThumbsUp(user);
+        return userThumbsUps.doesUserThumbsUp(user);
     }
 
     public void cancelThumbsUp(ThumbsUp thumbsUp) {
-        thumbsUps.cancelLike(thumbsUp);
+        userThumbsUps.cancelLike(thumbsUp);
     }
 
     public int getThumbsUpsCount() {
-        if (thumbsUps == null) {
+        if (userThumbsUps == null) {
             return 0;
         }
-        return thumbsUps.getThumbsUpsCount();
+        return userThumbsUps.getThumbsUpsCount();
     }
 }

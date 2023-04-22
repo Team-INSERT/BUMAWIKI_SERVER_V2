@@ -3,7 +3,7 @@ package com.project.bumawiki.domain.user.entity;
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUps;
+import com.project.bumawiki.domain.thumbsUp.domain.thumbsups.UserThumbsUps;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.*;
@@ -42,9 +42,9 @@ public class User {
     @OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL)
     private List<Contribute> contributeDocs = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Embedded
     @Builder.Default
-    private ThumbsUps thumbsUps = new ThumbsUps();
+    private UserThumbsUps userThumbsUps = new UserThumbsUps();
 
     public User update(BsmResourceResponse resource) {
         this.email = resource.getEmail();
@@ -63,20 +63,19 @@ public class User {
     }
 
     public void addThumbsUp(ThumbsUp thumbsUp) {
-        thumbsUps.addThumbsUp(thumbsUp);
+        userThumbsUps.addThumbsUp(thumbsUp);
+
     }
 
-    public void firstThumbsUp(ThumbsUps thumbsUps) {
-        this.thumbsUps = thumbsUps;
+    public void firstThumbsUp(UserThumbsUps userThumbsUps) {
+        this.userThumbsUps = userThumbsUps;
     }
 
     public boolean doYouLike(Docs docs) {
-        return thumbsUps.doYouThumbsUp(docs);
+        return userThumbsUps.doYouThumbsUp(docs);
     }
 
-    public void thumbsUp(ThumbsUp thumbsUp) {
-        thumbsUps.cancelLike(thumbsUp);
+    public void cancelThumbsUp(ThumbsUp thumbsUp) {
+        userThumbsUps.cancelLike(thumbsUp);
     }
-
-
 }
