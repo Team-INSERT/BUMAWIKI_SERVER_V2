@@ -6,6 +6,7 @@ import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.VersionNotExistException;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsSummaryDto;
 import com.project.bumawiki.domain.docs.presentation.dto.response.*;
 import com.project.bumawiki.domain.user.UserFacade;
 import lombok.RequiredArgsConstructor;

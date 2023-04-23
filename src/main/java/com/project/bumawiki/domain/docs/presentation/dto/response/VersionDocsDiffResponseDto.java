@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.docs.presentation.dto.response;
 
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsSummaryDto;
 import lombok.Getter;
 
 import java.util.ArrayList;
