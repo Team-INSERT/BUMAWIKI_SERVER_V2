@@ -3,7 +3,6 @@ package com.project.bumawiki.domain.docs.domain.repository;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.wrapper.DocsPopularWrapper;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,9 +22,6 @@ public interface DocsRepository extends JpaRepository<Docs, Long> {
 
     @Query("select d from Docs d where d.title like :title")
     Optional<Docs> findByTitle(@Param("title") String title);
-
-    @NotNull
-    Optional<Docs> findById(@NotNull Long id);
 
     @Query("select d from Docs d order by d.lastModifiedAt desc")
     Page<Docs> findByLastModifiedAt(Pageable pageable);
