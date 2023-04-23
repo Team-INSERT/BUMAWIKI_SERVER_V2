@@ -67,10 +67,6 @@ public class User {
 
     }
 
-    public void firstThumbsUp(UserThumbsUps userThumbsUps) {
-        this.userThumbsUps = userThumbsUps;
-    }
-
     public boolean doYouLike(Docs docs) {
         return userThumbsUps.doYouThumbsUp(docs);
     }
