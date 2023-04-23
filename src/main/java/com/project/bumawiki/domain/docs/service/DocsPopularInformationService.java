@@ -18,12 +18,10 @@ public class DocsPopularInformationService {
     private final DocsRepository docsRepository;
 
     @Transactional(readOnly = true)
-    public Page<DocsPopularResponseDto> getDocsByPopular(Pageable pageable) {
-        List<DocsPopularResponseDto> collect = docsRepository.findByThumbsUpsDesc(pageable)
+    public List<DocsPopularResponseDto> getDocsByPopular() {
+        return docsRepository.findByThumbsUpsDesc()
                 .stream()
                 .map(DocsPopularResponseDto::new)
                 .collect(Collectors.toList());
-
-        return new PageImpl<>(collect);
     }
 }

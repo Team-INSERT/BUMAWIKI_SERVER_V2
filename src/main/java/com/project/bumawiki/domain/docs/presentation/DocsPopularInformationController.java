@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/docs")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class DocsPopularInformationController {
     private final DocsPopularInformationService docsPopularInformationService;
 
     @GetMapping("/popular")
-    public Page<DocsPopularResponseDto> docsPopular(@PageableDefault(size = 20) Pageable pageable) {
-        return docsPopularInformationService.getDocsByPopular(pageable);
+    public List<DocsPopularResponseDto> docsPopular() {
+        return docsPopularInformationService.getDocsByPopular();
     }
 }
