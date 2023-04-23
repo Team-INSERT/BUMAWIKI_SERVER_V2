@@ -35,24 +35,6 @@ public class ThumbsUpManipulateService {
         cancelThumbsUp(foundDocs, user);
     }
 
-//    private void checkThumbsUp(User user, Docs foundDocs) {
-//        checkUserThumbsUpFirst(user);
-//        checkDocsThumbsUpFirst(foundDocs);
-//    }
-//
-//    private static void checkUserThumbsUpFirst(User user) {
-//        if (user.getUserThumbsUps() == null) {
-//            user.firstThumbsUp(new UserThumbsUps());
-//        }
-//    }
-//
-//    //처음 좋아요를 누른 건지 확인
-//    private void checkDocsThumbsUpFirst(Docs docs) {
-//        if (docs.getUserThumbsUps() == null) {
-//            docs.firstThumbsUp(new UserThumbsUps());
-//        }
-//    }
-
     //Like 추가
     private void addThumbsUp(Docs foundDocs, User user) {
         ThumbsUp thumbsUp = createThumbsUp(foundDocs, user);
