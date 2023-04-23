@@ -6,17 +6,13 @@ import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.VersionNotExistException;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndViewResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsDiffResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsSummaryDto;
-import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
-import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
+import com.project.bumawiki.domain.docs.presentation.dto.response.*;
+import com.project.bumawiki.domain.user.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -29,9 +25,11 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 
 
 @RequiredArgsConstructor
-@ServiceWithTransactionalReadOnly
+@Service
+@Transactional(readOnly = true)
 public class DocsInformationService {
     private final DocsRepository docsRepository;
+    private final UserFacade userFacade;
 
     public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType) {
         List<Docs> allStudent = docsRepository.findByDocsType(docsType);
@@ -42,14 +40,15 @@ public class DocsInformationService {
     }
 
     @Transactional(readOnly = true)
-    public List<DocsResponseDto> findByTitle(String title) {
+    public List<DocsNameAndEnrollResponseDto> findAllByTitle(String title) {
         List<Docs> docs = docsRepository.findAllByTitle(title);
+
         if (docs.size() == 0) {
             throw DocsNotFoundException.EXCEPTION;
         }
 
         return docs.stream()
-                .map(DocsResponseDto::new)
+                .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -58,9 +57,8 @@ public class DocsInformationService {
         Docs docs = docsRepository.findByTitle(title).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
-        docs.increaseView();
-
-        return new DocsResponseDto(docs);
+        return new DocsResponseDto(docs)
+                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
     }
 
     public VersionResponseDto findDocsVersion(String title) {
@@ -74,7 +72,10 @@ public class DocsInformationService {
 
         Collections.reverse(versionDocs);
 
-        return new VersionResponseDto(new DocsResponseDto(docs), versionDocs);
+        return new VersionResponseDto(
+                new DocsResponseDto(docs)
+                        .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()))
+                , versionDocs);
     }
 
     public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable) {
@@ -88,13 +89,6 @@ public class DocsInformationService {
         return docsRepository.findByLastModifiedAtAll()
                 .stream()
                 .map(DocsNameAndEnrollResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<DocsNameAndViewResponseDto> showDocsPopular() {
-        return docsRepository.findByView()
-                .stream()
-                .map(DocsNameAndViewResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -120,7 +114,4 @@ public class DocsInformationService {
 
         return new VersionDocsDiffResponseDto(docs.getTitle(), docs.getDocsType(), new VersionDocsSummaryDto(versionDocs.get(version.intValue())), new ArrayList<>(diff));
     }
-
 }
-
-

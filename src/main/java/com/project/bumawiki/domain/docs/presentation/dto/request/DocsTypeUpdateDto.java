@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.docs.presentation.dto;
+package com.project.bumawiki.domain.docs.presentation.dto.request;
 
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import lombok.Getter;

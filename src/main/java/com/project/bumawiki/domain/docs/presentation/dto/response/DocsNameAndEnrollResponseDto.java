@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.docs.presentation.dto;
+package com.project.bumawiki.domain.docs.presentation.dto.response;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
@@ -15,9 +15,9 @@ public class DocsNameAndEnrollResponseDto {
     private String title;
     private int enroll;
     private DocsType docsType;
-
     private LocalDateTime lastModifiedAt;
-    public DocsNameAndEnrollResponseDto(Docs docs){
+
+    public DocsNameAndEnrollResponseDto(Docs docs) {
         this.id = docs.getId();
         this.title = docs.getTitle();
         this.enroll = docs.getEnroll();

@@ -3,7 +3,9 @@ package com.project.bumawiki.domain.docs.facade;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.exception.DocsTitleAlreadyExistException;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
+import com.project.bumawiki.domain.docs.presentation.dto.request.DocsCreateRequestDto;
+import com.project.bumawiki.global.error.exception.BumawikiException;
+import com.project.bumawiki.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +18,16 @@ import java.util.Optional;
 public class DocsFacade {
     private final DocsRepository docsRepository;
 
-    public void checkTitleAlreadyExist(String title){
+    public Docs findById(Long id, ErrorCode errorCode) {
+        return docsRepository
+                .findById(id)
+                .orElseThrow(() -> new BumawikiException(errorCode));
+    }
+
+    public void checkTitleAlreadyExist(String title) {
         Optional<Docs> byTitle = docsRepository.findByTitle(title);
-        if(byTitle.isPresent()) throw DocsTitleAlreadyExistException.EXCEPTION;
-    };
+        if (byTitle.isPresent()) throw DocsTitleAlreadyExistException.EXCEPTION;
+    }
 
     @Transactional
     public Docs createDocs(final DocsCreateRequestDto docsCreateRequestDto) {
