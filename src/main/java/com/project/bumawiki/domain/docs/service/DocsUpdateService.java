@@ -58,6 +58,7 @@ public class DocsUpdateService {
     }
 
     private void setImages(DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files, Docs foundDocs) throws IOException {
+
         if (files != null) {
             setImageUrlInContents(docsUpdateRequestDto, imageService.GetFileUrl(files, foundDocs.getTitle()));
         }

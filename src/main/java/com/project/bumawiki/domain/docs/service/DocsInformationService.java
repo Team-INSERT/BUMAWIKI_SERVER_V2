@@ -8,6 +8,14 @@ import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
 import com.project.bumawiki.domain.docs.exception.VersionNotExistException;
 import com.project.bumawiki.domain.docs.presentation.dto.response.*;
 import com.project.bumawiki.domain.user.UserFacade;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndEnrollResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsNameAndViewResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsDiffResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsSummaryDto;
+import com.project.bumawiki.domain.docs.presentation.dto.VersionResponseDto;
+import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +47,7 @@ public class DocsInformationService {
     }
 
     @Transactional(readOnly = true)
+
     public List<DocsNameAndEnrollResponseDto> findAllByTitle(String title) {
         List<Docs> docs = docsRepository.findAllByTitle(title);
 
@@ -97,8 +106,8 @@ public class DocsInformationService {
         );
         String baseDocs = "";
         String versionedDocs;
+        List<VersionDocs> versionDocs = docs.getDocsVersion();
         try {
-            List<VersionDocs> versionDocs = docs.getDocsVersion();
             versionedDocs = versionDocs.get(version.intValue()).getContents();
             if (version > 0) {
                 baseDocs = versionDocs.get((int) (version - 1)).getContents();
@@ -111,6 +120,6 @@ public class DocsInformationService {
         LinkedList<Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
         dmp.diffCleanupSemantic(diff);
 
-        return new VersionDocsDiffResponseDto(new ArrayList<>(diff));
+        return new VersionDocsDiffResponseDto(docs.getTitle(), docs.getDocsType(), new VersionDocsSummaryDto(versionDocs.get(version.intValue())), new ArrayList<>(diff));
     }
 }

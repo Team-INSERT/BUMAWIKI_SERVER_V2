@@ -19,9 +19,7 @@ import java.util.Random;
 
 @Service
 public class ImageService {
-    private static final String uploadPath = "/home/t/Desktop/image/";
-
-
+    private static final String uploadPath = "/home/insert/Desktop/image/";
 
     private static String getRandomStr(){
         int leftLimit = 97; // letter 'a'
