@@ -5,7 +5,7 @@ import com.project.bumawiki.global.error.exception.ErrorCode;
 
 public class NoDocsYouThumbsUpException extends BumawikiException {
 
-    public static NoDocsYouThumbsUpException EXCEPTION = new NoDocsYouThumbsUpException(ErrorCode.NO_DOCS_YOU_THUMBS_UP);
+    public static final NoDocsYouThumbsUpException EXCEPTION = new NoDocsYouThumbsUpException(ErrorCode.NO_DOCS_YOU_THUMBS_UP);
     private NoDocsYouThumbsUpException(ErrorCode errorCode) {
         super(errorCode);
     }
