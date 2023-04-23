@@ -97,8 +97,8 @@ public class DocsInformationService {
         );
         String baseDocs = "";
         String versionedDocs;
+        List<VersionDocs> versionDocs = docs.getDocsVersion();
         try {
-            List<VersionDocs> versionDocs = docs.getDocsVersion();
             versionedDocs = versionDocs.get(version.intValue()).getContents();
             if (version > 0) {
                 baseDocs = versionDocs.get((int) (version - 1)).getContents();
@@ -111,6 +111,6 @@ public class DocsInformationService {
         LinkedList<Diff> diff = dmp.diffMain(baseDocs, versionedDocs);
         dmp.diffCleanupSemantic(diff);
 
-        return new VersionDocsDiffResponseDto(new ArrayList<>(diff));
+        return new VersionDocsDiffResponseDto(docs.getTitle(), docs.getDocsType(), new VersionDocsSummaryDto(versionDocs.get(version.intValue())), new ArrayList<>(diff));
     }
 }

@@ -2,7 +2,6 @@ package com.project.bumawiki.domain.auth.service;
 
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.authority.Authority;
-import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
@@ -35,7 +34,6 @@ public class UserSignUpOrUpdateService {
         }catch(BsmAuthInvalidClientException e){
             throw UserNotLoginException.EXCEPTION;
         }
-
         return updateOrSignUp(resource);
     }
 
@@ -46,8 +44,6 @@ public class UserSignUpOrUpdateService {
             return saveUser(resource);
         }
         User updateUser = user.get();
-
-
         return updateUser.update(resource);
     }
 

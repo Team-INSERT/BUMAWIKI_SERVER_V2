@@ -137,7 +137,6 @@ public class DocsUpdateService {
         if (docsType.equals(DocsType.READONLY)) throw NoUpdatableDocsException.EXCEPTION;
     }
 
-
     private Docs setVersionDocsToDocs(VersionDocs versionDocs) {
         Docs docs = docsRepository.findById(versionDocs.getDocsId())
                 .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
