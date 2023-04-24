@@ -38,7 +38,6 @@ public class Docs {
     private LocalDateTime lastModifiedAt;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "docs_id")
     private List<VersionDocs> docsVersion = new ArrayList<>();
 
     @OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
