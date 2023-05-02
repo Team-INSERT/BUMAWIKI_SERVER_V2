@@ -36,11 +36,12 @@ public class DocsCreateService {
         setImageUrl(docsCreateRequestDto, files);
 
         Docs docs = docsFacade.createDocs(docsCreateRequestDto);
-        VersionDocs savedVersionDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
 
+        VersionDocs savedVersionDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         Contribute contribute = contributeService.setContribute(savedVersionDocs);
 
         setVersionDocs(docs, savedVersionDocs, contribute);
+
         return new DocsResponseDto(docs);
     }
 
@@ -72,8 +73,6 @@ public class DocsCreateService {
         docsCreateRequestDto.updateContent(content);
     }
 
-
-    @Transactional
     private VersionDocs saveVersionDocs(final DocsCreateRequestDto docsCreateRequestDto, final Long id){
         return versionDocsRepository.save(
                 VersionDocs.builder()
