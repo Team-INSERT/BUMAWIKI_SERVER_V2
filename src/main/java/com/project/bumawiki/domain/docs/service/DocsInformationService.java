@@ -57,8 +57,7 @@ public class DocsInformationService {
         Docs docs = docsRepository.findByTitle(title).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
-        return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
+        return new DocsResponseDto(docs);
     }
 
     public VersionResponseDto findDocsVersion(String title) {
@@ -73,9 +72,7 @@ public class DocsInformationService {
         Collections.reverse(versionDocs);
 
         return new VersionResponseDto(
-                new DocsResponseDto(docs)
-                        .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()))
-                , versionDocs);
+                new DocsResponseDto(docs), versionDocs);
     }
 
     public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable) {

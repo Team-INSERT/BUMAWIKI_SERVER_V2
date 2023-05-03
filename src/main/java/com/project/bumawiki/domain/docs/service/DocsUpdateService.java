@@ -53,8 +53,7 @@ public class DocsUpdateService {
 
         setContribute(savedVersionDocs);
 
-        return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
+        return new DocsResponseDto(docs);
     }
 
     private void setImages(DocsUpdateRequestDto docsUpdateRequestDto, MultipartFile[] files, Docs foundDocs) throws IOException {
@@ -71,8 +70,7 @@ public class DocsUpdateService {
         Docs docs = findDocsByTitle(title);
         docs.updateTitle(requestDto.getTitle());
 
-        return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
+        return new DocsResponseDto(docs);
     }
 
     @Transactional
@@ -81,8 +79,7 @@ public class DocsUpdateService {
                 .orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
 
         docs.updateDocsType(docsTypeUpdateDto.getDocsType());
-        return new DocsResponseDto(docs)
-                .setYouLikeThis(docs.doesUserThumbsUp(userFacade.getCurrentUser()));
+        return new DocsResponseDto(docs);
     }
 
     @NotNull

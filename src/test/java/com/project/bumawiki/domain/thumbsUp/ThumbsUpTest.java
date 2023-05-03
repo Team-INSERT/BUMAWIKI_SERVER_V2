@@ -59,7 +59,7 @@ public class ThumbsUpTest {
         docsThumbsUps.addThumbsUp(thumbsUp);
         //then
         assertAll(
-                () -> assertThat(docs.getUserThumbsUps().getThumbsUps().equals(userThumbsUps.getThumbsUps()))
+                () -> assertThat(docs.getDocsThumbsUp().getThumbsUps().equals(userThumbsUps.getThumbsUps()))
                         .isEqualTo(true),
 
                 () -> assertThat(user.getUserThumbsUps().getThumbsUps().equals(docsThumbsUps.getThumbsUps()))

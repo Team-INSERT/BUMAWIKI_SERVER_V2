@@ -45,7 +45,7 @@ public class Docs {
 
     @Embedded
     @Builder.Default
-    private DocsThumbsUps userThumbsUps = new DocsThumbsUps();
+    private DocsThumbsUps docsThumbsUp = new DocsThumbsUps();
 
     public void updateDocsType(DocsType docsType) {
         this.docsType = docsType;
@@ -68,21 +68,25 @@ public class Docs {
     }
 
     public void addThumbsUp(ThumbsUp thumbsUp) {
-        userThumbsUps.addThumbsUp(thumbsUp);
+        docsThumbsUp.addThumbsUp(thumbsUp);
     }
 
     public boolean doesUserThumbsUp(User user) {
-        return userThumbsUps.doesUserThumbsUp(user);
+        return docsThumbsUp.doesUserThumbsUp(user);
     }
 
     public void cancelThumbsUp(ThumbsUp thumbsUp) {
-        userThumbsUps.cancelLike(thumbsUp);
+        docsThumbsUp.cancelLike(thumbsUp);
+    }
+
+    public boolean doesUserLike(User user) {
+        return docsThumbsUp.doesUserThumbsUp(user);
     }
 
     public int getThumbsUpsCount() {
-        if (userThumbsUps == null) {
+        if (docsThumbsUp == null) {
             return 0;
         }
-        return userThumbsUps.getThumbsUpsCount();
+        return docsThumbsUp.getThumbsUpsCount();
     }
 }
