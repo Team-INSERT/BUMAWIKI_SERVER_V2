@@ -1,5 +1,6 @@
 name: "Bug"
 description: "버그가 있나요? 🐞"
+labels: "Bug \U0001F41E"
 body:
   - type: textarea
     attributes:
