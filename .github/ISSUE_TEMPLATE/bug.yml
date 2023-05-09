@@ -1,25 +1,24 @@
 name: "Bug"
-description: "버그가 있나요? 🤬"
+description: "버그가 있나요? 🐞"
 body:
   - type: textarea
     attributes:
       label: Describe
       description: |
-        버그 설명
+        버그에 관한 설명
       placeholder: |
         그거 제작
-        
+
   - type: textarea
-  attributes:
-    label: Work
-    description: |
-      어떻게 해결할 수 있을까요?
-    placeholder: |
-      그거
+    attributes:
+      label: Work
+      description: |
+        버그를 어떻게 잡을 수 있을까요?
+      placeholder: |
+        그거
 
   - type: textarea
     attributes:
       label: Additional
       description: |
-        추가로 할말
-  - type: textarea
+        추가로 할말?
