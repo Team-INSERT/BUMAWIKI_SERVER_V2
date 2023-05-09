@@ -7,7 +7,7 @@ body:
       description: |
         버그 설명
       placeholder: |
-        나니모 나캇다
+        그거 제작
         
   - type: textarea
   attributes:
@@ -22,3 +22,4 @@ body:
       label: Additional
       description: |
         추가로 할말
+  - type: textarea
