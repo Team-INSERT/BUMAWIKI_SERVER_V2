@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 
 @Getter
 public class VersionDocsSummaryDto {
-    private Long id;
-    private LocalDateTime thisVersionCreatedAt;
-    private Long userId;
-    private String nickName;
+    private final Long id;
+    private final LocalDateTime thisVersionCreatedAt;
+    private final Long userId;
+    private final String nickName;
 
     public VersionDocsSummaryDto(VersionDocs versionDocs) {
         User contributor = versionDocs.getContributor().getContributor();
