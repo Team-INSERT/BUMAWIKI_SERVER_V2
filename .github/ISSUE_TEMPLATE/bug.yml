@@ -9,6 +9,14 @@ body:
         버그 설명
       placeholder: |
         나니모 나캇다
+        
+    - type: textarea
+    attributes:
+      label: Work
+      description: |
+        어떻게 해결할 수 있을까요?
+      placeholder: |
+        그거
 
   - type: textarea
     attributes:
