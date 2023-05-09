@@ -1,0 +1,24 @@
+name: "Todo"
+description: "할일이 있으신가요? 📗"
+body:
+  - type: textarea
+    attributes:
+      label: Describe
+      description: |
+        할일에 관한 설명
+      placeholder: |
+        그거 제작
+
+  - type: textarea
+    attributes:
+      label: Work
+      description: |
+        [작업내용] 무슨 작업을 하셨나요?
+      placeholder: |
+        그거
+
+  - type: textarea
+    attributes:
+      label: Additional
+      description: |
+        추가로 할말?

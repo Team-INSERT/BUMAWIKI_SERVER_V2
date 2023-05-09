@@ -1,0 +1,17 @@
+name: "Bug"
+description: "🤬"
+labels: 버그
+body:
+  - type: textarea
+    attributes:
+      label: Describe
+      description: |
+        버그 설명
+      placeholder: |
+        나니모 나캇다
+
+  - type: textarea
+    attributes:
+      label: Additional
+      description: |
+        추가로 할말
