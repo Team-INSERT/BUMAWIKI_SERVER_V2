@@ -29,7 +29,6 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 @Transactional(readOnly = true)
 public class DocsInformationService {
     private final DocsRepository docsRepository;
-    private final UserFacade userFacade;
 
     public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType) {
         List<Docs> allStudent = docsRepository.findByDocsType(docsType);
