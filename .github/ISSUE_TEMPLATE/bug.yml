@@ -1,25 +1,17 @@
-name: "Bug"
-description: "버그가 있나요? 🐞"
+---
+name: "Bug \U0001F41E"
+about: 무슨 오류가 났나요?
+title: ''
 labels: "Bug \U0001F41E"
-body:
-  - type: textarea
-    attributes:
-      label: Describe
-      description: |
-        버그에 관한 설명
-      placeholder: |
-        그거 제작
+assignees: ''
 
-  - type: textarea
-    attributes:
-      label: Work
-      description: |
-        버그를 어떻게 잡을 수 있을까요?
-      placeholder: |
-        그거
+---
 
-  - type: textarea
-    attributes:
-      label: Additional
-      description: |
-        추가로 할말?
+🐞  Describe
+
+
+✅ Tasks
+- [ ] 1.  
+
+
+🙋🏻 할 말
