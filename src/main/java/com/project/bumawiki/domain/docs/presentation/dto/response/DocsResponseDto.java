@@ -16,7 +16,6 @@ public class DocsResponseDto {
     private final DocsType docsType;
     private final LocalDateTime lastModifiedAt;
     private final int enroll;
-    private final int thumbsUpsCounts;
 
     public DocsResponseDto(Docs docs) {
         int lastValueOfDocsVersion = docs.getDocsVersion().size() - 1;
@@ -28,8 +27,6 @@ public class DocsResponseDto {
         this.lastModifiedAt = docs.getLastModifiedAt();
         this.docsType = docs.getDocsType();
         this.enroll = docs.getEnroll();
-        this.thumbsUpsCounts = docs.getThumbsUpsCount();
     }
-
 }
 

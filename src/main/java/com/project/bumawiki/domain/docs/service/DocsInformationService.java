@@ -29,7 +29,6 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 @Transactional(readOnly = true)
 public class DocsInformationService {
     private final DocsRepository docsRepository;
-    private final UserFacade userFacade;
 
     public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType) {
         List<Docs> allStudent = docsRepository.findByDocsType(docsType);
@@ -110,5 +109,14 @@ public class DocsInformationService {
         dmp.diffCleanupSemantic(diff);
 
         return new VersionDocsDiffResponseDto(docs.getTitle(), docs.getDocsType(), new VersionDocsSummaryDto(versionDocs.get(version.intValue())), new ArrayList<>(diff));
+    }
+
+    @Transactional(readOnly = true)
+    public DocsThumbsUpResponseDto getDocsThumbsUpsCount(String title) {
+        Docs docs = docsRepository.findByTitle(title).orElseThrow(
+                () -> DocsNotFoundException.EXCEPTION
+        );
+
+        return new DocsThumbsUpResponseDto(docs.getThumbsUpsCount());
     }
 }
