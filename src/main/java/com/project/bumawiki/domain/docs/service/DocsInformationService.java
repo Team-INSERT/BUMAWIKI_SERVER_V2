@@ -111,4 +111,13 @@ public class DocsInformationService {
 
         return new VersionDocsDiffResponseDto(docs.getTitle(), docs.getDocsType(), new VersionDocsSummaryDto(versionDocs.get(version.intValue())), new ArrayList<>(diff));
     }
+
+    @Transactional(readOnly = true)
+    public DocsThumbsUpResponseDto getDocsThumbsUpsCount(String title) {
+        Docs docs = docsRepository.findByTitle(title).orElseThrow(
+                () -> DocsNotFoundException.EXCEPTION
+        );
+
+        return new DocsThumbsUpResponseDto(docs.getThumbsUpsCount());
+    }
 }

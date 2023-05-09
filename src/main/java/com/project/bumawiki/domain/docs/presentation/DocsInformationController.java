@@ -3,10 +3,7 @@ package com.project.bumawiki.domain.docs.presentation;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
 
-import com.project.bumawiki.domain.docs.presentation.dto.response.DocsNameAndEnrollResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.response.DocsResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.response.VersionDocsDiffResponseDto;
-import com.project.bumawiki.domain.docs.presentation.dto.response.VersionResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.response.*;
 import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -57,11 +54,16 @@ public class DocsInformationController {
 
     @GetMapping("/find/version/{title}/different/{version}")
     public VersionDocsDiffResponseDto showVersionDocsDiff(@PathVariable String title, @PathVariable Long version) {
-        return docsInformationService.showVersionDocsDiff(title,version);
+        return docsInformationService.showVersionDocsDiff(title, version);
     }
 
     @GetMapping("/find/modified/all")
     public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDescAll() {
         return docsInformationService.showDocsModifiedAtDescAll();
+    }
+
+    @GetMapping("/thumbs/up/get/{title}")
+    public DocsThumbsUpResponseDto getDocsThumbsUpsCount(@PathVariable String title) {
+        return docsInformationService.getDocsThumbsUpsCount(title);
     }
 }
