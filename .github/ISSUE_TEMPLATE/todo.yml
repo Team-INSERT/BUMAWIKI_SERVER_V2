@@ -1,5 +1,6 @@
 name: "Todo"
 description: "할일이 있으신가요? 📗"
+labels: "Todo 📗"
 body:
   - type: textarea
     attributes:
