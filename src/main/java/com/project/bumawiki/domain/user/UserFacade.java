@@ -3,6 +3,7 @@ package com.project.bumawiki.domain.user;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
+import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -18,13 +19,9 @@ public class UserFacade {
         User currentUserWithLogin = SecurityUtil
                 .getCurrentUserOrNotLogin();
 
-        if (currentUserWithLogin == null) {
-            return null;
-        }
-
         return userRepository
                 .findById(currentUserWithLogin.getId())
-                .orElse(null);
+                .orElseThrow(() -> UserNotLoginException.EXCEPTION);
     }
 
     public User getUserByEmail(String email) {
