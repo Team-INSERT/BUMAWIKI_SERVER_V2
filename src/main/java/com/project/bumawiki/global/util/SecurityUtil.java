@@ -16,17 +16,20 @@ public class SecurityUtil {
     }
 
     public static User getCurrentUserOrNotLogin() {
-        try {
-            return getUser();
-        } catch (ClassCastException e) {
-            return null;
-        }
+        return getUser();
     }
 
     private static User getUser() {
-        AuthDetails authDetails = (AuthDetails) SecurityContextHolder.getContext()
+
+        Object principal = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
+
+        if (principal instanceof String) {
+            throw UserNotLoginException.EXCEPTION;
+        }
+
+        AuthDetails authDetails = (AuthDetails) principal;
 
         return authDetails.getUser();
     }
