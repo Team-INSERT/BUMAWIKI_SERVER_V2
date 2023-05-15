@@ -1,7 +1,14 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.6'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'org.springframework.boot' version '2.7.6'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.project'
@@ -22,7 +29,7 @@ repositories {
 dependencies {
 	implementation 'org.projectlombok:lombok:1.18.22'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+//	implementation 'org.springdoc:springdo c-openapi-ui:1.6.6'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -32,27 +39,51 @@ dependencies {
 
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
-	implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0'
-	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.0'
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
-	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0'
 
-	implementation 'com.github.leehj050211:bsm-oauth-java:1.0.0'
+    implementation 'com.github.leehj050211:bsm-oauth-java:1.0.0'
 
-	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 
-	implementation 'org.bitbucket.cowwoc:diff-match-patch:1.2'
+    implementation 'org.bitbucket.cowwoc:diff-match-patch:1.2'
+
+    //querydsl 추가
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+}
+
+//querydsl 추가
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

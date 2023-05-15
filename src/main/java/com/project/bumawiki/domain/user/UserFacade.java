@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class UserFacade {
     private final UserRepository userRepository;
 
-    @Nullable
     public User getCurrentUser() {
         User currentUserWithLogin = SecurityUtil
                 .getCurrentUserOrNotLogin();
