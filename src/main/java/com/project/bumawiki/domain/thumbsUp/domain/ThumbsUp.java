@@ -42,6 +42,6 @@ public class ThumbsUp {
     }
 
     public ThumbsUpResponseDto getDto() {
-        return new ThumbsUpResponseDto(docs.getTitle(), docs.getDocsType());
+        return new ThumbsUpResponseDto(docs);
     }
 }

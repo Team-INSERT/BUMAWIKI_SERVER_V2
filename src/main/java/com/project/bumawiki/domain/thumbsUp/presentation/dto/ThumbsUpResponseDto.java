@@ -1,6 +1,7 @@
 package com.project.bumawiki.domain.thumbsUp.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 
 public class ThumbsUpResponseDto {
@@ -10,8 +11,8 @@ public class ThumbsUpResponseDto {
     @JsonProperty
     private final DocsType docsType;
 
-    public ThumbsUpResponseDto(String title, DocsType docsType) {
-        this.title = title;
-        this.docsType = docsType;
+    public ThumbsUpResponseDto(Docs docs) {
+        this.title = docs.getTitle();
+        this.docsType = docs.getDocsType();
     }
 }
