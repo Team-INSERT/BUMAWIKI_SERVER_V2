@@ -17,6 +17,4 @@ public enum JwtConstants {
 
 
     public final String message;
-
-
 }
