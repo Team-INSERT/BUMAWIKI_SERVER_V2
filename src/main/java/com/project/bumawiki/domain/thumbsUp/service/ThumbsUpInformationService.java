@@ -24,10 +24,9 @@ public class ThumbsUpInformationService {
     private final CustomThumbsUpRepository customThumbsUpRepository;
 
     public List<ThumbsUpResponseDto> getThumbsUpList() {
-//        User user = SecurityUtil.getCurrentUserOrNotLogin();
-//
-//        return customThumbsUpRepository.getUserThumbsUp(user);
-        return null;
+        User user = SecurityUtil.getCurrentUserOrNotLogin();
+
+        return customThumbsUpRepository.getUserThumbsUp(user);
     }
 }
 

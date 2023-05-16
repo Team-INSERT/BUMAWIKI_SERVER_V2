@@ -24,7 +24,6 @@ public class CustomThumbsUpRepositoryImpl implements CustomThumbsUpRepository {
                 .from(thumbsUp)
                 .leftJoin(docs)
                 .on(thumbsUp.user.eq(user))
-                .fetchJoin()
                 .distinct()
                 .fetch();
     }
