@@ -22,8 +22,8 @@ public class CustomThumbsUpRepositoryImpl implements CustomThumbsUpRepository {
     public List<ThumbsUpResponseDto> getUserThumbsUp(User user) {
         return jpaQueryFactory.select(Projections.constructor(ThumbsUpResponseDto.class, docs))
                 .from(thumbsUp)
-                .leftJoin(docs)
-                .on(thumbsUp.user.eq(user))
+                .leftJoin(thumbsUp.docs, docs)
+                .where(thumbsUp.user.eq(user))
                 .distinct()
                 .fetch();
     }
