@@ -26,8 +26,6 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-    show_sql: false
-    format_sql: true
 
   servlet:
     multipart:

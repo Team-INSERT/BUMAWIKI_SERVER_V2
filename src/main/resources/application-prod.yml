@@ -26,7 +26,6 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: none
-    show_sql: false
 
   servlet:
     multipart:
@@ -37,7 +36,7 @@ spring:
 decorator:
   datasource:
     p6spy:
-      enable-logging: false
+      enable-logging: true
 
 auth:
   jwt:
