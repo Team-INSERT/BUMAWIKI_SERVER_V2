@@ -1,4 +1,9 @@
 spring:
+
+  config:
+    activate:
+      on-profile: local
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DB_URL}
@@ -21,8 +26,6 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-    show_sql: false
-    format_sql: true
 
   servlet:
     multipart:
@@ -53,4 +56,3 @@ image:
 
 server:
   port: 8080
-
