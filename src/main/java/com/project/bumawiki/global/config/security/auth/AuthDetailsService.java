@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.security.auth;
+package com.project.bumawiki.global.config.security.auth;
 
 import com.project.bumawiki.domain.user.entity.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;

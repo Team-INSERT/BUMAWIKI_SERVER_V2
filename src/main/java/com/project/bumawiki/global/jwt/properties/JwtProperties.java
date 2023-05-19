@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.jwt.config;
+package com.project.bumawiki.global.jwt.properties;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -2,7 +2,7 @@ package com.project.bumawiki.global.jwt.util;
 
 import com.project.bumawiki.domain.auth.domain.RefreshToken;
 import com.project.bumawiki.domain.auth.domain.repository.RefreshTokenRepository;
-import com.project.bumawiki.global.jwt.config.JwtProperties;
+import com.project.bumawiki.global.jwt.properties.JwtProperties;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import static com.project.bumawiki.global.jwt.config.JwtConstants.*;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.*;
 
 @Slf4j
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
 import com.project.bumawiki.domain.auth.service.UserSignUpOrUpdateService;
 import com.project.bumawiki.domain.user.entity.User;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
-import com.project.bumawiki.global.jwt.config.JwtProperties;
+import com.project.bumawiki.global.jwt.properties.JwtProperties;
 import com.project.bumawiki.global.jwt.util.JwtProvider;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
 import lombok.RequiredArgsConstructor;

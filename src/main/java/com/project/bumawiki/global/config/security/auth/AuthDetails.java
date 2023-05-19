@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.security.auth;
+package com.project.bumawiki.global.config.security.auth;
 
 import com.project.bumawiki.domain.user.entity.User;
 import lombok.Getter;

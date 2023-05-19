@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.querydsl;
+package com.project.bumawiki.global.config.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AccessLevel;

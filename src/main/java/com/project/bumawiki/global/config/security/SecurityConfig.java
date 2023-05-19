@@ -1,4 +1,4 @@
-package com.project.bumawiki.global.security;
+package com.project.bumawiki.global.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.bumawiki.global.error.CustomAuthenticationEntryPoint;
