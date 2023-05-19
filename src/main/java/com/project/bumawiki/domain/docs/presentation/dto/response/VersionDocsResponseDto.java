@@ -8,16 +8,14 @@ import java.time.LocalDateTime;
 
 @Getter
 public class VersionDocsResponseDto {
-    private Long id;
-    private String contents;
-    private LocalDateTime thisVersionCreatedAt;
-    private Long userId;
-    private String nickName;
+    private final Long id;
+    private final LocalDateTime thisVersionCreatedAt;
+    private final Long userId;
+    private final String nickName;
 
-    public VersionDocsResponseDto(VersionDocs versionDocs){
+    public VersionDocsResponseDto(VersionDocs versionDocs) {
         User contributor = versionDocs.getContributor().getContributor();
         this.id = versionDocs.getId();
-        this.contents = versionDocs.getContents();
         this.thisVersionCreatedAt = versionDocs.getThisVersionCreatedAt();
         this.nickName = contributor.getNickName();
         this.userId = contributor.getId();
