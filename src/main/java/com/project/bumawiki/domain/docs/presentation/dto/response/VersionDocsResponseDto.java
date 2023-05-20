@@ -13,8 +13,7 @@ public class VersionDocsResponseDto {
     private final Long userId;
     private final String nickName;
 
-    public VersionDocsResponseDto(VersionDocs versionDocs) {
-        User contributor = versionDocs.getContributor().getContributor();
+    public VersionDocsResponseDto(VersionDocs versionDocs, User contributor) {
         this.id = versionDocs.getId();
         this.thisVersionCreatedAt = versionDocs.getThisVersionCreatedAt();
         this.nickName = contributor.getNickName();

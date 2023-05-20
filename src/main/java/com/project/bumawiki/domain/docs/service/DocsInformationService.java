@@ -63,15 +63,7 @@ public class DocsInformationService {
         Docs docs = docsRepository.findByTitle(title)
                 .orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
-        List<VersionDocsResponseDto> versionDocs = docs.getDocsVersion()
-                .stream()
-                .map(VersionDocsResponseDto::new)
-                .collect(Collectors.toList());
-
-        Collections.reverse(versionDocs);
-
-        return new VersionResponseDto(
-                new DocsResponseDto(docs), versionDocs);
+        return docsRepository.getDocsVersion(docs);
     }
 
     public List<DocsNameAndEnrollResponseDto> showDocsModifiedAtDesc(Pageable pageable) {
