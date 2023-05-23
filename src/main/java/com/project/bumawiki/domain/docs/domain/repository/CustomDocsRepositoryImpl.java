@@ -1,20 +1,18 @@
 package com.project.bumawiki.domain.docs.domain.repository;
 
-import com.project.bumawiki.domain.contribute.domain.QContribute;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.presentation.dto.response.VersionDocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.response.VersionResponseDto;
-import com.project.bumawiki.domain.user.entity.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.project.bumawiki.domain.contribute.domain.QContribute.*;
+import static com.project.bumawiki.domain.contribute.domain.QContribute.contribute;
 import static com.project.bumawiki.domain.docs.domain.QDocs.docs;
 import static com.project.bumawiki.domain.docs.domain.QVersionDocs.versionDocs;
-import static com.project.bumawiki.domain.user.entity.QUser.*;
+import static com.project.bumawiki.domain.user.entity.QUser.user;
 import static com.querydsl.core.types.Projections.constructor;
 
 @RequiredArgsConstructor
@@ -26,14 +24,14 @@ public class CustomDocsRepositoryImpl implements CustomDocsRepository {
     @Override
     public VersionResponseDto getDocsVersion(Docs findDocs) {
         List<VersionDocsResponseDto> versionDocsResponseDto = jpaQueryFactory
-                .select(constructor(VersionDocsResponseDto.class, versionDocs, versionDocs.contributor.contributor))
+                .select(constructor(VersionDocsResponseDto.class, versionDocs.id, versionDocs.thisVersionCreatedAt, user.id, user.nickName))
                 .from(docs)
-                .leftJoin(docs.docsVersion, versionDocs)
-//                .leftJoin(versionDocs, contribute.versionDocs)
-//                .leftJoin(contribute.contributor, user)
-                .where(versionDocs.docsId.eq(findDocs.getId()))
+                .join(docs.docsVersion, versionDocs)
+                .join(versionDocs.contributor, contribute)
+                .join(contribute.contributor, user)
+                .where(docs.id.eq(findDocs.getId()))
                 .distinct()
-                .orderBy(versionDocs.thisVersionCreatedAt.asc())
+                .orderBy(versionDocs.thisVersionCreatedAt.desc())
                 .fetch();
 
         return new VersionResponseDto(versionDocsResponseDto);
