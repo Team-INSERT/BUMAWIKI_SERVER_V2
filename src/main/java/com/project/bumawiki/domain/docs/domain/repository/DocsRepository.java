@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface DocsRepository extends JpaRepository<Docs, Long> {
+public interface DocsRepository extends JpaRepository<Docs, Long>, CustomDocsRepository {
 
     @Query("select d from Docs d where d.docsType = :docsType order by d.enroll")
     List<Docs> findByDocsType(@Param("docsType") DocsType docsType);

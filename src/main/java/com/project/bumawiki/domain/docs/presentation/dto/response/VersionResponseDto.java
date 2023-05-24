@@ -6,11 +6,11 @@ import java.util.List;
 
 @Getter
 public class VersionResponseDto {
-    public DocsResponseDto docsResponseDto;
+    public int length;
     public List<VersionDocsResponseDto> versionDocsResponseDto;
 
-    public VersionResponseDto(DocsResponseDto docsResponseDto, List<VersionDocsResponseDto> versionDocsResponseDto) {
-        this.docsResponseDto = docsResponseDto;
+    public VersionResponseDto(List<VersionDocsResponseDto> versionDocsResponseDto) {
+        length = versionDocsResponseDto.size();
         this.versionDocsResponseDto = versionDocsResponseDto;
     }
 }
