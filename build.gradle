@@ -9,6 +9,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.6'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+    id "org.sonarqube" version "3.5.0.2730"
 }
 
 group = 'com.project'
@@ -74,14 +75,25 @@ querydsl {
 sourceSets {
     main.java.srcDir querydslDir
 }
+
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
     querydsl.extendsFrom compileClasspath
+}
+
+//setting for sonarqube
+sonarqube {
+    properties {
+        property "sonar.projectKey", "Team-INSERT_BUMAWIKI_SERVER_V2"
+        property "sonar.organization", "team-insert"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 tasks.named('test') {
