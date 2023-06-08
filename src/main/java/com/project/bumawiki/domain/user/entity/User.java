@@ -32,7 +32,7 @@ public class User {
     @Column(length = 8)
     private Integer enroll;
 
-    @Column(length = 16)
+    @Column(length = 20)
     private String nickName;
 
     @Enumerated(EnumType.STRING)
