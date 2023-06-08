@@ -2,8 +2,6 @@ package com.project.bumawiki.domain.docs.presentation.dto.response;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
-import com.project.bumawiki.domain.user.entity.authority.Authority;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

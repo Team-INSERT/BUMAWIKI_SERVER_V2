@@ -4,8 +4,8 @@ import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.entity.authority.Authority;
+import com.project.bumawiki.domain.user.domain.User;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
 
 import java.time.LocalDateTime;
 

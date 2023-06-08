@@ -4,7 +4,7 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
 import com.project.bumawiki.domain.thumbsUp.domain.collection.DocsThumbsUps;
 import com.project.bumawiki.domain.thumbsUp.domain.collection.UserThumbsUps;
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.domain.User;
 import com.project.bumawiki.global.DataForTest;
 import com.project.bumawiki.global.error.exception.BumawikiException;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,6 @@
 package com.project.bumawiki.global.config.security.auth;
 
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.domain.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

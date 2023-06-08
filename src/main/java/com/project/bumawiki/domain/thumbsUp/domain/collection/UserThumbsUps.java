@@ -5,7 +5,7 @@ import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
 import com.project.bumawiki.domain.thumbsUp.exception.AlreadyThumbsUpexception;
 import com.project.bumawiki.domain.thumbsUp.exception.YouDontThumbsUpThisDocs;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 

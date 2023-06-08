@@ -1,8 +1,8 @@
 package com.project.bumawiki.domain.user;
 
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.entity.authority.Authority;
-import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.domain.User;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
+import com.project.bumawiki.domain.user.domain.repository.UserRepository;
 import com.project.bumawiki.domain.user.presentation.dto.UserAuthorityDto;
 import com.project.bumawiki.domain.user.service.UserAuthorityService;
 import com.project.bumawiki.global.DataForTest;

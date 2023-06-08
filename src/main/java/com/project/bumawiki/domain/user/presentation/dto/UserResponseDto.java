@@ -2,8 +2,8 @@ package com.project.bumawiki.domain.user.presentation.dto;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.contribute.dto.ContributeResponseDto;
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.entity.authority.Authority;
+import com.project.bumawiki.domain.user.domain.User;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 

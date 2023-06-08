@@ -1,10 +1,14 @@
 package com.project.bumawiki.domain.user.presentation;
 
-import com.project.bumawiki.domain.user.entity.authority.Authority;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
 import com.project.bumawiki.domain.user.presentation.dto.UserAuthorityDto;
 import com.project.bumawiki.domain.user.service.UserAuthorityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -13,8 +17,9 @@ public class UserAuthorityController {
     private final UserAuthorityService userAuthorityService;
 
     @PutMapping("/set/authority")
-    public Authority setUserAuthority(@RequestBody final UserAuthorityDto userAuthorityDto){
-        Authority execute = userAuthorityService.execute(userAuthorityDto);
-        return execute;
+    public ResponseEntity<Authority> setUserAuthority(@RequestBody final UserAuthorityDto userAuthorityDto){
+        Authority authority = userAuthorityService.execute(userAuthorityDto);
+        return ResponseEntity.ok().body(authority);
     }
+
 }

@@ -1,8 +1,10 @@
 package com.project.bumawiki.domain.user.presentation;
 
+import com.project.bumawiki.domain.user.domain.User;
 import com.project.bumawiki.domain.user.presentation.dto.UserResponseDto;
 import com.project.bumawiki.domain.user.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +20,17 @@ public class UserInfoController {
     private final UserInfoService userInfoService;
 
     @GetMapping("/user")
-    public UserResponseDto findUserInfo(){
-        return userInfoService.findMyInfo();
+    public ResponseEntity<UserResponseDto> findUserInfo(){
+        User loginUser = userInfoService.getLoginUser();
+        UserResponseDto response = new UserResponseDto(loginUser);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/user/id/{id}")
-    public UserResponseDto findAnotherUserInFo(@PathVariable Long id){
-        return userInfoService.findAnotherInfo(id);
+    public ResponseEntity<UserResponseDto> findAnotherUserInFo(@PathVariable Long id){
+        User foundUser = userInfoService.findAnotherInfo(id);
+        UserResponseDto response = new UserResponseDto(foundUser);
+        return ResponseEntity.ok().body(response);
     }
+
 }

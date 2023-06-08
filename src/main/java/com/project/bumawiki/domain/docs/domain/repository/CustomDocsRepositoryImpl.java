@@ -13,7 +13,6 @@ import static com.project.bumawiki.domain.contribute.domain.QContribute.contribu
 import static com.project.bumawiki.domain.docs.domain.QDocs.docs;
 import static com.project.bumawiki.domain.docs.domain.QVersionDocs.versionDocs;
 import static com.project.bumawiki.domain.user.entity.QUser.user;
-import static com.querydsl.core.types.Projections.constructor;
 
 @RequiredArgsConstructor
 @Repository

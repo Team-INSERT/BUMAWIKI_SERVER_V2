@@ -3,7 +3,7 @@ package com.project.bumawiki.domain.docs.service;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
 import com.project.bumawiki.domain.user.UserFacade;
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.domain.User;
 import com.project.bumawiki.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.project.bumawiki.domain.auth.service;
 
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.entity.authority.Authority;
-import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.domain.User;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
+import com.project.bumawiki.domain.user.domain.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotLoginException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import leehj050211.bsmOauth.BsmOauth;

@@ -1,7 +1,7 @@
 package com.project.bumawiki.domain.docs.presentation.dto;
 
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.domain.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

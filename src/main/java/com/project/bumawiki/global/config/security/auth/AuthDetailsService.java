@@ -1,6 +1,6 @@
 package com.project.bumawiki.global.config.security.auth;
 
-import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.domain.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import lombok.RequiredArgsConstructor;
