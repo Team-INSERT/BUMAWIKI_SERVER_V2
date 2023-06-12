@@ -11,6 +11,7 @@ import com.project.bumawiki.domain.docs.service.DocsInformationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,46 +28,46 @@ public class DocsInformationController {
     private final DocsInformationService docsInformationService;
 
     @GetMapping("/{stringDocsType}")
-    public List<DocsNameAndEnrollResponseDto> findAllByDocsType(@PathVariable String stringDocsType) {
+    public ResponseEntity<List<DocsNameAndEnrollResponseDto>> findAllByDocsType(@PathVariable String stringDocsType) {
 
         DocsType docsType = DocsType.valueOfLabel(stringDocsType);
         if (docsType == null) throw DocsTypeNotFoundException.EXCEPTION;
 
-        return docsInformationService.findByDocsType(docsType);
+        return ResponseEntity.ok(docsInformationService.findByDocsType(docsType));
     }
 
     @GetMapping("/find/all/title/{title}")
-    public List<DocsNameAndEnrollResponseDto> findAllByTitle(@PathVariable String title) {
-        return docsInformationService.findAllByTitle(title);
+    public ResponseEntity<List<DocsNameAndEnrollResponseDto>> findAllByTitle(@PathVariable String title) {
+        return ResponseEntity.ok(docsInformationService.findAllByTitle(title));
     }
 
     @GetMapping("/find/title/{title}")
-    public DocsResponseDto findById(@PathVariable String title) {
-        return docsInformationService.findDocs(title);
+    public ResponseEntity<DocsResponseDto> findById(@PathVariable String title) {
+        return ResponseEntity.ok(docsInformationService.findDocs(title));
     }
 
     @GetMapping("/find/{title}/version")
-    public VersionResponseDto showDocsVersion(@PathVariable String title) {
-        return docsInformationService.findDocsVersion(title);
+    public ResponseEntity<VersionResponseDto> showDocsVersion(@PathVariable String title) {
+        return ResponseEntity.ok(docsInformationService.findDocsVersion(title));
     }
 
     @GetMapping("/find/modified")
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable) {
-        return docsInformationService.showDocsModifiedAtDesc(pageable);
+    public ResponseEntity<List<DocsNameAndEnrollResponseDto>> showDocsModifiedTimeDesc(@PageableDefault(size = 12) Pageable pageable) {
+        return ResponseEntity.ok(docsInformationService.showDocsModifiedAtDesc(pageable));
     }
 
     @GetMapping("/find/version/{title}/different/{version}")
-    public VersionDocsDiffResponseDto showVersionDocsDiff(@PathVariable String title, @PathVariable Long version) {
-        return docsInformationService.showVersionDocsDiff(title, version);
+    public ResponseEntity<VersionDocsDiffResponseDto> showVersionDocsDiff(@PathVariable String title, @PathVariable Long version) {
+        return ResponseEntity.ok(docsInformationService.showVersionDocsDiff(title, version));
     }
 
     @GetMapping("/find/modified/all")
-    public List<DocsNameAndEnrollResponseDto> showDocsModifiedTimeDescAll() {
-        return docsInformationService.showDocsModifiedAtDescAll();
+    public ResponseEntity<List<DocsNameAndEnrollResponseDto>> showDocsModifiedTimeDescAll() {
+        return ResponseEntity.ok(docsInformationService.showDocsModifiedAtDescAll());
     }
 
     @GetMapping("/thumbs/up/get/{title}")
-    public DocsThumbsUpResponseDto getDocsThumbsUpsCount(@PathVariable String title) {
-        return docsInformationService.getDocsThumbsUpsCount(title);
+    public ResponseEntity<DocsThumbsUpResponseDto> getDocsThumbsUpsCount(@PathVariable String title) {
+        return ResponseEntity.ok(docsInformationService.getDocsThumbsUpsCount(title));
     }
 }

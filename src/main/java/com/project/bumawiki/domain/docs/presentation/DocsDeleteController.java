@@ -2,6 +2,7 @@ package com.project.bumawiki.domain.docs.presentation;
 
 import com.project.bumawiki.domain.docs.service.DocsDeleteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,7 @@ public class DocsDeleteController {
     private final DocsDeleteService docsDeleteService;
 
     @DeleteMapping("delete/{id}")
-    public Long deleteDocs(@PathVariable Long id){
-        return docsDeleteService.execute(id);
+    public ResponseEntity<Long> deleteDocs(@PathVariable Long id) {
+        return ResponseEntity.ok(docsDeleteService.execute(id));
     }
 }
