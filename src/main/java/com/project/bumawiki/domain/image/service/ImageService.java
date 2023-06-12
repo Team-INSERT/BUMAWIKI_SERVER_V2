@@ -19,9 +19,7 @@ import java.util.Random;
 
 @Service
 public class ImageService {
-    private static final String uploadPath = "/home/t/Desktop/image/";
-
-
+    private static final String uploadPath = "/home/insert/Desktop/image/";
 
     private static String getRandomStr(){
         int leftLimit = 97; // letter 'a'
@@ -41,7 +39,6 @@ public class ImageService {
         String randomStr = getRandomStr();
         String fileName = randomStr + StringUtils.cleanPath(file.getOriginalFilename());
 
-//        Path uploadPath = Paths.get("~/image/"+userName);
         Path uploadPath = Paths.get(ImageService.uploadPath+userName);
         if(!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
@@ -57,11 +54,9 @@ public class ImageService {
     }
     public ArrayList<String> GetFileUrl(MultipartFile[] files, String DocsName) throws IOException {
         ArrayList<String> ImageUrl = new ArrayList<>();
-        int i=0;
         for (MultipartFile file : files){
             String fileName = saveFile(file,DocsName);
-            ImageUrl.add("<<http://bumawiki.kro.kr/api/image/display/"+DocsName+"/"+fileName+">>");
-            i++;
+            ImageUrl.add("<<https://bumawiki.kro.kr/api/image/display/"+DocsName+"/"+fileName+">>");
         }
         return ImageUrl;
     }
@@ -77,6 +72,7 @@ public class ImageService {
                 throw NoImageException.EXCEPTION;
             }
         } catch (MalformedURLException ex) {
+            System.out.println(DocsName + "/" + fileName);
             throw NoImageException.EXCEPTION;
         }
     }

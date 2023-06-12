@@ -16,15 +16,15 @@ import java.io.IOException;
 public class ExceptionFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws IOException {
-        try{
+        try {
             filterChain.doFilter(request, response);
-        } catch(BumawikiException e){
-            writeErrorCode(response,e.getErrorCode());
+        } catch (BumawikiException e) {
+            writeErrorCode(response, e.getErrorCode());
         } catch (ExpiredJwtException e) {
             writeErrorCode(response, ErrorCode.EXPIRED_JWT);
-        } catch(JwtException e){
+        } catch (JwtException e) {
             writeErrorCode(response, ErrorCode.INVALID_TOKEN);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             writeErrorCode(response, ErrorCode.INTERNAL_SERVER_ERROR);
         }
@@ -40,6 +40,4 @@ public class ExceptionFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(errorResponse.toString());
     }
-
-
 }

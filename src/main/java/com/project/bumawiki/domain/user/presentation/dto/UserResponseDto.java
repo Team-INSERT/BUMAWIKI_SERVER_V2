@@ -2,8 +2,8 @@ package com.project.bumawiki.domain.user.presentation.dto;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.contribute.dto.ContributeResponseDto;
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.entity.authority.Authority;
+import com.project.bumawiki.domain.user.domain.User;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,6 +19,8 @@ public class UserResponseDto {
 
     private String nickName;
 
+    private String name;
+
     private Authority authority;
 
     private List<ContributeResponseDto> contributeDocs;
@@ -28,6 +30,7 @@ public class UserResponseDto {
         this.email = user.getEmail();
         this.nickName = user.getNickName();
         this.authority = user.getAuthority();
+        this.name = user.getName();
         List<Contribute> contributeDocs = getContributeReversed(user);
         this.contributeDocs = contributeDocs
                         .stream()

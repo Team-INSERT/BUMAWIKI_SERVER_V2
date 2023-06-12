@@ -1,19 +1,20 @@
 package com.project.bumawiki.global.jwt.util;
 
 import com.project.bumawiki.domain.auth.domain.repository.AuthIdRepository;
-import com.project.bumawiki.global.jwt.config.JwtProperties;
 import com.project.bumawiki.global.jwt.exception.ExpiredJwtException;
 import com.project.bumawiki.global.jwt.exception.InvalidJwtException;
-import io.jsonwebtoken.*;
+import com.project.bumawiki.global.jwt.properties.JwtProperties;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Objects;
 
-import static com.project.bumawiki.global.jwt.config.JwtConstants.*;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.AUTH_ID;
 
 @Component
 @Slf4j

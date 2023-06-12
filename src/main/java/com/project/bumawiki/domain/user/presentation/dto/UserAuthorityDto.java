@@ -1,6 +1,6 @@
 package com.project.bumawiki.domain.user.presentation.dto;
 
-import com.project.bumawiki.domain.user.entity.authority.Authority;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,4 +14,5 @@ public class UserAuthorityDto {
     private String email;
     @NotNull
     private Authority authority;
+
 }

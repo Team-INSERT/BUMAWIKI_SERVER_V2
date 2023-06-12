@@ -2,8 +2,8 @@ package com.project.bumawiki.global.jwt.util;
 
 import com.project.bumawiki.domain.auth.domain.RefreshToken;
 import com.project.bumawiki.domain.auth.domain.repository.RefreshTokenRepository;
-import com.project.bumawiki.global.jwt.config.JwtProperties;
 import com.project.bumawiki.global.jwt.dto.TokenResponseDto;
+import com.project.bumawiki.global.jwt.properties.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,12 @@ import org.springframework.stereotype.Component;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import static com.project.bumawiki.global.jwt.config.JwtConstants.*;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.ACCESS_KEY;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.AUTH_ID;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.EMPTY;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.REFRESH_KEY;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.ROLE;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.TYPE;
 
 @Slf4j
 @RequiredArgsConstructor

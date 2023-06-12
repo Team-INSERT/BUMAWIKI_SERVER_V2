@@ -6,8 +6,8 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.exception.DocsNotFoundException;
-import com.project.bumawiki.domain.user.entity.User;
-import com.project.bumawiki.domain.user.entity.repository.UserRepository;
+import com.project.bumawiki.domain.user.domain.User;
+import com.project.bumawiki.domain.user.domain.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
@@ -90,10 +90,8 @@ public class ContributeService {
 
 
     private User findUser(){
-        User user = SecurityUtil.getCurrentUser().getUser();
-        if(user == null){
-            throw UserNotFoundException.EXCEPTION;
-        }
+        User user = SecurityUtil.getCurrentUserWithLogin();
+
         return userRepository.findById(user.getId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }

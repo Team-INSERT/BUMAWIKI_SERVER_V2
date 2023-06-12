@@ -6,8 +6,8 @@ import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.facade.DocsFacade;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsCreateRequestDto;
-import com.project.bumawiki.domain.docs.presentation.dto.DocsResponseDto;
+import com.project.bumawiki.domain.docs.presentation.dto.request.DocsCreateRequestDto;
+import com.project.bumawiki.domain.docs.presentation.dto.response.DocsResponseDto;
 import com.project.bumawiki.domain.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,11 +36,12 @@ public class DocsCreateService {
         setImageUrl(docsCreateRequestDto, files);
 
         Docs docs = docsFacade.createDocs(docsCreateRequestDto);
-        VersionDocs savedVersionDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
 
+        VersionDocs savedVersionDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         Contribute contribute = contributeService.setContribute(savedVersionDocs);
 
         setVersionDocs(docs, savedVersionDocs, contribute);
+
         return new DocsResponseDto(docs);
     }
 
@@ -72,8 +73,6 @@ public class DocsCreateService {
         docsCreateRequestDto.updateContent(content);
     }
 
-
-    @Transactional
     private VersionDocs saveVersionDocs(final DocsCreateRequestDto docsCreateRequestDto, final Long id){
         return versionDocsRepository.save(
                 VersionDocs.builder()
