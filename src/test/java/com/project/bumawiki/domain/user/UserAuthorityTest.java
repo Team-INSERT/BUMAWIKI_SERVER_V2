@@ -2,7 +2,7 @@ package com.project.bumawiki.domain.user;
 
 import com.project.bumawiki.domain.user.domain.User;
 import com.project.bumawiki.domain.user.domain.authority.Authority;
-import com.project.bumawiki.domain.user.domain.repository.UserRepository;
+import com.project.bumawiki.domain.user.domain.repository.UserRepositoryMapper;
 import com.project.bumawiki.domain.user.presentation.dto.UserAuthorityDto;
 import com.project.bumawiki.domain.user.service.UserAuthorityService;
 import com.project.bumawiki.global.DataForTest;
@@ -14,29 +14,32 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserAuthorityTest {
 
-    private DataForTest dataForTest = new DataForTest();
     static User user;
+    private final DataForTest dataForTest = new DataForTest();
     @Mock
-    private UserRepository userRepository;
+    private UserRepositoryMapper userRepositoryMapper;
+
     private UserAuthorityService userBannedService;
 
+    @NotNull
+    private static UserAuthorityDto getUserAuthorityDto(Authority authority) {
+        return new UserAuthorityDto(user.getEmail(), authority);
+    }
 
     @BeforeEach
     void init() {
         user = dataForTest.getUser();
         //유저 밴 서비스 생성
-        userBannedService = new UserAuthorityService(userRepository);
+        userBannedService = new UserAuthorityService(userRepositoryMapper);
         //이 이메일로 조회시 user 반환
-        when(userRepository
-                .findByEmail("checkbanworkwell@bssm.hs.kr"))
-                .thenReturn(Optional.ofNullable(user));
+        when(userRepositoryMapper
+                .getByEmail("checkbanworkwell@bssm.hs.kr"))
+                .thenReturn(user);
     }
 
     @Test
@@ -67,11 +70,5 @@ public class UserAuthorityTest {
         Authority authority = userBannedService.execute(userAuthorityDto);
         //then
         Assertions.assertThat(authority).isEqualTo(Authority.ADMIN);
-    }
-
-    @NotNull
-    private static UserAuthorityDto getUserAuthorityDto(Authority authority) {
-        UserAuthorityDto userAuthorityDto = new UserAuthorityDto(user.getEmail(), authority);
-        return userAuthorityDto;
     }
 }
