@@ -12,7 +12,7 @@ import java.util.List;
 import static com.project.bumawiki.domain.contribute.domain.QContribute.contribute;
 import static com.project.bumawiki.domain.docs.domain.QDocs.docs;
 import static com.project.bumawiki.domain.docs.domain.QVersionDocs.versionDocs;
-import static com.project.bumawiki.domain.user.entity.QUser.user;
+import static com.project.bumawiki.domain.user.domain.QUser.*;
 import static com.querydsl.core.types.Projections.constructor;
 
 @RequiredArgsConstructor

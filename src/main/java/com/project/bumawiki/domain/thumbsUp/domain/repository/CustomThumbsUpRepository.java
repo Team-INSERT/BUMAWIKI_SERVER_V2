@@ -1,7 +1,7 @@
 package com.project.bumawiki.domain.thumbsUp.domain.repository;
 
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
-import com.project.bumawiki.domain.user.entity.User;
+import com.project.bumawiki.domain.user.domain.User;
 
 import java.util.List;
 

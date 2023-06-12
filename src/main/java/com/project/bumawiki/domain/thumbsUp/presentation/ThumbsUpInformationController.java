@@ -3,6 +3,7 @@ package com.project.bumawiki.domain.thumbsUp.presentation;
 import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.thumbsUp.service.ThumbsUpInformationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ public class ThumbsUpInformationController {
     private final ThumbsUpInformationService thumbsUpInformationService;
 
     @GetMapping("/get")
-    public List<ThumbsUpResponseDto> getThumbsUp() {
-        return thumbsUpInformationService.getThumbsUpList();
+    public ResponseEntity<List<ThumbsUpResponseDto>> getThumbsUp() {
+        return ResponseEntity.ok(thumbsUpInformationService.getThumbsUpList());
     }
 }
