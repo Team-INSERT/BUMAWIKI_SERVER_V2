@@ -13,7 +13,8 @@ public class UserInfoService {
     private final UserRepositoryMapper userRepositoryMapper;
 
     public User getLoginUser(){
-        return SecurityUtil.getCurrentUserWithLogin();
+        Long id = SecurityUtil.getCurrentUserWithLogin().getId();
+        return userRepositoryMapper.getById(id);
     }
     
     public User findAnotherInfo(Long userId){
