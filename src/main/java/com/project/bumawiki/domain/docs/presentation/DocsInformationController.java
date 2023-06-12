@@ -2,6 +2,7 @@ package com.project.bumawiki.domain.docs.presentation;
 
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.DocsTypeNotFoundException;
+import com.project.bumawiki.domain.docs.presentation.dto.TeacherResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.response.DocsNameAndEnrollResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.response.DocsResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.response.DocsThumbsUpResponseDto;
@@ -26,6 +27,12 @@ import java.util.List;
 @RequestMapping("/api/docs")
 public class DocsInformationController {
     private final DocsInformationService docsInformationService;
+
+    @GetMapping("/all/teacher")
+    public ResponseEntity<TeacherResponseDto> findAllTeacher() {
+        return ResponseEntity.ok(docsInformationService.getAllTeacher());
+    }
+
 
     @GetMapping("/{stringDocsType}")
     public ResponseEntity<List<DocsNameAndEnrollResponseDto>> findAllByDocsType(@PathVariable String stringDocsType) {
