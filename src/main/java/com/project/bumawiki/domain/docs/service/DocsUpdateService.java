@@ -9,7 +9,7 @@ import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.exception.CannotChangeYourDocsException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
-import com.project.bumawiki.domain.docs.facade.DocsFacade;
+import com.project.bumawiki.domain.docs.domain.repository.DocsRepositoryMapper;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsTitleUpdateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsTypeUpdateDto;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsUpdateRequestDto;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 @ServiceWithTransactionalReadOnly
 public class DocsUpdateService {
-    private final DocsFacade docsFacade;
+    private final DocsRepositoryMapper docsRepositoryMapper;
     private final DocsRepository docsRepository;
     private final VersionDocsRepository versionDocsRepository;
     private final ContributeService contributeService;
@@ -65,7 +65,7 @@ public class DocsUpdateService {
     @Transactional
     public DocsResponseDto titleUpdate(String title, DocsTitleUpdateRequestDto requestDto) {
 
-        docsFacade.checkTitleAlreadyExist(requestDto.getTitle());
+        docsRepositoryMapper.checkTitleAlreadyExist(requestDto.getTitle());
 
         Docs docs = findDocsByTitle(title);
         docs.updateTitle(requestDto.getTitle());

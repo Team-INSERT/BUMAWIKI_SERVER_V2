@@ -5,7 +5,7 @@ import com.project.bumawiki.domain.contribute.service.ContributeService;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
-import com.project.bumawiki.domain.docs.facade.DocsFacade;
+import com.project.bumawiki.domain.docs.domain.repository.DocsRepositoryMapper;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsCreateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.response.DocsResponseDto;
 import com.project.bumawiki.domain.image.service.ImageService;
@@ -26,16 +26,16 @@ public class DocsCreateService {
     private final VersionDocsRepository versionDocsRepository;
     private final ImageService imageService;
     private final ContributeService contributeService;
-    private final DocsFacade docsFacade;
+    private final DocsRepositoryMapper docsRepositoryMapper;
 
     @Transactional
     public DocsResponseDto execute(final DocsCreateRequestDto docsCreateRequestDto, final MultipartFile[] files) throws IOException {
 
-        docsFacade.checkTitleAlreadyExist(docsCreateRequestDto.getTitle());
+        docsRepositoryMapper.checkTitleAlreadyExist(docsCreateRequestDto.getTitle());
 
         setImageUrl(docsCreateRequestDto, files);
 
-        Docs docs = docsFacade.createDocs(docsCreateRequestDto);
+        Docs docs = docsRepositoryMapper.createDocs(docsCreateRequestDto);
 
         VersionDocs savedVersionDocs = saveVersionDocs(docsCreateRequestDto, docs.getId());
         Contribute contribute = contributeService.setContribute(savedVersionDocs);

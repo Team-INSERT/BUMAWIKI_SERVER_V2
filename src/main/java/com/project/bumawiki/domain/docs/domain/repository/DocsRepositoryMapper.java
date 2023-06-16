@@ -1,4 +1,4 @@
-package com.project.bumawiki.domain.docs.facade;
+package com.project.bumawiki.domain.docs.domain.repository;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
@@ -8,14 +8,15 @@ import com.project.bumawiki.global.error.exception.BumawikiException;
 import com.project.bumawiki.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@Component
+@Repository
 @RequiredArgsConstructor
-public class DocsFacade {
+public class DocsRepositoryMapper {
     private final DocsRepository docsRepository;
 
     public Docs findById(Long id, ErrorCode errorCode) {
