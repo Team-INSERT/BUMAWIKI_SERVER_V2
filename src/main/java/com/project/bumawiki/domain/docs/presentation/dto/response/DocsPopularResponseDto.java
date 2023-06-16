@@ -1,7 +1,6 @@
 package com.project.bumawiki.domain.docs.presentation.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.bumawiki.domain.docs.domain.repository.wrapper.DocsPopularWrapper;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 
 public class DocsPopularResponseDto {
@@ -12,12 +11,12 @@ public class DocsPopularResponseDto {
     @JsonProperty
     private final DocsType docsType;
     @JsonProperty
-    private final int thumbsUpsCounts;
+    private final long thumbsUpsCounts;
 
-    public DocsPopularResponseDto(DocsPopularWrapper docsPopularWrapper) {
-        this.title = docsPopularWrapper.getTitle();
-        this.enroll = docsPopularWrapper.getEnroll();
-        this.docsType = docsPopularWrapper.getDocsType();
-        this.thumbsUpsCounts = docsPopularWrapper.getThumbsUpCount();
+    public DocsPopularResponseDto(String title, int enroll, DocsType docsType, long thumbsUpsCounts) {
+        this.title = title;
+        this.enroll = enroll;
+        this.docsType = docsType;
+        this.thumbsUpsCounts = thumbsUpsCounts;
     }
 }

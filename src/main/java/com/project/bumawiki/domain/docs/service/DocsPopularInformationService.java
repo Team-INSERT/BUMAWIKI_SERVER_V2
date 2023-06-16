@@ -16,9 +16,6 @@ public class DocsPopularInformationService {
 
     @Transactional(readOnly = true)
     public List<DocsPopularResponseDto> getDocsByPopular() {
-        return docsRepository.findByThumbsUpsDesc()
-                .stream()
-                .map(DocsPopularResponseDto::new)
-                .collect(Collectors.toList());
+        return docsRepository.findByThumbsUpsDesc();
     }
 }
