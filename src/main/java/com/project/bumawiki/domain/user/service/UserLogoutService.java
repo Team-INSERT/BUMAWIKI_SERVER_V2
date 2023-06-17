@@ -20,16 +20,16 @@ public class UserLogoutService {
 
 
     @Transactional
-    public String execute(String bearerRefreshToken){
+    public String execute(String bearerRefreshToken) {
         String authId = jwtUtil.getJwtBody(bearerRefreshToken).get(JwtConstants.AUTH_ID.message).toString();
 
 
-                authIdRepository.findByAuthId(authId)
-                        .ifPresent(authIdRepository::delete);
+        authIdRepository.findByAuthId(authId)
+                .ifPresent(authIdRepository::delete);
 
 
-                refreshTokenRepository.findById(authId)
-                        .ifPresent(refreshTokenRepository::delete);
+        refreshTokenRepository.findById(authId)
+                .ifPresent(refreshTokenRepository::delete);
 
         SecurityContextHolder.clearContext();
 

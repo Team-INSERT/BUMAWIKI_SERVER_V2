@@ -19,7 +19,7 @@ public class AuthDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
-            new SimpleGrantedAuthority(user.getAuthority().name())
+                new SimpleGrantedAuthority(user.getAuthority().name())
         );
     }
 

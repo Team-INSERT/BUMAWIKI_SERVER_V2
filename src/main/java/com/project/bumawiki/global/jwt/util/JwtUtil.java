@@ -24,14 +24,14 @@ public class JwtUtil {
     private final JwtProperties jwtProperties;
     private final AuthIdRepository authIdRepository;
 
-    public String resolveToken(HttpServletRequest request){
+    public String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader(jwtProperties.getHeader());
 
         return parseToken(bearer);
     }
 
-    public String parseToken(String bearer){
-        if(!Objects.equals(bearer, "") && bearer != null){
+    public String parseToken(String bearer) {
+        if (!Objects.equals(bearer, "") && bearer != null) {
             String token = bearer.replaceAll(jwtProperties.getPrefix(), "").trim();
             checkingIfJwtExpired(token);
             return token;
@@ -39,23 +39,22 @@ public class JwtUtil {
         return null;
     }
 
-    public void checkingIfJwtExpired(String token){
+    public void checkingIfJwtExpired(String token) {
         String authId = getJwt(token).getBody().get(AUTH_ID.getMessage()).toString();
 
         authIdRepository.findByAuthId(authId)
                 .orElseThrow(() -> ExpiredJwtException.EXCEPTION);
     }
 
-    public Jws<Claims> getJwt(String token){
-        if(token == null){
+    public Jws<Claims> getJwt(String token) {
+        if (token == null) {
             throw InvalidJwtException.EXCEPTION;
         }
         return Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token);
     }
 
 
-
-    public Claims getJwtBody(String bearer){
+    public Claims getJwtBody(String bearer) {
         Jws<Claims> jwt = getJwt(parseToken(bearer));
         return jwt.getBody();
     }

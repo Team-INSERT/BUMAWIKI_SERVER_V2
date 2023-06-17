@@ -36,7 +36,7 @@ spring:
 decorator:
   datasource:
     p6spy:
-      enable-logging: true
+      enable-logging: false
 
 auth:
   jwt:

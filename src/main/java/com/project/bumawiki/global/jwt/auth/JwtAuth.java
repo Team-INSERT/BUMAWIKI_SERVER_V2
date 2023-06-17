@@ -18,19 +18,19 @@ public class JwtAuth {
     private final JwtUtil jwtUtil;
     private final AuthDetailsService authDetailsService;
 
-    public Authentication authentication(String token){
+    public Authentication authentication(String token) {
         Claims claims = jwtUtil.getJwt(token).getBody();
 
-        if(isNotAccessToken(token)){
+        if (isNotAccessToken(token)) {
             throw InvalidJwtException.EXCEPTION;
         }
 
         UserDetails userDetails = authDetailsService.loadUserByUsername(claims.get(JwtConstants.AUTH_ID.message).toString());
-        return new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     private boolean isNotAccessToken(String token) {
-        if(token.isEmpty()){
+        if (token.isEmpty()) {
             throw InvalidJwtException.EXCEPTION;
         }
         String role = jwtUtil.getJwt(token).getHeader().get(JwtConstants.TYPE.message).toString();

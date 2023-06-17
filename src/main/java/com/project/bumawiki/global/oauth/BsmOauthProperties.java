@@ -20,7 +20,7 @@ public class BsmOauthProperties {
     }
 
     @Bean("bsmOauth")
-    public BsmOauth bsmOauth(){
+    public BsmOauth bsmOauth() {
         return new BsmOauth(client_id, secret_key);
     }
 }

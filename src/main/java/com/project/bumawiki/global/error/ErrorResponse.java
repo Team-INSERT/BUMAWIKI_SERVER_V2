@@ -10,7 +10,7 @@ public class ErrorResponse {
     private String code;
     private String message;
 
-    public String toString(){
+    public String toString() {
         return "{\n" +
                 "\t\"status\": " + status +
                 "\n\t\"code\": " + code +

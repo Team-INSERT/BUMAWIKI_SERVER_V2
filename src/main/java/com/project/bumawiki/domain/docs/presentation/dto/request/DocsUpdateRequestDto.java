@@ -10,7 +10,7 @@ public class DocsUpdateRequestDto {
     @NotNull
     private String contents;
 
-    public DocsUpdateRequestDto updateContent(String setContent){
+    public DocsUpdateRequestDto updateContent(String setContent) {
         this.contents = setContent;
         return this;
     }

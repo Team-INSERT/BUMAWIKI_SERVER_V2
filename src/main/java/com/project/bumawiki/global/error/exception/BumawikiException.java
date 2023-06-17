@@ -5,6 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class BumawikiException extends RuntimeException{
+public class BumawikiException extends RuntimeException {
     private final ErrorCode errorCode;
 }

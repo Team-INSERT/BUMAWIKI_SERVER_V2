@@ -4,7 +4,6 @@ import com.project.bumawiki.domain.user.domain.User;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
