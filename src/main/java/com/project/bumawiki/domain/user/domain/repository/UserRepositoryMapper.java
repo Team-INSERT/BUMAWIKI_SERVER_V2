@@ -12,7 +12,6 @@ public class UserRepositoryMapper {
 
     private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
     public User getByEmail(final String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);

@@ -1,7 +1,6 @@
 package com.project.bumawiki.domain.docs.domain.repository;
 
 import com.project.bumawiki.domain.docs.domain.Docs;
-import com.project.bumawiki.domain.docs.domain.repository.wrapper.DocsPopularWrapper;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,13 +27,4 @@ public interface DocsRepository extends JpaRepository<Docs, Long>, CustomDocsRep
 
     @Query("select d from Docs d order by d.lastModifiedAt desc")
     List<Docs> findByLastModifiedAtAll();
-
-    @Query(nativeQuery = true,
-            value = "select title, enroll, docs_type as DocsType, count(thumbs_up_id) as ThumbsUpCount " +
-                    "from docs d inner join thumbs_up t " +
-                    "using (docs_id) " +
-                    "group by title, enroll, docs_type " +
-                    "order by count(thumbs_up_id) desc " +
-                    "limit 25")
-    List<DocsPopularWrapper> findByThumbsUpsDesc();
 }
