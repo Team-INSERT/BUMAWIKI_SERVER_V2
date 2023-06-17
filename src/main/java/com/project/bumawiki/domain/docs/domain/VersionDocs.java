@@ -1,20 +1,10 @@
 package com.project.bumawiki.domain.docs.domain;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -25,7 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class VersionDocs {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "version_docs_id")
     private Long id;
 
@@ -42,7 +33,7 @@ public class VersionDocs {
     @OneToOne(mappedBy = "versionDocs", cascade = CascadeType.ALL)
     private Contribute contributor;
 
-    public void updateContributor(Contribute contribute){
+    public void updateContributor(Contribute contribute) {
         this.contributor = contribute;
     }
 }

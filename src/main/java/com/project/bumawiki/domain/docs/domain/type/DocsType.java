@@ -21,10 +21,10 @@ public enum DocsType {
     NOTICE("notice"),
     READONLY("readonly");
 
-    private final String name;
-
     private static final Map<String, DocsType> BY_LABEL =
             Stream.of(values()).collect(Collectors.toMap(DocsType::getName, e -> e));
+
+    private final String name;
 
     public static DocsType valueOfLabel(String docsType) {
         return BY_LABEL.get(docsType);

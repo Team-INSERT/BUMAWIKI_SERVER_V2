@@ -17,7 +17,7 @@ public class UserAuthorityController {
     private final UserAuthorityService userAuthorityService;
 
     @PutMapping("/set/authority")
-    public ResponseEntity<Authority> setUserAuthority(@RequestBody final UserAuthorityDto userAuthorityDto){
+    public ResponseEntity<Authority> setUserAuthority(@RequestBody final UserAuthorityDto userAuthorityDto) {
         Authority authority = userAuthorityService.execute(userAuthorityDto);
         return ResponseEntity.ok().body(authority);
     }

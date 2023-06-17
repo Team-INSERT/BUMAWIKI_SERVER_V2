@@ -14,16 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
-
 @RestController
 @RequestMapping("/api/image")
 public class ImageController {
     private ImageService imageService;
 
     @Autowired
-    public void FileController(ImageService imageService){
+    public void FileController(ImageService imageService) {
         this.imageService = imageService;
     }
+
     @GetMapping("/display/{DocsName}/{fileName}")
     public ResponseEntity<Resource> displayImage(@PathVariable String fileName,
                                                  @PathVariable String DocsName,
@@ -36,12 +36,12 @@ public class ImageController {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
         }
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .header("Content-Type",contentType)
+                .header("Content-Type", contentType)
                 .body(resource);
     }
 

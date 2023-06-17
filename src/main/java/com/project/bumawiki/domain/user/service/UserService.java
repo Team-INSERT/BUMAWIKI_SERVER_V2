@@ -14,7 +14,7 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final AuthIdRepository authIdRepository;
 
-    public String checkIsLoginUser(String bearer){
+    public String checkIsLoginUser(String bearer) {
         String authId = jwtUtil.getJwtBody(bearer).get(JwtConstants.AUTH_ID.message).toString();
 
         authIdRepository.findByAuthId(authId)

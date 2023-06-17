@@ -11,14 +11,7 @@ import com.project.bumawiki.domain.docs.service.DocsUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,12 +23,12 @@ import java.io.IOException;
 public class DocsCreateUpdateController {
 
     private final DocsUpdateService docsUpdateService;
+    private final DocsCreateService docsCreateService;
 
     @PostMapping("/create")
     public ResponseEntity<DocsResponseDto> createDocs(@RequestPart DocsCreateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {
         return ResponseEntity.ok(docsCreateService.execute(request, files));
     }
-    private final DocsCreateService docsCreateService;
 
     @PutMapping("/update/{title}")
     public DocsResponseDto updateDocs(@RequestHeader("Authorization") String bearer, @PathVariable String title, @RequestPart DocsUpdateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {

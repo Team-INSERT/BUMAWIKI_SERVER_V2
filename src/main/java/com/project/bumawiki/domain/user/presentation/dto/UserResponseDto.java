@@ -25,7 +25,7 @@ public class UserResponseDto {
 
     private List<ContributeResponseDto> contributeDocs;
 
-    public UserResponseDto(User user){
+    public UserResponseDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.nickName = user.getNickName();
@@ -33,9 +33,9 @@ public class UserResponseDto {
         this.name = user.getName();
         List<Contribute> contributeDocs = getContributeReversed(user);
         this.contributeDocs = contributeDocs
-                        .stream()
-                        .map(ContributeResponseDto::new)
-                        .collect(Collectors.toList());
+                .stream()
+                .map(ContributeResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @NotNull

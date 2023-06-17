@@ -20,14 +20,14 @@ public class UserInfoController {
     private final UserInfoService userInfoService;
 
     @GetMapping("/user")
-    public ResponseEntity<UserResponseDto> findUserInfo(){
+    public ResponseEntity<UserResponseDto> findUserInfo() {
         User loginUser = userInfoService.getLoginUser();
         UserResponseDto response = new UserResponseDto(loginUser);
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/user/id/{id}")
-    public ResponseEntity<UserResponseDto> findAnotherUserInFo(@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> findAnotherUserInFo(@PathVariable Long id) {
         User foundUser = userInfoService.findAnotherInfo(id);
         UserResponseDto response = new UserResponseDto(foundUser);
         return ResponseEntity.ok().body(response);

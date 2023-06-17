@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocsDeleteService {
     private final DocsRepository docsRepository;
 
-    public Long execute(Long id){
+    public Long execute(Long id) {
         docsRepository.deleteById(id);
 
         return id;

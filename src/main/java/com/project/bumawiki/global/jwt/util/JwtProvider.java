@@ -13,12 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
-import static com.project.bumawiki.global.jwt.properties.JwtConstants.ACCESS_KEY;
-import static com.project.bumawiki.global.jwt.properties.JwtConstants.AUTH_ID;
-import static com.project.bumawiki.global.jwt.properties.JwtConstants.EMPTY;
-import static com.project.bumawiki.global.jwt.properties.JwtConstants.REFRESH_KEY;
-import static com.project.bumawiki.global.jwt.properties.JwtConstants.ROLE;
-import static com.project.bumawiki.global.jwt.properties.JwtConstants.TYPE;
+import static com.project.bumawiki.global.jwt.properties.JwtConstants.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,14 +22,14 @@ public class JwtProvider {
     private final JwtProperties jwtProperties;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public String generateAccessToken(String authId, String role){
+    public String generateAccessToken(String authId, String role) {
 
-        return jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage() ,jwtProperties.getAccessExp());
+        return jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage(), jwtProperties.getAccessExp());
     }
 
-    public TokenResponseDto generateToken(String authId, String role){
-        String accessToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage() ,jwtProperties.getAccessExp());
-        String refreshToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, REFRESH_KEY.getMessage() ,jwtProperties.getRefreshExp());
+    public TokenResponseDto generateToken(String authId, String role) {
+        String accessToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage(), jwtProperties.getAccessExp());
+        String refreshToken = jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, REFRESH_KEY.getMessage(), jwtProperties.getRefreshExp());
 
         refreshTokenRepository.save(RefreshToken.builder()
                 .id(authId)
@@ -48,8 +43,7 @@ public class JwtProvider {
     }
 
 
-
-    private String generateToken(String authId, String role, String type ,Long exp){
+    private String generateToken(String authId, String role, String type, Long exp) {
         return Jwts.builder()
                 .setHeaderParam(TYPE.message, type)
                 .claim(ROLE.getMessage(), role)
@@ -61,7 +55,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public ZonedDateTime getExpiredTime(){
+    public ZonedDateTime getExpiredTime() {
         return ZonedDateTime.now().plusSeconds(jwtProperties.getRefreshExp());
     }
 }

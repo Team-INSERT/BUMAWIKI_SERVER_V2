@@ -29,7 +29,7 @@ public class UserLoginService {
         return jwtProvider.generateToken(user.getEmail(), user.getAuthority().name());
     }
 
-    private void saveAuthId(String email){
+    private void saveAuthId(String email) {
         authIdRepository.save(
                 AuthId.builder()
                         .id(email)
