@@ -17,8 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
@@ -37,6 +40,24 @@ public class DocsInformationService {
                 .map(DocsNameAndEnrollResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+	public Map<Integer, List<DocsNameAndEnrollResponseDto>> findByEnroll(final DocsType docsType) {
+		List<Docs> allDocs = docsRepository.findByDocsType(docsType);
+
+		List<DocsNameAndEnrollResponseDto> docsList = allDocs.stream()
+			.map(DocsNameAndEnrollResponseDto::new)
+			.collect(Collectors.toList());
+
+		// TreeMap을 사용하여 enroll 값을 기준으로 정렬된 Map을 만듭니다.
+		Map<Integer, List<DocsNameAndEnrollResponseDto>> enrollMap = new TreeMap<>(Collections.reverseOrder());
+
+		// 기존의 리스트를 순회하면서 enroll 값을 기준으로 Map에 추가합니다.
+		for (DocsNameAndEnrollResponseDto doc : docsList) {
+			enrollMap.computeIfAbsent(doc.getEnroll(), k -> new ArrayList<>()).add(doc);
+		}
+
+		return enrollMap;
+	}
 
     @Transactional(readOnly = true)
     public List<DocsNameAndEnrollResponseDto> findAllByTitle(String title) {
