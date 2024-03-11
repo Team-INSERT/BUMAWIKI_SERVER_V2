@@ -29,11 +29,9 @@ public class DocsCreateService {
     private final DocsRepositoryMapper docsRepositoryMapper;
 
     @Transactional
-    public DocsResponseDto execute(final DocsCreateRequestDto docsCreateRequestDto, final MultipartFile[] files) throws IOException {
+    public DocsResponseDto execute(final DocsCreateRequestDto docsCreateRequestDto) throws IOException {
 
         docsRepositoryMapper.checkTitleAlreadyExist(docsCreateRequestDto.getTitle());
-
-        setImageUrl(docsCreateRequestDto, files);
 
         Docs docs = docsRepositoryMapper.createDocs(docsCreateRequestDto);
 

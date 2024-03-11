@@ -26,8 +26,8 @@ public class DocsCreateUpdateController {
     private final DocsCreateService docsCreateService;
 
     @PostMapping("/create")
-    public ResponseEntity<DocsResponseDto> createDocs(@RequestPart DocsCreateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {
-        return ResponseEntity.ok(docsCreateService.execute(request, files));
+    public ResponseEntity<DocsResponseDto> createDocs(@RequestBody DocsCreateRequestDto request) throws IOException {
+        return ResponseEntity.ok(docsCreateService.execute(request));
     }
 
     @PutMapping("/update/{title}")
