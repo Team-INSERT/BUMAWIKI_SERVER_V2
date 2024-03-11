@@ -31,8 +31,8 @@ public class DocsCreateUpdateController {
     }
 
     @PutMapping("/update/{title}")
-    public DocsResponseDto updateDocs(@RequestHeader("Authorization") String bearer, @PathVariable String title, @RequestPart DocsUpdateRequestDto request, @RequestPart(required = false) MultipartFile[] files) throws IOException {
-        return ResponseEntity.ok(docsUpdateService.execute(bearer, title, request, files)).getBody();
+    public DocsResponseDto updateDocs(@RequestHeader("Authorization") String bearer, @PathVariable String title, @RequestBody DocsUpdateRequestDto request) throws IOException {
+        return ResponseEntity.ok(docsUpdateService.execute(bearer, title, request)).getBody();
     }
 
     @PutMapping("/update/title/{title}")
