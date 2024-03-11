@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.docs.service;
 
+import com.project.bumawiki.domain.contribute.domain.repository.ContributeRepository;
 import com.project.bumawiki.domain.docs.domain.Docs;
 import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
@@ -10,6 +11,8 @@ import com.project.bumawiki.domain.docs.presentation.dto.ClubResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.TeacherResponseDto;
 import com.project.bumawiki.domain.docs.presentation.dto.VersionDocsSummaryDto;
 import com.project.bumawiki.domain.docs.presentation.dto.response.*;
+import com.project.bumawiki.domain.user.domain.User;
+
 import lombok.RequiredArgsConstructor;
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +35,7 @@ import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
 @Transactional(readOnly = true)
 public class DocsInformationService {
     private final DocsRepository docsRepository;
+    private final ContributeRepository contributeRepository;
 
     public List<DocsNameAndEnrollResponseDto> findByDocsType(final DocsType docsType) {
         List<Docs> allStudent = docsRepository.findByDocsType(docsType);
@@ -77,7 +81,9 @@ public class DocsInformationService {
         Docs docs = docsRepository.findByTitle(title).
                 orElseThrow(() -> DocsNotFoundException.EXCEPTION);
 
-        return new DocsResponseDto(docs);
+        List<User> contributors = contributeRepository.findUserAllByDocs(docs);
+
+        return new DocsResponseDto(docs, contributors);
     }
 
     public VersionResponseDto findDocsVersion(String title) {

@@ -26,22 +26,22 @@ public class DocsCreateUpdateController {
     private final DocsCreateService docsCreateService;
 
     @PostMapping("/create")
-    public ResponseEntity<DocsResponseDto> createDocs(@RequestBody DocsCreateRequestDto request) throws IOException {
+    public ResponseEntity<Long> createDocs(@RequestBody DocsCreateRequestDto request) throws IOException {
         return ResponseEntity.ok(docsCreateService.execute(request));
     }
 
     @PutMapping("/update/{title}")
-    public DocsResponseDto updateDocs(@RequestHeader("Authorization") String bearer, @PathVariable String title, @RequestBody DocsUpdateRequestDto request) throws IOException {
-        return ResponseEntity.ok(docsUpdateService.execute(bearer, title, request)).getBody();
+    public ResponseEntity<Long> updateDocs(@RequestHeader("Authorization") String bearer, @PathVariable String title, @RequestBody DocsUpdateRequestDto request) throws IOException {
+        return ResponseEntity.ok(docsUpdateService.execute(bearer, title, request));
     }
 
     @PutMapping("/update/title/{title}")
-    public ResponseEntity<DocsResponseDto> updateDocsTitle(@RequestBody DocsTitleUpdateRequestDto requestDto, @PathVariable String title) {
+    public ResponseEntity<Long> updateDocsTitle(@RequestBody DocsTitleUpdateRequestDto requestDto, @PathVariable String title) {
         return ResponseEntity.ok(docsUpdateService.titleUpdate(title, requestDto));
     }
 
     @PutMapping("/update/docsType")
-    public ResponseEntity<DocsResponseDto> updateDocsType(@RequestBody DocsTypeUpdateDto requestDto) {
+    public ResponseEntity<Long> updateDocsType(@RequestBody DocsTypeUpdateDto requestDto) {
         return ResponseEntity.ok(docsUpdateService.DocsTypeUpdate(requestDto));
     }
 }

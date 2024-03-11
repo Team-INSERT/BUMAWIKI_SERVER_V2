@@ -38,7 +38,7 @@ public class DocsUpdateService {
 	private final UserFacade userFacade;
 
 	@Transactional
-	public DocsResponseDto execute(String bearer, String title, DocsUpdateRequestDto docsUpdateRequestDto) throws
+	public Long execute(String bearer, String title, DocsUpdateRequestDto docsUpdateRequestDto) throws
 		IOException {
 		String authId = userService.checkIsLoginUser(bearer);
 		Docs foundDocs = findDocsByTitle(title);
@@ -49,27 +49,27 @@ public class DocsUpdateService {
 
 		setContribute(savedVersionDocs);
 
-		return new DocsResponseDto(docs);
+		return docs.getId();
 	}
 
 	@Transactional
-	public DocsResponseDto titleUpdate(String title, DocsTitleUpdateRequestDto requestDto) {
+	public Long titleUpdate(String title, DocsTitleUpdateRequestDto requestDto) {
 
 		docsRepositoryMapper.checkTitleAlreadyExist(requestDto.getTitle());
 
 		Docs docs = findDocsByTitle(title);
 		docs.updateTitle(requestDto.getTitle());
 
-		return new DocsResponseDto(docs);
+		return docs.getId();
 	}
 
 	@Transactional
-	public DocsResponseDto DocsTypeUpdate(final DocsTypeUpdateDto docsTypeUpdateDto) {
+	public Long DocsTypeUpdate(final DocsTypeUpdateDto docsTypeUpdateDto) {
 		Docs docs = docsRepository.findById(docsTypeUpdateDto.getId())
 			.orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
 
 		docs.updateDocsType(docsTypeUpdateDto.getDocsType());
-		return new DocsResponseDto(docs);
+		return docs.getId();
 	}
 
 	@NotNull
