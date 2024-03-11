@@ -66,6 +66,9 @@ dependencies {
     //querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    //aws s3
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.638'
 }
 
 //querydsl 추가

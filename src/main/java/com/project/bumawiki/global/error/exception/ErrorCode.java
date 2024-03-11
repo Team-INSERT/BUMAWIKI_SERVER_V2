@@ -9,9 +9,6 @@ import lombok.Getter;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
 
-    //Image
-    NO_IMAGE(400, "IMG-400-1", "NO Image"),
-
     //Like
     ALREADY_THUMBS_UP(400, "THUMBSUP-400-1", "Already Thumbs Up This Docs"),
     YOU_DONT_THUMBS_UP_THIS_DOCS(400, "THUMBSUP-400-2", "You Dont Thumbs Up This Docs"),
@@ -39,7 +36,12 @@ public enum ErrorCode {
     //ServerError,
     INVALID_ARGUMENT(400, "ARG-400-1", "Arg Is Not Valid"),
     BSM_AUTH_INVALID_CLIENT(500, "BSM-500-1", "Bsm Client Is Invalid"),
-    INTERNAL_SERVER_ERROR(500, "SERVER-500-1", "Internal Server Error");
+    INTERNAL_SERVER_ERROR(500, "SERVER-500-1", "Internal Server Error"),
+
+    //Image
+    NO_IMAGE(400, "IMG-400-1", "NO Image"),
+    IMAGE_NOT_FOUND_EXCEPTION(404, "IMG-404-1", "Image Not Found"),
+    S3_SAVE_EXCEPTION(500,"IMG-500-1" , "S3 Save Exception");
 
     private final int status;
     private final String code;

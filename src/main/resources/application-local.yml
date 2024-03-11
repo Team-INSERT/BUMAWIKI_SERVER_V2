@@ -54,5 +54,12 @@ bsm:
 image:
   path: ${SAVING_URL}
 
+#S3
+aws:
+  s3:
+    bucket: ${S3_BUCKET}
+    access-key: ${S3_ACCESSKEY}
+    secret-key: ${S3_SECRET}
+
 server:
   port: 8080
