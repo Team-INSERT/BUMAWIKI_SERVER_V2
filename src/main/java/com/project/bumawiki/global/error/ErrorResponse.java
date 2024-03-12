@@ -11,10 +11,10 @@ public class ErrorResponse {
     private String message;
 
     public String toString() {
-        return "{\n" +
-                "\t\"status\": " + status +
-                "\n\t\"code\": " + code +
-                "\n\t\"message\": " + message +
-                "\n}";
+        return "{" +
+                "\n\t\"status\": " + status + "," +
+                "\n\t\"code\": \" " + code + "\"," +
+                "\n\t\"message\": \" " + message + "\""
+                \n}";
     }
 }
