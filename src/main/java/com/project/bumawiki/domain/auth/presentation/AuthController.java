@@ -26,12 +26,12 @@ public class AuthController {
     }
 
     @DeleteMapping("/bsm/logout")
-    public ResponseEntity<String> userLogout(@RequestHeader("refresh_token") String refreshToken) {
+    public ResponseEntity<String> userLogout(@RequestHeader("refreshToken") String refreshToken) {
         return ResponseEntity.ok(userLogoutService.execute(refreshToken));
     }
 
     @PutMapping("/refresh/access")
-    public TokenResponseDto refreshAccessToken(@RequestHeader("refresh_token") String refreshToken) {
+        public TokenResponseDto refreshAccessToken(@RequestHeader("refreshToken") String refreshToken) {
         return ResponseEntity.ok(accessTokenRefreshService.execute(refreshToken)).getBody();
     }
 }
