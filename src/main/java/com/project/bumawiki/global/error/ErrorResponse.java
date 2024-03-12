@@ -14,7 +14,7 @@ public class ErrorResponse {
         return "{" +
                 "\n\t\"status\": " + status + "," +
                 "\n\t\"code\": \" " + code + "\"," +
-                "\n\t\"message\": \" " + message + "\""
-                \n}";
+                "\n\t\"message\": \" " + message + "\"" +
+                "\n}";
     }
 }
