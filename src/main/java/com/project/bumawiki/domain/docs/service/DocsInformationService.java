@@ -25,6 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch.Diff;
@@ -45,7 +47,7 @@ public class DocsInformationService {
                 .collect(Collectors.toList());
     }
 
-	public Map<Integer, List<DocsNameAndEnrollResponseDto>> findByEnroll(final DocsType docsType) {
+	public Map<Integer, List<DocsNameAndEnrollResponseDto>> findByDocsTypeOrderByEnroll(final DocsType docsType) {
 		List<Docs> allDocs = docsRepository.findByDocsType(docsType);
 
 		List<DocsNameAndEnrollResponseDto> docsList = allDocs.stream()

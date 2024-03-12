@@ -51,7 +51,7 @@ public class DocsInformationController {
 			throw DocsTypeNotFoundException.EXCEPTION;
 		}
 
-		return ResponseEntity.ok(DocsTypeDto.from(docsInformationService.findByEnroll(docsType)));
+		return ResponseEntity.ok(DocsTypeDto.from(docsInformationService.findByDocsTypeOrderByEnroll(docsType)));
 	}
 
 	@GetMapping("/find/all/title/{title}")
