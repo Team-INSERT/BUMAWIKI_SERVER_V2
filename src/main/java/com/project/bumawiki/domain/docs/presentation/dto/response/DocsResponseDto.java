@@ -21,6 +21,7 @@ public class DocsResponseDto {
 	private final DocsType docsType;
 	private final LocalDateTime lastModifiedAt;
 	private final int enroll;
+	private final boolean isDocsDetail;
 	private final List<SimpleUserDto> contributors;
 
 	public DocsResponseDto(Docs docs, List<User> contributors) {
@@ -33,6 +34,7 @@ public class DocsResponseDto {
 		this.lastModifiedAt = docs.getLastModifiedAt();
 		this.docsType = docs.getDocsType();
 		this.enroll = docs.getEnroll();
+		this.isDocsDetail = true;
 		this.contributors = contributors.stream()
 			.map(SimpleUserDto::new)
 			.collect(Collectors.toList());
