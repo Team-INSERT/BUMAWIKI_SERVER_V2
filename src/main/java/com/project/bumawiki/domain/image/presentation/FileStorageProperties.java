@@ -1,18 +1,14 @@
 package com.project.bumawiki.domain.image.presentation;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
-@ConstructorBinding
+@Getter
+@RequiredArgsConstructor
 @ConfigurationProperties(prefix = "image")
 public class FileStorageProperties {
-    private String path;
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
+    private final String path;
 }
