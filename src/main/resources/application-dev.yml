@@ -22,7 +22,7 @@ spring:
   jpa:
     database: mysql
 
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     generate-ddl: true
     hibernate:
       ddl-auto: update

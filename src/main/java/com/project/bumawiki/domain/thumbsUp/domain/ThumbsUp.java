@@ -5,7 +5,7 @@ import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto
 import com.project.bumawiki.domain.user.domain.User;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
