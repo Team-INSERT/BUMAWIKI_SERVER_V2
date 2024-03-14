@@ -4,5 +4,21 @@ import java.time.LocalDateTime;
 
 import lombok.Getter;
 
-public record VersionDocsResponseDto(Long id, LocalDateTime thisVersionCreatedAt, Long userId, String nickName) {
+@Getter
+public final class VersionDocsResponseDto {
+	private int index;
+	private final LocalDateTime thisVersionCreatedAt;
+	private final Long userId;
+	private final String nickName;
+
+	public VersionDocsResponseDto(LocalDateTime thisVersionCreatedAt, Long userId, String nickName) {
+		this.thisVersionCreatedAt = thisVersionCreatedAt;
+		this.userId = userId;
+		this.nickName = nickName;
+	}
+
+	public void updateIndex(int index) {
+		this.index = index;
+	}
+
 }
