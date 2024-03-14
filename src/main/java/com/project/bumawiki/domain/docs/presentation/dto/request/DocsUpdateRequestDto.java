@@ -2,7 +2,7 @@ package com.project.bumawiki.domain.docs.presentation.dto.request;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @Getter
 public class DocsUpdateRequestDto {

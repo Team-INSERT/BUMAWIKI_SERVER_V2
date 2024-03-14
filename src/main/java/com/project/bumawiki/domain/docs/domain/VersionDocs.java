@@ -1,15 +1,12 @@
 package com.project.bumawiki.domain.docs.domain;
 
-import java.time.LocalDateTime;
+import com.project.bumawiki.domain.contribute.domain.Contribute;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -28,25 +25,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class VersionDocs {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "version_docs_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "version_docs_id")
+    private Long id;
 
-	@NotNull
-	private Long docsId;
+    @NotNull
+    private Long docsId;
 
-	@Column(columnDefinition = "TEXT")
-	@NotNull
-	private String contents;
+    @Column(columnDefinition = "TEXT")
+    @NotNull
+    private String contents;
 
-	@CreatedDate
-	private LocalDateTime thisVersionCreatedAt;
+    @CreatedDate
+    private LocalDateTime thisVersionCreatedAt;
 
-	@OneToOne(mappedBy = "versionDocs", cascade = CascadeType.ALL)
-	private Contribute contributor;
+    @OneToOne(mappedBy = "versionDocs", cascade = CascadeType.ALL)
+    private Contribute contributor;
 
-	public void updateContributor(Contribute contribute) {
-		this.contributor = contribute;
-	}
+    public void updateContributor(Contribute contribute) {
+        this.contributor = contribute;
+    }
 }

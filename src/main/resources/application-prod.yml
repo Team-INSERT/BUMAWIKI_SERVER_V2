@@ -9,9 +9,10 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-  redis:
-    port: 6379
-    host: localhost
+  data:
+    redis:
+      port: 6379
+      host: localhost
 
   logging:
     level:
@@ -22,7 +23,7 @@ spring:
   jpa:
     database: mysql
 
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     generate-ddl: true
     hibernate:
       ddl-auto: none

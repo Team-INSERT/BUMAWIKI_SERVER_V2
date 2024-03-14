@@ -8,7 +8,7 @@ import com.project.bumawiki.domain.user.domain.User;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,11 @@ public class Docs {
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<VersionDocs> docsVersion = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
     private List<Contribute> contributor = new ArrayList<>();
 

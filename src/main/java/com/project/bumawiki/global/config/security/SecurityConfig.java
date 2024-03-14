@@ -1,19 +1,27 @@
 package com.project.bumawiki.global.config.security;
 
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.bumawiki.global.error.CustomAuthenticationEntryPoint;
+import com.project.bumawiki.global.error.ExceptionFilter;
 import com.project.bumawiki.global.jwt.auth.JwtAuth;
+import com.project.bumawiki.global.jwt.auth.JwtFilter;
 import com.project.bumawiki.global.jwt.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
-
-import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -26,35 +34,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
-                .csrf().disable()
-                .formLogin().disable()
-                .cors()
-
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                .and()
-                .authorizeRequests()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                //user
-                .antMatchers(PUT, "/api/set/authority").hasAuthority("ADMIN")
-                //docs
-                .antMatchers(POST, "/api/docs/create").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(PUT, "/api/docs/update/**").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(DELETE, "/api/docs/delete/**").hasAuthority("ADMIN")
-                .antMatchers(PUT, "/api/docs/update/title/**").hasAuthority("ADMIN")
-                .antMatchers(PUT, "/api/docs/update/docsType").hasAuthority("ADMIN")
-                //thumbsUp
-                .antMatchers(POST, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(DELETE, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers(GET, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
-                .anyRequest().permitAll()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
-                .and()
-                .apply(new FilterConfig(jwtUtil, jwtAuth));
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .sessionManagement(
+                        (sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                        .requestMatchers(POST, "/api/docs/create").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(PUT, "/api/docs/update/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(DELETE, "/api/docs/delete/**").hasAuthority("ADMIN")
+                        .requestMatchers(PUT, "/api/docs/update/title/**").hasAuthority("ADMIN")
+                        .requestMatchers(PUT, "/api/docs/update/docsType").hasAuthority("ADMIN")
+                        //thumbsUp
+                        .requestMatchers(POST, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(DELETE, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(GET, "/api/thumbs/up").hasAnyAuthority("USER", "ADMIN")
+                        .anyRequest().permitAll()
+                )
+                .exceptionHandling(exceptionHandler -> exceptionHandler.authenticationEntryPoint(
+                        new CustomAuthenticationEntryPoint(objectMapper)))
+                .addFilterBefore(new JwtFilter(jwtAuth, jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionFilter(), JwtFilter.class);
 
         return http.build();
     }

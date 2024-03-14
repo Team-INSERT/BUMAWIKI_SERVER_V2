@@ -4,7 +4,7 @@ import com.project.bumawiki.domain.user.domain.authority.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
