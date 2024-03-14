@@ -40,7 +40,7 @@ public class JwtUtil {
     }
 
     public void checkingIfJwtExpired(String token) {
-        String authId = getJwt(token).getBody().get(AUTH_ID.getMessage()).toString();
+        String authId = getJwt(token).getPayload().get(AUTH_ID.getMessage()).toString();
 
         authIdRepository.findByAuthId(authId)
                 .orElseThrow(() -> ExpiredJwtException.EXCEPTION);
@@ -50,12 +50,12 @@ public class JwtUtil {
         if (token == null) {
             throw InvalidJwtException.EXCEPTION;
         }
-        return Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token);
+        return Jwts.parser().verifyWith(jwtProperties.getSecret()).build().parseSignedClaims(token);
     }
 
 
     public Claims getJwtBody(String bearer) {
         Jws<Claims> jwt = getJwt(parseToken(bearer));
-        return jwt.getBody();
+        return jwt.getPayload();
     }
 }

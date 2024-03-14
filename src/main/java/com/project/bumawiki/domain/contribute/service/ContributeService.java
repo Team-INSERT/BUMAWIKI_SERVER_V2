@@ -11,8 +11,8 @@ import com.project.bumawiki.domain.user.domain.repository.UserRepository;
 import com.project.bumawiki.domain.user.exception.UserNotFoundException;
 import com.project.bumawiki.global.annotation.ServiceWithTransactionalReadOnly;
 import com.project.bumawiki.global.util.SecurityUtil;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;

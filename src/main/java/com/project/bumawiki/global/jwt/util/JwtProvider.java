@@ -23,7 +23,6 @@ public class JwtProvider {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public String generateAccessToken(String authId, String role) {
-
         return jwtProperties.getPrefix() + EMPTY.getMessage() + generateToken(authId, role, ACCESS_KEY.getMessage(), jwtProperties.getAccessExp());
     }
 
@@ -45,11 +44,12 @@ public class JwtProvider {
 
     private String generateToken(String authId, String role, String type, Long exp) {
         return Jwts.builder()
-                .setHeaderParam(TYPE.message, type)
+                .header()
+                    .add(TYPE.message, type).and()
                 .claim(ROLE.getMessage(), role)
                 .claim(AUTH_ID.getMessage(), authId)
-                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
-                .setExpiration(
+                .signWith(jwtProperties.getSecret())
+                .expiration(
                         new Date(System.currentTimeMillis() + exp * 1000)
                 )
                 .compact();

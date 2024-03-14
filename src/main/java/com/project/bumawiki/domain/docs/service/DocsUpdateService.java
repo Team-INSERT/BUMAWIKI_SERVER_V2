@@ -1,9 +1,9 @@
 package com.project.bumawiki.domain.docs.service;
 
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;

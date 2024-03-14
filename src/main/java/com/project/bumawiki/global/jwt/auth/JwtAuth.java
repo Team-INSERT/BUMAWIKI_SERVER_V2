@@ -19,7 +19,7 @@ public class JwtAuth {
     private final AuthDetailsService authDetailsService;
 
     public Authentication authentication(String token) {
-        Claims claims = jwtUtil.getJwt(token).getBody();
+        Claims claims = jwtUtil.getJwt(token).getPayload();
 
         if (isNotAccessToken(token)) {
             throw InvalidJwtException.EXCEPTION;

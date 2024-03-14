@@ -4,8 +4,8 @@ import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.contribute.dto.ContributeResponseDto;
 import com.project.bumawiki.domain.user.domain.User;
 import com.project.bumawiki.domain.user.domain.authority.Authority;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;

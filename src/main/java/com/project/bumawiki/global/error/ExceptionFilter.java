@@ -4,7 +4,7 @@ import com.project.bumawiki.global.error.exception.BumawikiException;
 import com.project.bumawiki.global.error.exception.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
