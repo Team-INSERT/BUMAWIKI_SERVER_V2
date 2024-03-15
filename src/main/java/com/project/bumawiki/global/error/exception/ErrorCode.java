@@ -41,7 +41,19 @@ public enum ErrorCode {
     //Image
     NO_IMAGE(400, "IMG-400-1", "NO Image"),
     IMAGE_NOT_FOUND_EXCEPTION(404, "IMG-404-1", "Image Not Found"),
-    S3_SAVE_EXCEPTION(500,"IMG-500-1" , "S3 Save Exception");
+    S3_SAVE_EXCEPTION(500,"IMG-500-1" , "S3 Save Exception"),
+
+    //coin
+    MONEY_NOT_ENOUGH(400, "COIN-400-1", "Money Is Not Enough"),
+    COIN_NOT_ENOUGH(400,"COIN-400-2" , "Coin Is Not Enough"),
+    TRADE_ALREADY_FINISHED(400, "COIN-400-3", "Trade Already Finished"),
+    ALREADY_AWARDED(400, "COIN-400-4", "Already Awarded"),
+    ALREADY_CREATED(401, "COIN-401-1", "Account Already Created"),
+    CANCEL_OTHERS_TRADE(403,"COIN-403-1" , "Cancel Others Trade"),
+    COIN_ACCOUNT_NOT_FOUND_EXCEPTION(404, "COIN-404-1", "Coin Account Not Found"),
+    PRICE_NOT_FOUND(404, "COIN-404-2", "Price Not Found"),
+    TRADE_NOT_FOUND(404, "COIN-404-3", "Trade Not Found"),
+    RANDOM_INSTANCE(500, "COIN-500-1", "Random Instance Create Exception");
 
     private final int status;
     private final String code;
