@@ -48,7 +48,7 @@ public class DocsInformationController {
 
 		DocsType docsType = DocsType.valueOfLabel(stringDocsType);
 		if (docsType == null) {
-			System.out.println(docsType.name());
+			System.out.println(stringDocsType);
 			throw DocsTypeNotFoundException.EXCEPTION;
 		}
 
