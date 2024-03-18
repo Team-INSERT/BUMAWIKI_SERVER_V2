@@ -1,0 +1,26 @@
+package com.project.bumawiki.domain.coin.domain.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.project.bumawiki.domain.coin.domain.Price;
+import com.project.bumawiki.domain.coin.exception.PriceNotFoundException;
+
+public interface PriceRepository extends JpaRepository<Price, Long> {
+
+	@Query(value = "select * from price p order by p.started_time desc LIMIT 1", nativeQuery = true)
+	Optional<Price> findTopOrderByStartedTime();
+
+	@Query("select p from Price p order by p.startedTime")
+	List<Price> findAllByOrderByStartedTime();
+
+	default Price getRecentPrice() {
+		return findTopOrderByStartedTime()
+			.orElseThrow(
+				PriceNotFoundException::new
+			);
+	}
+}
