@@ -10,8 +10,6 @@ public class DocsUpdateRequestDto {
     @NotNull
     private String contents;
 
-    public DocsUpdateRequestDto updateContent(String setContent) {
-        this.contents = setContent;
-        return this;
-    }
+    @NotNull(message = "업데이트할 문서의 버전이 전달되지 않았습니다.")
+    private int updatingVersion;
 }
