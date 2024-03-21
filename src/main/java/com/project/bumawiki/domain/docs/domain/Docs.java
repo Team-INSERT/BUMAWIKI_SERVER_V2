@@ -2,6 +2,7 @@ package com.project.bumawiki.domain.docs.domain;
 
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
+import com.project.bumawiki.domain.docs.domain.type.Status;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
 import com.project.bumawiki.domain.thumbsUp.domain.collection.DocsThumbsUps;
 import com.project.bumawiki.domain.user.domain.User;
@@ -49,6 +50,11 @@ public class Docs {
     @Builder.Default
     private DocsThumbsUps docsThumbsUp = new DocsThumbsUps();
 
+    private int lastVersion;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public void updateDocsType(DocsType docsType) {
         this.docsType = docsType;
     }
@@ -90,5 +96,13 @@ public class Docs {
             return 0;
         }
         return docsThumbsUp.getThumbsUpsCount();
+    }
+
+    public void updateLatestVersion(int version) {
+        this.lastVersion = version;
+    }
+
+    public void updateStatus(Status status) {
+        this.status = status;
     }
 }
