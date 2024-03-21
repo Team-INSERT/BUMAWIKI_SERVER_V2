@@ -45,7 +45,8 @@ public class DocsUpdateService {
 		if (foundDocs.getStatus() == Status.CONFLICTED) {
 			throw new DocsConflictedException();
 		}
-		VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId(), foundDocs.getLastVersion());
+		VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId(),
+			foundDocs.getLastVersion());
 		Docs docs;
 
 		if (foundDocs.getLastVersion() != docsUpdateRequestDto.getUpdatingVersion()) {
