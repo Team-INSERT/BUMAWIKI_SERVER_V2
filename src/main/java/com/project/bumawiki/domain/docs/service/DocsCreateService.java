@@ -16,7 +16,6 @@ import com.project.bumawiki.domain.docs.domain.VersionDocs;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepositoryMapper;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsCreateRequestDto;
-import com.project.bumawiki.domain.docs.presentation.dto.response.DocsResponseDto;
 import com.project.bumawiki.domain.image.service.ImageService;
 
 import lombok.RequiredArgsConstructor;
@@ -81,6 +80,7 @@ public class DocsCreateService {
 				.docsId(id)
 				.contents(docsCreateRequestDto.getContents())
 				.thisVersionCreatedAt(LocalDateTime.now())
+				.version(1)
 				.build()
 		);
 	}

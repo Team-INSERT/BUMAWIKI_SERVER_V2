@@ -1,7 +1,5 @@
 package com.project.bumawiki.domain.docs.service;
 
-import jakarta.validation.constraints.NotNull;
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +12,13 @@ import com.project.bumawiki.domain.docs.domain.repository.DocsRepository;
 import com.project.bumawiki.domain.docs.domain.repository.DocsRepositoryMapper;
 import com.project.bumawiki.domain.docs.domain.repository.VersionDocsRepository;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
+import com.project.bumawiki.domain.docs.domain.type.Status;
 import com.project.bumawiki.domain.docs.exception.CannotChangeYourDocsException;
+import com.project.bumawiki.domain.docs.exception.DocsConflictedException;
 import com.project.bumawiki.domain.docs.exception.NoUpdatableDocsException;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsTitleUpdateRequestDto;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsTypeUpdateDto;
 import com.project.bumawiki.domain.docs.presentation.dto.request.DocsUpdateRequestDto;
-import com.project.bumawiki.domain.docs.presentation.dto.response.DocsResponseDto;
 import com.project.bumawiki.domain.user.UserFacade;
 import com.project.bumawiki.domain.user.domain.User;
 import com.project.bumawiki.domain.user.service.UserService;
@@ -38,14 +37,22 @@ public class DocsUpdateService {
 	private final UserFacade userFacade;
 
 	@Transactional
-	public Long execute(String bearer, String title, DocsUpdateRequestDto docsUpdateRequestDto) throws
-		IOException {
+	public Long execute(String bearer, String title, DocsUpdateRequestDto docsUpdateRequestDto) {
 		String authId = userService.checkIsLoginUser(bearer);
 		Docs foundDocs = findDocsByTitle(title);
 		validate(authId, foundDocs);
 
-		VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId());
-		Docs docs = setVersionDocs(savedVersionDocs);
+		if (foundDocs.getStatus() == Status.CONFLICTED) {
+			throw new DocsConflictedException();
+		}
+		VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId(), foundDocs.getLastVersion());
+		Docs docs;
+
+		if (foundDocs.getLastVersion() != docsUpdateRequestDto.getUpdatingVersion()) {
+			docs = setVersionDocs(savedVersionDocs, Status.CONFLICTED);
+		} else {
+			docs = setVersionDocs(savedVersionDocs, Status.GOOD);
+		}
 
 		setContribute(savedVersionDocs);
 
@@ -72,11 +79,22 @@ public class DocsUpdateService {
 		return docs.getId();
 	}
 
-	@NotNull
-	private Docs setVersionDocs(VersionDocs savedVersionDocs) {
+	private Docs setVersionDocs(VersionDocs savedVersionDocs, Status status) {
 		Docs docs = setVersionDocsToDocs(savedVersionDocs);
+		docs.updateStatus(status);
 		docs.setModifiedTime(savedVersionDocs.getThisVersionCreatedAt());
 		return docs;
+	}
+
+	private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, Long docsId, int lastVersion) {
+		return versionDocsRepository.save(
+			VersionDocs.builder()
+				.docsId(docsId)
+				.thisVersionCreatedAt(LocalDateTime.now())
+				.contents(docsUpdateRequestDto.getContents())
+				.version(lastVersion + 1)
+				.build()
+		);
 	}
 
 	private void setContribute(VersionDocs savedVersionDocs) {
@@ -92,16 +110,6 @@ public class DocsUpdateService {
 	private void validate(String authId, Docs foundDocs) {
 		updateDocsOneself(foundDocs.getTitle(), foundDocs.getEnroll(), authId, foundDocs.getDocsType());
 		updateReadOnlyDocs(foundDocs.getDocsType());
-	}
-
-	private VersionDocs saveVersionDocs(DocsUpdateRequestDto docsUpdateRequestDto, Long docsId) {
-		return versionDocsRepository.save(
-			VersionDocs.builder()
-				.docsId(docsId)
-				.thisVersionCreatedAt(LocalDateTime.now())
-				.contents(docsUpdateRequestDto.getContents())
-				.build()
-		);
 	}
 
 	private void updateDocsOneself(String title, Integer enroll, String authId, DocsType docsType) {
@@ -129,6 +137,7 @@ public class DocsUpdateService {
 		Docs docs = docsRepository.findById(versionDocs.getDocsId())
 			.orElseThrow(() -> NoUpdatableDocsException.EXCEPTION);
 
+		docs.updateLatestVersion(versionDocs.getVersion());
 		docs.getDocsVersion().add(versionDocs);
 
 		return docs;
