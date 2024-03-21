@@ -15,12 +15,15 @@ public enum ErrorCode {
     NO_DOCS_YOU_THUMBS_UP(404, "THUMBSUP-404-1", "좋아요를 누르려는 문서가 없습니다."),
 
     //Docs
+    DOCS_IS_NOT_CONFLICTED(400, "DOCS-400-1", "문서가 충돌나지 않았습니다."),
+    DOCS_CONFLICTED(400, "DOCS-400-2", "문서가 충돌 상태이기 때문에 수정할 수 없습니다."),
     NO_UPDATABLE_DOCS(403, "DOCS-403-1", "없데이트 하려고 하는 문서가 없습니다."),
     POST_TITLE_ALREADY_EXIST(403, "DOCS-403-1", "같은 제목의 문서가 이미 존재합니다."),
     CANNOT_CHANGE_YOUR_DOCS(403, "DOCS-403-2", "본인의 문서는 수정할 수 없습니다."),
     DOCS_NOT_FOUND(404, "DOCS-404-2", "문서를 조회할 수 없습니다."),
     DOCS_TYPE_NOT_FOUND(404, "DOCS-404-3", "문서 타입이 존재하지 않습니다."),
     VERSION_NOT_EXIST(404, "DOCS-404-4", "문서 버전이 존재하지 않습니다."),
+    NO_SUCH_VERSION(404, "DOCS-404-5", "문서 버전이 존재하지 않습니다."),
 
     FORBIDDEN(403, "COMMON-403-1", "Forbidden"),
 
@@ -38,12 +41,12 @@ public enum ErrorCode {
     BSM_AUTH_INVALID_CLIENT(500, "BSM-500-1", "Bsm Client Is Invalid"),
     INTERNAL_SERVER_ERROR(500, "SERVER-500-1", "Internal Server Error"),
 
-    //Image
+    //Image,
     NO_IMAGE(400, "IMG-400-1", "이미지가 없습니다."),
     IMAGE_NOT_FOUND_EXCEPTION(404, "IMG-404-1", "이미지를 조회할 수 없습니다."),
     S3_SAVE_EXCEPTION(500,"IMG-500-1" , "S3 Save Exception"),
 
-    //coin
+    //coin,
     MONEY_NOT_ENOUGH(400, "COIN-400-1", "돈이 충분하지 않습니다."),
     COIN_NOT_ENOUGH(400,"COIN-400-2" , "코인이 충분하지 않습니다."),
     TRADE_ALREADY_FINISHED(400, "COIN-400-3", "거래가 이미 종료되었습니다."),
