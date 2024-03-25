@@ -31,7 +31,7 @@ public class PriceScheduler {
 
 		Price recentPrice = priceRepository.getRecentPrice();
 		int max = recentPrice.getPrice() + CHANGE_MONEY_RANGE;
-		int min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 0);
+		int min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 20000);
 
 		SecureRandom random = getRandomInstance();
 		int randomPrice = random.nextInt(max - min + 1) + min;
