@@ -1,5 +1,6 @@
 package com.project.bumawiki.domain.coin.domain.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +24,7 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
 				PriceNotFoundException::new
 			);
 	}
+
+	@Query("select p from Price p where p.startedTime >= :twoWeeksAgo order by p.startedTime asc")
+	List<Price> findAllAfterStartedTime(LocalDateTime twoWeeksAgo);
 }

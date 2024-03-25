@@ -1,8 +1,11 @@
 package com.project.bumawiki.domain.coin.domain.repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.project.bumawiki.domain.coin.domain.CoinAccount;
 import com.project.bumawiki.domain.coin.exception.CoinAccountNotFoundException;
@@ -22,4 +25,6 @@ public interface CoinAccountRepository extends JpaRepository<CoinAccount, Long> 
 			.orElseThrow(CoinAccountNotFoundException::new);
 	}
 
+	@Query(value = "select c from CoinAccount c order by c.money + c.coin * :price desc, c.gotMoney asc")
+	List<CoinAccount> getRanking(Pageable pageable, Long price);
 }

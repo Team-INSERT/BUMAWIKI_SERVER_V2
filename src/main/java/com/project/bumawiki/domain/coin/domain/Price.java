@@ -16,11 +16,11 @@ public class Price {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private int price;
+	private Long price;
 
 	private LocalDateTime startedTime;
 
-	public Price(int price) {
+	public Price(Long price) {
 		this.price = price;
 		startedTime = LocalDateTime.now();
 	}
