@@ -90,4 +90,9 @@ public class CoinController {
 	public List<RankingResponse> getRanking(@PageableDefault Pageable pageable) {
 		return coinService.getRanking(pageable);
 	}
+
+	@GetMapping("/prices")
+	public PriceResponse getRecentPrice() {
+		return PriceResponse.from(coinService.getRecentPrice());
+	}
 }

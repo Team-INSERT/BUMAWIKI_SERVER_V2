@@ -194,4 +194,8 @@ public class CoinService {
 				)
 			).toList();
 	}
+
+	public Price getRecentPrice() {
+		return priceRepository.getRecentPrice();
+	}
 }
