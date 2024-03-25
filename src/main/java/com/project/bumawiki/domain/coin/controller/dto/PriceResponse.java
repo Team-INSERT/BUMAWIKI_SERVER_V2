@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.project.bumawiki.domain.coin.domain.Price;
 
 public record PriceResponse(
-	int price,
+	Long price,
 	LocalDateTime startedTime
 ) {
 	public static PriceResponse from(Price price) {

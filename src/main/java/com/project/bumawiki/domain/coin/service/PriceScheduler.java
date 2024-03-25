@@ -27,14 +27,14 @@ public class PriceScheduler {
 
 	@Scheduled(fixedRate = 300000)
 	void changePrice() {
-		int CHANGE_MONEY_RANGE = 200000;
+		Long CHANGE_MONEY_RANGE = 200000L;
 
 		Price recentPrice = priceRepository.getRecentPrice();
-		int max = recentPrice.getPrice() + CHANGE_MONEY_RANGE;
-		int min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 20000);
+		Long max = recentPrice.getPrice() + CHANGE_MONEY_RANGE;
+		Long min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 20000L);
 
 		SecureRandom random = getRandomInstance();
-		int randomPrice = random.nextInt(max - min + 1) + min;
+		Long randomPrice = random.nextLong(max - min + 1L) + min;
 		Price newPrice = new Price(randomPrice - randomPrice % 100);
 
 		priceRepository.save(newPrice);

@@ -54,6 +54,7 @@ public enum ErrorCode {
     ALREADY_CREATED(401, "COIN-401-1", "코인 지갑이 이미 생성되었습니다."),
     CANCEL_OTHERS_TRADE(403,"COIN-403-1" , "다른 사람의 거래를 취소할 수 없습니다."),
     COIN_ACCOUNT_NOT_FOUND_EXCEPTION(404, "COIN-404-1", "코인 계정을 찾을 수 없습니다."),
+    NO_PERIOD(404, "COIN-404-2", "기간이 없습니다."),
     PRICE_NOT_FOUND(404, "COIN-404-2", "가격을 찾을 수 없습니다."),
     TRADE_NOT_FOUND(404, "COIN-404-3", "거래를 조회할 수 없습니다."),
     RANDOM_INSTANCE(500, "COIN-500-1", "Random Instance Create Exception");

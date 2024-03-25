@@ -3,11 +3,14 @@ package com.project.bumawiki.domain.coin.service;
 import static com.project.bumawiki.global.util.RandomUtil.*;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.bumawiki.domain.coin.controller.dto.RankingResponse;
 import com.project.bumawiki.domain.coin.domain.CoinAccount;
 import com.project.bumawiki.domain.coin.domain.Price;
 import com.project.bumawiki.domain.coin.domain.Trade;
@@ -22,6 +25,7 @@ import com.project.bumawiki.domain.coin.exception.CancelOthersTradeException;
 import com.project.bumawiki.domain.coin.exception.TradeAlreadyFinishedException;
 import com.project.bumawiki.domain.coin.exception.TradeNotFoundException;
 import com.project.bumawiki.domain.user.domain.User;
+import com.project.bumawiki.domain.user.domain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +37,7 @@ public class CoinService {
 	private final CoinAccountRepository coinAccountRepository;
 	private final PriceRepository priceRepository;
 	private final TradeRepository tradeRepository;
+	private final UserRepository userRepository;
 
 	public CoinAccount createCoinAccount(User user) {
 		boolean alreadyCreatedAccount = coinAccountRepository.existsByUserId(user.getId());
@@ -109,8 +114,37 @@ public class CoinService {
 		return tradeRepository.findAllByCoinAccountIdOrderByTradedTimeDesc(accountId);
 	}
 
-	public List<Price> getAllPrices() {
-		return priceRepository.findAllByOrderByStartedTime();
+	public List<Price> getPriceByPeriod(String period) {
+		if (period.equals("full")) {
+			return priceRepository.findAllByOrderByStartedTime();
+		}
+
+		if (period.equals("halfMonth")) {
+			LocalDateTime twoWeeksAgo = LocalDateTime.now().minusWeeks(2);
+			return priceRepository.findAllAfterStartedTime(twoWeeksAgo);
+		}
+
+		if (period.equals("week")) {
+			LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
+			return priceRepository.findAllAfterStartedTime(oneWeekAgo);
+		}
+
+		if (period.equals("day")) {
+			LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
+			return priceRepository.findAllAfterStartedTime(oneDayAgo);
+		}
+
+		if (period.equals("halfDay")) {
+			LocalDateTime halfDayAgo = LocalDateTime.now().minusHours(12);
+			return priceRepository.findAllAfterStartedTime(halfDayAgo);
+		}
+
+		if (period.equals("threeHours")) {
+			LocalDateTime threeHoursAgo = LocalDateTime.now().minusHours(3);
+			return priceRepository.findAllAfterStartedTime(threeHoursAgo);
+		}
+
+		throw new NoPeriodException();
 	}
 
 	public void cancelTrade(Long tradeId, User user) {
@@ -147,5 +181,21 @@ public class CoinService {
 		account.updateLastRewardedTimeNow();
 
 		return randomNumber;
+	}
+
+	public List<RankingResponse> getRanking(Pageable pageable) {
+		Price recentPrice = priceRepository.getRecentPrice();
+		return coinAccountRepository.getRanking(pageable, recentPrice.getPrice())
+			.stream()
+			.map(ranking -> new RankingResponse(
+					ranking,
+					recentPrice.getPrice(),
+					userRepository.getById(ranking.getUserId())
+				)
+			).toList();
+	}
+
+	public Price getRecentPrice() {
+		return priceRepository.getRecentPrice();
 	}
 }
