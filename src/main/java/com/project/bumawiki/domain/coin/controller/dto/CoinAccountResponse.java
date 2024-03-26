@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.project.bumawiki.domain.coin.domain.CoinAccount;
 
 public record CoinAccountResponse(
-	Long userId,
+	Long id,
 	Long money,
 	Long coin,
 	LocalDateTime lastRewardedTime
@@ -13,7 +13,7 @@ public record CoinAccountResponse(
 
 	public static CoinAccountResponse from(CoinAccount coinAccount) {
 		return new CoinAccountResponse(
-			coinAccount.getUserId(),
+			coinAccount.getId(),
 			coinAccount.getMoney(),
 			coinAccount.getCoin(),
 			coinAccount.getLastRewardedTime()
