@@ -2,24 +2,25 @@ package com.project.bumawiki.domain.user.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.project.bumawiki.domain.contribute.domain.Contribute;
+import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
+import com.project.bumawiki.domain.thumbsUp.exception.AlreadyThumbsUpexception;
+import com.project.bumawiki.domain.thumbsUp.exception.YouDontThumbsUpThisDocs;
+import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
+import com.project.bumawiki.domain.user.domain.authority.Authority;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-
-import com.project.bumawiki.domain.contribute.domain.Contribute;
-import com.project.bumawiki.domain.docs.domain.Docs;
-import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.collection.UserThumbsUps;
-import com.project.bumawiki.domain.user.domain.authority.Authority;
-
 import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -58,9 +59,40 @@ public class User {
 	@OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL)
 	private List<Contribute> contributeDocs = new ArrayList<>();
 
-	@Embedded
+	@OneToMany(
+		mappedBy = "user",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL,
+		orphanRemoval = true)
 	@Builder.Default
-	private UserThumbsUps userThumbsUps = new UserThumbsUps();
+	private final List<ThumbsUp> thumbsUps = new ArrayList<>();
+
+	public void cancelThumbsUp(ThumbsUp thumbsUp) {
+		boolean removed = thumbsUps
+			.removeIf(thumbsUp::equals);
+
+		if (!removed) {
+			throw YouDontThumbsUpThisDocs.EXCEPTION;
+		}
+	}
+
+	public void addThumbsUp(ThumbsUp thumbsUp) {
+		boolean anyMatch = thumbsUps
+			.stream()
+			.anyMatch(iterThumbsUp -> iterThumbsUp.equals(thumbsUp));
+
+		if (anyMatch) {
+			throw AlreadyThumbsUpexception.EXCEPTION;
+		}
+		this.thumbsUps.add(thumbsUp);
+	}
+
+	public List<ThumbsUpResponseDto> getList() {
+		return this.thumbsUps
+			.stream()
+			.map(ThumbsUp::getDto)
+			.collect(Collectors.toList());
+	}
 
 	public User update(BsmResourceResponse resource) {
 		this.email = resource.getEmail();
@@ -74,20 +106,7 @@ public class User {
 		this.authority = authority;
 	}
 
-	public void setContributeDocs(List<Contribute> contribute) {
+	public void updateContributeDocs(List<Contribute> contribute) {
 		this.contributeDocs = contribute;
-	}
-
-	public void addThumbsUp(ThumbsUp thumbsUp) {
-		userThumbsUps.addThumbsUp(thumbsUp);
-
-	}
-
-	public boolean doYouLike(Docs docs) {
-		return userThumbsUps.doYouThumbsUp(docs);
-	}
-
-	public void cancelThumbsUp(ThumbsUp thumbsUp) {
-		userThumbsUps.cancelLike(thumbsUp);
 	}
 }

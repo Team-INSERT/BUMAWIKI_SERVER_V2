@@ -48,7 +48,7 @@ public class CustomDocsRepositoryImpl implements CustomDocsRepository {
 			.select(
 				constructor(DocsPopularResponseDto.class, docs.title, docs.enroll, docs.docsType, thumbsUp.id.count()))
 			.from(docs)
-			.innerJoin(docs.docsThumbsUp.thumbsUps, thumbsUp)
+			.innerJoin(docs.thumbsUps, thumbsUp)
 			.groupBy(docs.title, docs.enroll, docs.docsType)
 			.orderBy(thumbsUp.id.count().desc())
 			.limit(25)

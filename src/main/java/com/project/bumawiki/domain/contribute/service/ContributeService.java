@@ -46,7 +46,7 @@ public class ContributeService {
         contributes.add(contribute);
 
         setFirstContribute(contributes, user);
-        docs.setContributor(contributes);
+        docs.updateContributor(contributes);
         return contribute;
     }
 
@@ -73,7 +73,7 @@ public class ContributeService {
 
     @Transactional
     public void setFirstContribute(final List<Contribute> contributes, final User user){
-        user.setContributeDocs(contributes);
+        user.updateContributeDocs(contributes);
     }
 
     @Transactional

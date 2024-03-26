@@ -1,18 +1,36 @@
 package com.project.bumawiki.domain.docs.domain;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.annotation.LastModifiedDate;
+
 import com.project.bumawiki.domain.contribute.domain.Contribute;
 import com.project.bumawiki.domain.docs.domain.type.DocsType;
 import com.project.bumawiki.domain.docs.domain.type.Status;
 import com.project.bumawiki.domain.thumbsUp.domain.ThumbsUp;
-import com.project.bumawiki.domain.thumbsUp.domain.collection.DocsThumbsUps;
+import com.project.bumawiki.domain.thumbsUp.exception.AlreadyThumbsUpexception;
+import com.project.bumawiki.domain.thumbsUp.exception.YouDontThumbsUpThisDocs;
+import com.project.bumawiki.domain.thumbsUp.presentation.dto.ThumbsUpResponseDto;
 import com.project.bumawiki.domain.user.domain.User;
-import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -21,88 +39,113 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Docs {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "docs_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "docs_id")
+	private Long id;
 
-    @Column(length = 32, unique = true)
-    private String title;
+	@Column(length = 32, unique = true)
+	private String title;
 
-    @Column(length = 8)
-    private int enroll;
+	@Column(length = 8)
+	private int enroll;
 
-    @Enumerated(EnumType.STRING)
-    private DocsType docsType;
+	@Enumerated(EnumType.STRING)
+	private DocsType docsType;
 
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
+	@LastModifiedDate
+	private LocalDateTime lastModifiedAt;
 
-    @Builder.Default
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<VersionDocs> docsVersion = new ArrayList<>();
+	@Builder.Default
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<VersionDocs> docsVersion = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
-    private List<Contribute> contributor = new ArrayList<>();
+	@Builder.Default
+	@OneToMany(mappedBy = "docs", cascade = CascadeType.ALL)
+	private List<Contribute> contributor = new ArrayList<>();
 
-    @Embedded
-    @Builder.Default
-    private DocsThumbsUps docsThumbsUp = new DocsThumbsUps();
+	@OneToMany(
+		mappedBy = "docs",
+		fetch = FetchType.LAZY,
+		cascade = CascadeType.ALL,
+		orphanRemoval = true)
+	@Builder.Default
+	private final List<ThumbsUp> thumbsUps = new ArrayList<>();
 
-    private int lastVersion;
+	public void cancelThumbsUp(ThumbsUp thumbsUp) {
+		boolean removed = thumbsUps
+			.removeIf(thumbsUp::equals);
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+		if (!removed) {
+			throw YouDontThumbsUpThisDocs.EXCEPTION;
+		}
+	}
 
-    public void updateDocsType(DocsType docsType) {
-        this.docsType = docsType;
-    }
+	public boolean doesUserThumbsUp(User user) {
+		return thumbsUps
+			.stream()
+			.anyMatch(like -> like.doesUserThumbsUp(user));
+	}
 
-    public void setVersionDocs(List<VersionDocs> versionDocs) {
-        this.docsVersion = versionDocs;
-    }
+	public void addThumbsUp(ThumbsUp thumbsUp) {
+		boolean anyMatch = thumbsUps
+			.stream()
+			.anyMatch(iterThumbsUp -> iterThumbsUp.equals(thumbsUp));
 
-    public void setContributor(List<Contribute> contributes) {
-        this.contributor = contributes;
-    }
+		if (anyMatch) {
+			throw AlreadyThumbsUpexception.EXCEPTION;
+		}
+		this.thumbsUps.add(thumbsUp);
+	}
 
-    public void setModifiedTime(LocalDateTime lastModifiedAt) {
-        this.lastModifiedAt = lastModifiedAt;
-    }
+	public List<ThumbsUpResponseDto> getList() {
+		return this.thumbsUps
+			.stream()
+			.map(ThumbsUp::getDto)
+			.collect(Collectors.toList());
+	}
 
-    public void updateTitle(String title) {
-        this.title = title;
-    }
+	private int lastVersion;
 
-    public void addThumbsUp(ThumbsUp thumbsUp) {
-        docsThumbsUp.addThumbsUp(thumbsUp);
-    }
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
-    public boolean doesUserThumbsUp(User user) {
-        return docsThumbsUp.doesUserThumbsUp(user);
-    }
+	public void updateDocsType(DocsType docsType) {
+		this.docsType = docsType;
+	}
 
-    public void cancelThumbsUp(ThumbsUp thumbsUp) {
-        docsThumbsUp.cancelLike(thumbsUp);
-    }
+	public void setVersionDocs(List<VersionDocs> versionDocs) {
+		this.docsVersion = versionDocs;
+	}
 
-    public boolean doesUserLike(User user) {
-        return docsThumbsUp.doesUserThumbsUp(user);
-    }
+	public void updateContributor(List<Contribute> contributes) {
+		this.contributor = contributes;
+	}
 
-    public int getThumbsUpsCount() {
-        if (docsThumbsUp == null) {
-            return 0;
-        }
-        return docsThumbsUp.getThumbsUpsCount();
-    }
+	public void setModifiedTime(LocalDateTime lastModifiedAt) {
+		this.lastModifiedAt = lastModifiedAt;
+	}
 
-    public void updateLatestVersion(int version) {
-        this.lastVersion = version;
-    }
+	public void updateTitle(String title) {
+		this.title = title;
+	}
 
-    public void updateStatus(Status status) {
-        this.status = status;
-    }
+	public boolean doesUserLike(User user) {
+		return doesUserThumbsUp(user);
+	}
+
+	public int getThumbsUpsCount() {
+		if (thumbsUps == null) {
+			return 0;
+		}
+		return thumbsUps.size();
+	}
+
+	public void updateLatestVersion(int version) {
+		this.lastVersion = version;
+	}
+
+	public void updateStatus(Status status) {
+		this.status = status;
+	}
 }
