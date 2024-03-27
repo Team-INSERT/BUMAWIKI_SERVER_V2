@@ -31,16 +31,40 @@ public class PriceScheduler {
 
 		Price recentPrice = priceRepository.getRecentPrice();
 		Long max = recentPrice.getPrice() + CHANGE_MONEY_RANGE;
-		Long min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 20000L);
+		Long min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 0L);
 
 		SecureRandom random = getRandomInstance();
-		Long randomPrice = random.nextLong(max - min + 1L) + min;
-		Price newPrice = new Price(randomPrice - randomPrice % 100);
+		// Long randomPrice = random.nextLong(max - min + 1L) + min;
+		Long randomPrice = 0L;
+		Price newPrice;
+		if (randomPrice == 0) {
+			restartCoin();
+			newPrice = new Price(100000L);
+		} else {
+			newPrice = new Price(randomPrice - randomPrice % 100);
+		}
 
 		priceRepository.save(newPrice);
-
 		processBuyingTrade(newPrice);
 		processSellingTrade(newPrice);
+	}
+
+	private void restartCoin() {
+		List<CoinAccount> coinAccounts = coinAccountRepository.findAllByCoinGreaterThan0();
+
+		for (CoinAccount coinAccount : coinAccounts) {
+			Trade trade = new Trade(
+				0L,
+				coinAccount.getCoin(),
+				0L,
+				TradeStatus.DELISTING,
+				coinAccount.getId()
+			);
+			coinAccount.sellCoin(0L, coinAccount.getCoin());
+
+			tradeRepository.save(trade);
+			coinAccountRepository.save(coinAccount);
+		}
 	}
 
 	private void processSellingTrade(Price newPrice) {

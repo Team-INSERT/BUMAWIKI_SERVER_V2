@@ -6,5 +6,6 @@ public enum TradeStatus {
 	SELLING,
 	SOLD,
 	CANCELLED,
+	DELISTING,
 	NONE
 }

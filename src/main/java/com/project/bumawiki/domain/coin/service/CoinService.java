@@ -96,7 +96,6 @@ public class CoinService {
 	private void sellNow(Trade trade, CoinAccount coinAccount) {
 		coinAccount.sellCoin(trade.getCoinPrice(), trade.getCoinCount());
 		trade.updateTradeStatus(TradeStatus.SOLD);
-		trade.updateTradedTimeNow();
 	}
 
 	private void buyLater(Trade trade) {
@@ -106,7 +105,6 @@ public class CoinService {
 	private void buyNow(Trade trade, CoinAccount coinAccount) {
 		coinAccount.buyCoin(trade.getCoinPrice(), trade.getCoinCount());
 		trade.updateTradeStatus(TradeStatus.BOUGHT);
-		trade.updateTradedTimeNow();
 	}
 
 	@Transactional(readOnly = true)
