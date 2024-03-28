@@ -38,7 +38,7 @@ public class PriceScheduler {
 		Price newPrice;
 		if (randomPrice == 0) {
 			restartCoin();
-			newPrice = new Price(100000L);
+			newPrice = new Price(1000000L);
 		} else {
 			newPrice = new Price(randomPrice - randomPrice % 100);
 		}
