@@ -25,7 +25,7 @@ public class PriceScheduler {
 	private final TradeRepository tradeRepository;
 	private final CoinAccountRepository coinAccountRepository;
 
-	@Scheduled(fixedRate = 300000)
+	@Scheduled(fixedRate = 180000)
 	void changePrice() {
 		Long CHANGE_MONEY_RANGE = 200000L;
 
