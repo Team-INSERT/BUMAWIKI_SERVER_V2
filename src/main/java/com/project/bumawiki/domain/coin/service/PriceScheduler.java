@@ -34,8 +34,7 @@ public class PriceScheduler {
 		Long min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 0L);
 
 		SecureRandom random = getRandomInstance();
-		// Long randomPrice = random.nextLong(max - min + 1L) + min;
-		Long randomPrice = 0L;
+		Long randomPrice = random.nextLong(max - min + 1L) + min;
 		Price newPrice;
 		if (randomPrice == 0) {
 			restartCoin();

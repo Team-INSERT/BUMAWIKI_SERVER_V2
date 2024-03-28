@@ -2,8 +2,6 @@ package com.project.bumawiki.domain.coin.domain;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-
 import com.project.bumawiki.domain.coin.domain.type.TradeStatus;
 
 import jakarta.persistence.Entity;
