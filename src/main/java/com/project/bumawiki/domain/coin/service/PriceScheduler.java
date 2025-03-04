@@ -56,8 +56,11 @@ public class PriceScheduler {
 			soldRatio = tradeMap.getOrDefault(SOLD, List.of()).size() / (double)trades.size();
 		}
 
-		Long max = recentPrice.getPrice() + (CHANGE_MONEY_RANGE * (long)boughtRatio);
-		Long min = recentPrice.getPrice() - (CHANGE_MONEY_RANGE * (long)soldRatio);
+		Long max = Math.round(recentPrice.getPrice() + (CHANGE_MONEY_RANGE * boughtRatio));
+		Long min = Math.round(recentPrice.getPrice() - (CHANGE_MONEY_RANGE * soldRatio));
+
+		System.out.println("max = " + max);
+		System.out.println("min = " + min);
 
 		SecureRandom random = getRandomInstance();
 		long totalRandomPrice = 0L;
