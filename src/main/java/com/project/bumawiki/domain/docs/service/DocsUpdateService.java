@@ -42,9 +42,9 @@ public class DocsUpdateService {
 		Docs foundDocs = findDocsByTitle(title);
 		validate(authId, foundDocs);
 
-		if (foundDocs.getStatus() == Status.CONFLICTED) {
-			throw new DocsConflictedException();
-		}
+		// if (foundDocs.getStatus() == Status.CONFLICTED) {
+		// 	throw new DocsConflictedException();
+		// }
 
 		VersionDocs savedVersionDocs = saveVersionDocs(docsUpdateRequestDto, foundDocs.getId(),
 			foundDocs.getLastVersion());
