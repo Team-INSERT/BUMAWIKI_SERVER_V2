@@ -27,7 +27,7 @@ public class PriceScheduler {
 	private final TradeRepository tradeRepository;
 	private final CoinAccountRepository coinAccountRepository;
 
-	@Scheduled(fixedRate = 180000)
+	@Scheduled(fixedRate = 90000)
 	void changePrice() {
 		Long CHANGE_MONEY_RANGE = 140000L;
 
@@ -56,8 +56,11 @@ public class PriceScheduler {
 			soldRatio = tradeMap.getOrDefault(SOLD, List.of()).size() / (double)trades.size();
 		}
 
-		Long max = recentPrice.getPrice() + (CHANGE_MONEY_RANGE * (long)boughtRatio);
-		Long min = recentPrice.getPrice() - (CHANGE_MONEY_RANGE * (long)soldRatio);
+		Long max = Math.round(recentPrice.getPrice() + (CHANGE_MONEY_RANGE * boughtRatio));
+		Long min = Math.round(recentPrice.getPrice() - (CHANGE_MONEY_RANGE * soldRatio));
+
+		System.out.println("max = " + max);
+		System.out.println("min = " + min);
 
 		SecureRandom random = getRandomInstance();
 		long totalRandomPrice = 0L;
@@ -65,6 +68,9 @@ public class PriceScheduler {
 
 		for (int i = 0; i < 10; i++) {
 			Long randomPrice = random.nextLong(max - min + 1L) + min;
+
+			System.out.println("randomPrice = " + randomPrice);
+
 			if (randomPrice < 0) {
 				failcount++;
 			}
@@ -72,6 +78,8 @@ public class PriceScheduler {
 		}
 
 		Long averageRandomPrice = totalRandomPrice / 10;
+		System.out.println("averageRandomPrice = " + averageRandomPrice);
+
 		Price newPrice;
 
 		if (failcount > 3) {
@@ -80,6 +88,8 @@ public class PriceScheduler {
 		} else {
 			newPrice = new Price(averageRandomPrice);
 		}
+		System.out.println("newPrice = " + newPrice);
+		System.out.println("\n\n");
 
 		priceRepository.save(newPrice);
 		processBuyingTrade(newPrice);
