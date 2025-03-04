@@ -1,9 +1,11 @@
 package com.project.bumawiki.domain.coin.service;
 
+import static com.project.bumawiki.domain.coin.domain.type.TradeStatus.*;
 import static com.project.bumawiki.global.util.RandomUtil.*;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,20 +29,56 @@ public class PriceScheduler {
 
 	@Scheduled(fixedRate = 180000)
 	void changePrice() {
-		Long CHANGE_MONEY_RANGE = 200000L;
+		Long CHANGE_MONEY_RANGE = 140000L;
 
 		Price recentPrice = priceRepository.getRecentPrice();
-		Long max = recentPrice.getPrice() + CHANGE_MONEY_RANGE;
-		Long min = Math.max(recentPrice.getPrice() - CHANGE_MONEY_RANGE, 0L);
+
+		List<Trade> trades = tradeRepository.findByCreatedAtGreaterThan(recentPrice.getStartedTime());
+		trades = trades.stream()
+			.filter(trade -> !List.of(DELISTING, NONE, CANCELLED).contains(trade.getTradeStatus()))
+			.toList();
+
+		Map<TradeStatus, List<Trade>> tradeMap = trades.stream().collect(
+			java.util.stream.Collectors.groupingBy(
+				trade -> switch (trade.getTradeStatus()) {
+					case BOUGHT, BUYING -> BOUGHT;
+					case SELLING, SOLD -> SOLD;
+					default -> NONE;
+				}
+			)
+		);
+
+		double boughtRatio = 0.5;
+		double soldRatio = 0.5;
+
+		if (!trades.isEmpty()) {
+			boughtRatio = tradeMap.getOrDefault(BOUGHT, List.of()).size() / (double)trades.size();
+			soldRatio = tradeMap.getOrDefault(SOLD, List.of()).size() / (double)trades.size();
+		}
+
+		Long max = recentPrice.getPrice() + (CHANGE_MONEY_RANGE * (long)boughtRatio);
+		Long min = recentPrice.getPrice() - (CHANGE_MONEY_RANGE * (long)soldRatio);
 
 		SecureRandom random = getRandomInstance();
-		Long randomPrice = random.nextLong(max - min + 1L) + min;
+		long totalRandomPrice = 0L;
+		int failcount = 0;
+
+		for (int i = 0; i < 10; i++) {
+			Long randomPrice = random.nextLong(max - min + 1L) + min;
+			if (randomPrice < 0) {
+				failcount++;
+			}
+			totalRandomPrice += randomPrice;
+		}
+
+		Long averageRandomPrice = totalRandomPrice / 10;
 		Price newPrice;
-		if (randomPrice == 0) {
+
+		if (failcount > 3) {
 			restartCoin();
-			newPrice = new Price(1000000L);
+			newPrice = new Price(350000L);
 		} else {
-			newPrice = new Price(randomPrice - randomPrice % 100);
+			newPrice = new Price(averageRandomPrice);
 		}
 
 		priceRepository.save(newPrice);
@@ -88,7 +126,7 @@ public class PriceScheduler {
 				CoinAccount tradingAccount = coinAccountRepository.getById(buyingTrade.getCoinAccountId());
 
 				tradingAccount.buyCoin(buyingTrade.getCoinPrice(), buyingTrade.getCoinCount());
-				buyingTrade.updateTradeStatus(TradeStatus.BOUGHT);
+				buyingTrade.updateTradeStatus(BOUGHT);
 				tradeRepository.save(buyingTrade);
 			}
 		}

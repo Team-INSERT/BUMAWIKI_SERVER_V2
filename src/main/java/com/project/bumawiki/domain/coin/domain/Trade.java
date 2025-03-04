@@ -2,6 +2,9 @@ package com.project.bumawiki.domain.coin.domain;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.project.bumawiki.domain.coin.domain.type.TradeStatus;
 
 import jakarta.persistence.Entity;
@@ -28,6 +31,11 @@ public class Trade {
 	private TradeStatus tradeStatus;
 	private Long coinAccountId;
 	private LocalDateTime tradedTime;
+
+	@CreationTimestamp
+	private LocalDateTime createdAt = LocalDateTime.now();
+	@UpdateTimestamp
+	private LocalDateTime updatedAt = LocalDateTime.now();
 
 	public Trade(Long coinPrice, Long coinCount, Long usedMoney, TradeStatus tradeStatus, Long coinAccountId) {
 		this.coinPrice = coinPrice;
