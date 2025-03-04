@@ -27,7 +27,7 @@ public class PriceScheduler {
 	private final TradeRepository tradeRepository;
 	private final CoinAccountRepository coinAccountRepository;
 
-	@Scheduled(fixedRate = 30000)
+	@Scheduled(fixedRate = 90000)
 	void changePrice() {
 		Long CHANGE_MONEY_RANGE = 140000L;
 
@@ -68,7 +68,9 @@ public class PriceScheduler {
 
 		for (int i = 0; i < 10; i++) {
 			Long randomPrice = random.nextLong(max - min + 1L) + min;
+
 			System.out.println("randomPrice = " + randomPrice);
+
 			if (randomPrice < 0) {
 				failcount++;
 			}
@@ -77,6 +79,7 @@ public class PriceScheduler {
 
 		Long averageRandomPrice = totalRandomPrice / 10;
 		System.out.println("averageRandomPrice = " + averageRandomPrice);
+
 		Price newPrice;
 
 		if (failcount > 3) {
