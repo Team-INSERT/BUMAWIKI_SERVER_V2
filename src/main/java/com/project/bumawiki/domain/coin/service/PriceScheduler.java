@@ -29,7 +29,8 @@ public class PriceScheduler {
 
 	@Scheduled(fixedRate = 90000)
 	void changePrice() {
-		Long CHANGE_MONEY_RANGE = 140000L;
+		Long CHANGE_MONEY_RANGE_MIN = 70000L;
+		Long CHANGE_MONEY_RANGE = 100000L;
 
 		Price recentPrice = priceRepository.getRecentPrice();
 
@@ -37,6 +38,8 @@ public class PriceScheduler {
 		trades = trades.stream()
 			.filter(trade -> !List.of(DELISTING, NONE, CANCELLED).contains(trade.getTradeStatus()))
 			.toList();
+
+		Long coinAllCount = trades.stream().mapToLong(Trade::getCoinCount).sum();
 
 		Map<TradeStatus, List<Trade>> tradeMap = trades.stream().collect(
 			java.util.stream.Collectors.groupingBy(
@@ -52,12 +55,14 @@ public class PriceScheduler {
 		double soldRatio = 0.5;
 
 		if (!trades.isEmpty()) {
-			boughtRatio = tradeMap.getOrDefault(BOUGHT, List.of()).size() / (double)trades.size();
-			soldRatio = tradeMap.getOrDefault(SOLD, List.of()).size() / (double)trades.size();
+			boughtRatio = tradeMap.getOrDefault(BOUGHT, List.of()).stream().mapToLong(Trade::getCoinCount).sum()
+				/ (double)coinAllCount;
+			soldRatio = tradeMap.getOrDefault(SOLD, List.of()).stream().mapToLong(Trade::getCoinCount).sum()
+				/ (double)coinAllCount;
 		}
 
-		Long max = Math.round(recentPrice.getPrice() + (CHANGE_MONEY_RANGE * boughtRatio));
-		Long min = Math.round(recentPrice.getPrice() - (CHANGE_MONEY_RANGE * soldRatio));
+		Long max = Math.round(recentPrice.getPrice() + (CHANGE_MONEY_RANGE * boughtRatio) + CHANGE_MONEY_RANGE_MIN);
+		Long min = Math.round(recentPrice.getPrice() - (CHANGE_MONEY_RANGE * soldRatio) - CHANGE_MONEY_RANGE_MIN);
 
 		System.out.println("max = " + max);
 		System.out.println("min = " + min);
@@ -82,7 +87,7 @@ public class PriceScheduler {
 
 		Price newPrice;
 
-		if (failcount > 3) {
+		if (failcount > 1) {
 			restartCoin();
 			newPrice = new Price(350000L);
 		} else {
