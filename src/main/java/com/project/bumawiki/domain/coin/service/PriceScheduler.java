@@ -124,11 +124,16 @@ public class PriceScheduler {
 
 		for (Trade sellingTrade : sellingTrades) {
 			if (sellingTrade.getCoinPrice() <= newPrice.getPrice()) {
-				CoinAccount tradingAccount = coinAccountRepository.getById(sellingTrade.getCoinAccountId());
+				try {
 
-				tradingAccount.sellCoin(sellingTrade.getCoinPrice(), sellingTrade.getCoinCount());
-				sellingTrade.updateTradeStatus(TradeStatus.SOLD);
-				tradeRepository.save(sellingTrade);
+					CoinAccount tradingAccount = coinAccountRepository.getById(sellingTrade.getCoinAccountId());
+
+					tradingAccount.sellCoin(sellingTrade.getCoinPrice(), sellingTrade.getCoinCount());
+					sellingTrade.updateTradeStatus(TradeStatus.SOLD);
+					tradeRepository.save(sellingTrade);
+				} catch (Exception ignored) {
+
+				}
 			}
 		}
 	}
@@ -138,11 +143,15 @@ public class PriceScheduler {
 
 		for (Trade buyingTrade : buyingTrades) {
 			if (buyingTrade.getCoinPrice() >= newPrice.getPrice()) {
-				CoinAccount tradingAccount = coinAccountRepository.getById(buyingTrade.getCoinAccountId());
+				try {
+					CoinAccount tradingAccount = coinAccountRepository.getById(buyingTrade.getCoinAccountId());
 
-				tradingAccount.buyCoin(buyingTrade.getCoinPrice(), buyingTrade.getCoinCount());
-				buyingTrade.updateTradeStatus(BOUGHT);
-				tradeRepository.save(buyingTrade);
+					tradingAccount.buyCoin(buyingTrade.getCoinPrice(), buyingTrade.getCoinCount());
+					buyingTrade.updateTradeStatus(BOUGHT);
+					tradeRepository.save(buyingTrade);
+				} catch (Exception ignored) {
+
+				}
 			}
 		}
 	}
