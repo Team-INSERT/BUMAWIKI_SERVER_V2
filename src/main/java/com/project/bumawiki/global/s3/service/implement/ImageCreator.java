@@ -36,7 +36,7 @@ public class ImageCreator {
 			throw new S3SaveException();
 		}
 
-		return amazonS3.getUrl(s3Bucket.getS3Bucket(), fileName).toString();
+		return "https://cdn.buma.wiki/" + fileName;
 	}
 
 	private String createFileName(MultipartFile multipartFile) {

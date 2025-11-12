@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
@@ -25,7 +24,12 @@ class S3Config {
 			.withCredentials(
 				new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey))
 			)
-			.withRegion(Regions.AP_NORTHEAST_2)
+			.withEndpointConfiguration(
+				new AmazonS3ClientBuilder.EndpointConfiguration(
+					"https://bcebbd8dec3ba1919201b6170528bc41.r2.cloudflarestorage.com/bumawiki",
+					"APAC"
+				)
+			)
 			.build();
 	}
 }
